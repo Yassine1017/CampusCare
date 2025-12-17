@@ -16,6 +16,21 @@ class signInPageViewController: UIViewController {
     }
     
 
+    @IBAction func loginButtonTapped(_ sender: UIButton) {
+        let alert = UIAlertController(
+                   title: "Success",
+                   message: "Login successful. Welcome.",
+                   preferredStyle: .alert
+               )
+
+               let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                   self.performSegue(withIdentifier: "goToHome", sender: self)
+               }
+
+               alert.addAction(okAction)
+               present(alert, animated: true)
+    }
+    
     /*
     // MARK: - Navigation
 
