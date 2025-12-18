@@ -248,6 +248,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="TXZ-7C-1ho"/>
                     <value key="contentSizeForViewInPopover" type="size" width="393" height="852"/>
+                    <connections>
+                        <outlet property="categoryTextField" destination="tuB-Zd-AWh" id="2uv-1Y-UEj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lQ2-QJ-gOE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
