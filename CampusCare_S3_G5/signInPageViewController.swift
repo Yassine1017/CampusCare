@@ -18,17 +18,18 @@ class signInPageViewController: UIViewController {
 
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         let alert = UIAlertController(
-                   title: "Success",
-                   message: "Login successful. Welcome.",
-                   preferredStyle: .alert
-               )
+                title: "Success",
+                message: "Login successful. Welcome.",
+                preferredStyle: .alert
+            )
 
-               let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                   self.performSegue(withIdentifier: "goToHome", sender: self)
-               }
+            let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                self.performSegue(withIdentifier: "goToHome", sender: nil)
+            }
 
-               alert.addAction(okAction)
-               present(alert, animated: true)
+            alert.addAction(okAction)
+            self.present(alert, animated: true)
     }
     
     /*
