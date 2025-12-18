@@ -1,5 +1,5 @@
 //
-//  SignUpViewController SignUpViewController SignUpViewController SignUpViewController SignUpViewController.swift
+//  ReportIssuesViewController.swift
 //  CampusCare_S3_G5
 //
 //  Created by MOHAMED ALTAJER on 18/12/2025.
@@ -7,12 +7,13 @@
 
 import UIKit
 
-class SignUpViewController_SignUpViewController_SignUpViewController_SignUpViewController_SignUpViewController: UIViewController {
+class ReportIssuesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        navigationController?.navigationBar.isTranslucent = false
     }
     
 

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vvd-gR-r2V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DJy-Uf-VDZ">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -45,7 +44,7 @@
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="Tvy-rQ-pEd"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="WX0-ke-kcq"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YFl-gr-3Fa">
@@ -66,7 +65,7 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pFI-Jn-JLk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2405.9701492537311" y="4.805491990846682"/>
+            <point key="canvasLocation" x="3325.373134328358" y="4.805491990846682"/>
         </scene>
         <!--Sign In Page View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -102,6 +101,9 @@ admins manage repairs efficiently.</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="forgotPasswordTapped:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="4I0-VF-yXy"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="______________________Or_____________________" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oDN-ZE-hEm">
                                 <rect key="frame" x="-3" y="620" width="399" height="21"/>
@@ -126,7 +128,7 @@ admins manage repairs efficiently.</string>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="loginButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tbx-To-Ufz"/>
+                                    <action selector="loginButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="W4D-KE-jX1"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qvk-8a-x12">
@@ -135,7 +137,8 @@ admins manage repairs efficiently.</string>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Register"/>
                                 <connections>
-                                    <segue destination="sDs-E7-gID" kind="show" id="xbS-Va-IHo"/>
+                                    <action selector="registerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rkH-4i-Svb"/>
+                                    <segue destination="sDs-E7-gID" kind="show" identifier="goToSignUp" id="Cr1-Ct-9y7"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Liy-rt-SVW">
@@ -145,7 +148,7 @@ admins manage repairs efficiently.</string>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zuH-Aw-UtF">
-                                <rect key="frame" x="1" y="0.0" width="409" height="116"/>
+                                <rect key="frame" x="-3" y="0.0" width="413" height="116"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SvL-X5-rRa">
@@ -164,13 +167,6 @@ admins manage repairs efficiently.</string>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cch-SI-kyK">
-                                <rect key="frame" x="25" y="135" width="168" height="43"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BUD-sJ-Ttk">
                                 <rect key="frame" x="262" y="438" width="124" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -180,23 +176,37 @@ admins manage repairs efficiently.</string>
                                     <color key="baseForegroundColor" systemColor="systemGrayColor"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="ZXy-ks-CZQ" kind="show" id="kc2-y6-kqm"/>
+                                    <segue destination="ZXy-ks-CZQ" kind="show" identifier="goToForgotPassword" id="z4G-3o-fZ8"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cch-SI-kyK">
+                                <rect key="frame" x="107" y="150" width="168" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="wSb-D4-ixd"/>
+                    <connections>
+                        <outlet property="emailOrPhoneTextField" destination="Liy-rt-SVW" id="4LO-qd-zGe"/>
+                        <outlet property="forgotPasswordButton" destination="BUD-sJ-Ttk" id="vaA-bZ-MYU"/>
+                        <outlet property="loginButton" destination="4tr-EF-6co" id="DfG-ce-vCF"/>
+                        <outlet property="passwordTextField" destination="fpR-bR-Euh" id="DwU-tm-Jsk"/>
+                        <outlet property="registerButton" destination="Qvk-8a-x12" id="CA3-SV-NXZ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3217.9104477611941" y="-4.1189931350114417"/>
+            <point key="canvasLocation" x="4137.313432835821" y="-4.1189931350114417"/>
         </scene>
-        <!--View Controller-->
+        <!--Sign Up View Controller-->
         <scene sceneID="AIl-aV-lyA">
             <objects>
-                <viewController id="sDs-E7-gID" sceneMemberID="viewController">
+                <viewController id="sDs-E7-gID" customClass="SignUpViewController" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c9b-4v-p3r">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -267,13 +277,6 @@ admins manage repairs efficiently.</string>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wW0-zP-wFW">
-                                <rect key="frame" x="240" y="759" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" name="AccentColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Gn-pt-Tfg">
                                 <rect key="frame" x="33" y="698" width="308" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -283,6 +286,9 @@ admins manage repairs efficiently.</string>
                                     <fontDescription key="titleFontDescription" type="system" pointSize="17"/>
                                     <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="signUpTapped:" destination="sDs-E7-gID" eventType="touchUpInside" id="yjV-CM-vp7"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VtC-TA-n3A">
                                 <rect key="frame" x="-3" y="0.0" width="409" height="116"/>
@@ -324,15 +330,33 @@ admins manage repairs efficiently.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JGm-Uw-Uyw">
+                                <rect key="frame" x="241" y="749" width="66" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Login"/>
+                                <connections>
+                                    <action selector="loginTapped:" destination="sDs-E7-gID" eventType="touchUpInside" id="Y0Y-nx-XPV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="o03-WD-L3J"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="n0V-Fx-ppa"/>
+                    <connections>
+                        <outlet property="btnLogin" destination="JGm-Uw-Uyw" id="qzs-hH-Ai7"/>
+                        <outlet property="btnSignUp" destination="2Gn-pt-Tfg" id="gn8-AR-1zh"/>
+                        <outlet property="txtConfirmPassword" destination="Kdy-g6-4Ml" id="cSl-V3-JCw"/>
+                        <outlet property="txtEmailPhone" destination="5jO-tc-tTA" id="BH8-5n-Yi7"/>
+                        <outlet property="txtFullName" destination="f3i-Xe-rXJ" id="JyX-6d-BxX"/>
+                        <outlet property="txtPassword" destination="Zok-qR-21W" id="HbR-ZV-SDA"/>
+                        <outlet property="txtUsername" destination="pbd-fI-48w" id="oxG-Sh-KaD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CiB-EJ-VvN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4049.2537313432836" y="-4.1189931350114417"/>
+            <point key="canvasLocation" x="4968.6567164179105" y="-4.1189931350114417"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="VJR-Ej-Nes">
@@ -357,7 +381,7 @@ admins manage repairs efficiently.</string>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="jJZ-nl-Btl" kind="show" id="Lof-b5-s40"/>
+                                    <segue destination="jJZ-nl-Btl" kind="show" id="gZS-hS-AQw"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qcs-tk-Mgp">
@@ -406,7 +430,7 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gMO-SU-bD0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4761.1940298507461" y="4.805491990846682"/>
+            <point key="canvasLocation" x="5680.5970149253726" y="4.805491990846682"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="WpB-Ns-xh3">
@@ -476,33 +500,33 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dNW-bB-bI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5664.1791044776119" y="4.805491990846682"/>
+            <point key="canvasLocation" x="6583.5820895522384" y="4.805491990846682"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="8dZ-bu-kWN">
+        <scene sceneID="oAt-Wo-xIq">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jv2-f9-2Fo" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DJy-Uf-VDZ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hX9-nQ-YZp">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zc8-MS-DM7">
                         <rect key="frame" x="0.0" y="124" width="402" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Dbb-RF-jkg">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
-                        <segue destination="Vvd-gR-r2V" kind="relationship" relationship="rootViewController" id="HFH-Ct-X9X"/>
+                        <segue destination="Vvd-gR-r2V" kind="relationship" relationship="rootViewController" id="TKZ-T4-N9c"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="y8Q-AM-fGu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZqE-iK-RTV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1486.5671641791043" y="4.805491990846682"/>
+            <point key="canvasLocation" x="2405.9701492537311" y="4.805491990846682"/>
         </scene>
     </scenes>
     <resources>
         <image name="ChatGPT Image Dec 3, 2025, 01_16_16 PM" width="1024" height="1024"/>
         <image name="_splash screen" width="423" height="423"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
