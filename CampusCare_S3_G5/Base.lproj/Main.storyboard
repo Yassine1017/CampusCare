@@ -16,61 +16,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="JIa-ze-2Qk">
-                                <rect key="frame" x="24" y="109" width="423" height="741.33333333333337"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="center" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="alP-BQ-q3a">
+                                <rect key="frame" x="30" y="108" width="423" height="744"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="_splash screen" translatesAutoresizingMaskIntoConstraints="NO" id="Vwk-2W-UrI">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="_splash screen" translatesAutoresizingMaskIntoConstraints="NO" id="tbV-zj-iBf">
                                         <rect key="frame" x="0.0" y="0.0" width="423" height="423"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report issues" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o2t-cV-Rr5">
-                                        <rect key="frame" x="0.0" y="443" width="423" height="36"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report Issues" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGU-gO-hPm">
+                                        <rect key="frame" x="128.33333333333337" y="446" width="166.66666666666663" height="31.333333333333314"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On Campus easily " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mom-uO-doT">
-                                        <rect key="frame" x="0.0" y="499" width="423" height="36"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On Campus Easily " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b9w-de-fsd">
+                                        <rect key="frame" x="99.666666666666671" y="500.33333333333331" width="223.66666666666663" height="31.333333333333314"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YFl-gr-3Fa">
-                                        <rect key="frame" x="0.0" y="555" width="423" height="128"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1R1-kz-4yU">
+                                        <rect key="frame" x="81.666666666666686" y="554.66666666666663" width="260" height="128"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <string key="text">Campus Repair &amp; Maintenance System helps students and staff submit maintenance requests, track their status, and stay updated while technicians and
 admins manage repairs efficiently.</string>
                                         <color key="textColor" systemColor="systemGrayColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-kt-xsj">
-                                        <rect key="frame" x="0.0" y="703" width="423" height="38.333333333333371"/>
-                                        <color key="backgroundColor" red="0.08235294118" green="0.36470588240000001" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pgo-bc-TPp">
+                                        <rect key="frame" x="153.33333333333334" y="705.66666666666663" width="116.33333333333334" height="38.333333333333371"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Get Started ">
-                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </buttonConfiguration>
                                         <connections>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="WX0-ke-kcq"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" id="vI6-bI-RED"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Vwk-2W-UrI" secondAttribute="trailing" constant="24" id="6Cz-hc-1MG"/>
-                                    <constraint firstItem="o2t-cV-Rr5" firstAttribute="top" secondItem="Vwk-2W-UrI" secondAttribute="bottom" id="BM8-ZA-D3s"/>
-                                    <constraint firstItem="Vwk-2W-UrI" firstAttribute="top" secondItem="JIa-ze-2Qk" secondAttribute="top" constant="40" id="cXP-iY-3ZF"/>
-                                    <constraint firstItem="Vwk-2W-UrI" firstAttribute="centerX" secondItem="JIa-ze-2Qk" secondAttribute="centerX" id="iIj-fn-d3X"/>
-                                    <constraint firstItem="Vwk-2W-UrI" firstAttribute="leading" secondItem="JIa-ze-2Qk" secondAttribute="leading" constant="24" id="ojn-Z4-9eJ"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wZf-1F-1iR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="JIa-ze-2Qk" firstAttribute="top" secondItem="V0Y-fA-Drg" secondAttribute="top" constant="40" id="d4V-z9-HCa"/>
-                            <constraint firstItem="JIa-ze-2Qk" firstAttribute="leading" secondItem="wZf-1F-1iR" secondAttribute="leading" constant="24" id="f0Y-Br-3Ls"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hwC-7a-hcQ"/>
                 </viewController>
