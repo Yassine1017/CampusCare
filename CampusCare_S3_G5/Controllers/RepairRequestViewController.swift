@@ -14,6 +14,9 @@ class RepairRequestViewController: UIViewController {
   
     @IBOutlet weak var statusTextField: UITextField!
     
+    var requests: [RepairRequest] = []
+
+    
     // MARK: - Properties
     let statusPicker = UIPickerView()
 
@@ -27,6 +30,9 @@ class RepairRequestViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadSampleData()
+        
 
         setupStatusPicker()
         setupNavigationBar()
@@ -39,6 +45,30 @@ class RepairRequestViewController: UIViewController {
             forHeaderFooterViewReuseIdentifier: RequestsHeaderView.identifier
         )
     }
+    
+    func loadSampleData() {
+        requests = [
+            RepairRequest(
+                id: 1,
+                issue: "Leaking Faucet",
+                status: .new,
+                assignmentDate: nil,
+                technicianName: nil,
+                category: "Plumbing",
+                notes: []
+            ),
+            RepairRequest(
+                id: 2,
+                issue: "Broken Light",
+                status: .completed,
+                assignmentDate: Date(),
+                technicianName: "Ahmed Hussain",
+                category: "Electrical",
+                notes: []
+            )
+        ]
+    }
+
 
     // MARK: - Picker Setup
     func setupStatusPicker() {
@@ -84,6 +114,20 @@ class RepairRequestViewController: UIViewController {
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.tintColor = .white
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let request = sender as? RepairRequest else { return }
+
+        if segue.identifier == "showEditRequest" {
+            let vc = segue.destination as! EditRequestViewController
+            vc.request = request
+        }
+
+        if segue.identifier == "showTrackRequest" {
+            let vc = segue.destination as! TrackRequestViewController
+            vc.request = request
+        }
+    }
 }
 
 // All functions for picker button
@@ -119,25 +163,61 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return 5  // 1 header row + 5 data rows
+        return requests.count
     }
+
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCell(
+        guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "RequestCell",
             for: indexPath
-        )
+        ) as? RequestTableViewCell else {
+            fatalError("RequestCell not connected properly")
+        }
+
+        let request = requests[indexPath.row]
+
+        cell.idLabel.text = "#\(request.id)"
+        cell.issueLabel.text = request.issue
+        cell.statusLabel.text = request.status.rawValue
+
+        if request.status == .new {
+            cell.actionButton.setTitle("Edit", for: .normal)
+        } else {
+            cell.actionButton.setTitle("View", for: .normal)
+        }
+
+        cell.actionHandler = { [weak self] in
+            self?.handleAction(for: request)
+        }
 
         return cell
     }
+    
+    
+    func handleAction(for request: RepairRequest) {
+        if request.status == .new {
+            performSegue(withIdentifier: "showEditRequest", sender: request)
+        } else {
+            performSegue(withIdentifier: "showTrackRequest", sender: request)
+        }
+    }
 
+
+
+    
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
-        return tableView.dequeueReusableHeaderFooterView(
+
+        guard let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: RequestsHeaderView.identifier
-        )
+        ) as? RequestsHeaderView else {
+            return nil
+        }
+
+        return header
     }
 
     func tableView(_ tableView: UITableView,
@@ -154,6 +234,9 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
         print("Tapped row \(indexPath.row)")
     }
 }
+
+
+
 
 
 
