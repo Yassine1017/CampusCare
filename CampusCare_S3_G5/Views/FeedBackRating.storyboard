@@ -1,30 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17150" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController id="Y6W-OH-hqX" customClass="FeedBackRating" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="MainStack">
+                                <rect key="frame" x="20" y="159" width="353" height="426.33333333333326"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Rate Your Experience" textAlignment="center" lineBreakMode="tailTruncation" fontDescription="UICTFontTextStyleTitle1" translatesAutoresizingMaskIntoConstraints="NO" id="TitleLabel"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="StarStack">
+                                        <rect key="frame" x="0.0" y="62.666666666666686" width="353" height="50"/>
+                                        <subviews>
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Star1">
+                                                <buttonConfiguration key="configuration" style="plain" image="star" catalog="system"/>
+                                                <connections>
+                                                    <action selector="starTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="c1"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Star2">
+                                                <buttonConfiguration key="configuration" style="plain" image="star" catalog="system"/>
+                                                <connections>
+                                                    <action selector="starTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="c2"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Star3">
+                                                <buttonConfiguration key="configuration" style="plain" image="star" catalog="system"/>
+                                                <connections>
+                                                    <action selector="starTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="c3"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Star4">
+                                                <buttonConfiguration key="configuration" style="plain" image="star" catalog="system"/>
+                                                <connections>
+                                                    <action selector="starTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="c4"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Star5">
+                                                <buttonConfiguration key="configuration" style="plain" image="star" catalog="system"/>
+                                                <connections>
+                                                    <action selector="starTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="c5"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints><constraint firstAttribute="height" constant="50" id="h1"/></constraints>
+                                        <color key="tintColor" systemColor="systemOrangeColor"/>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Write your opinion:" textAlignment="natural" lineBreakMode="tailTruncation" fontDescription="system" weight="medium" pointSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OpinionTitle"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ReviewTextView">
+                                        <rect key="frame" x="0.0" y="183" width="353" height="180"/>
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                        <constraints><constraint firstAttribute="height" constant="180" id="h2"/></constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ButtonStack">
+                                        <rect key="frame" x="0.0" y="388" width="353" height="38.333333333333314"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CancelBtn">
+                                                <buttonConfiguration key="configuration" style="gray" title="Cancel"/>
+                                                <color key="tintColor" systemColor="systemRedColor"/>
+                                                <connections>
+                                                    <action selector="cancelPressed:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="c6"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SubmitBtn">
+                                                <buttonConfiguration key="configuration" style="filled" title="Submit"/>
+                                                <connections>
+                                                    <action selector="submitPressed:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="c7"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="MainStack" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="100" id="t1"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="MainStack" secondAttribute="trailing" constant="20" id="t2"/>
+                            <constraint firstItem="MainStack" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="t3"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="reviewTextView" destination="ReviewTextView" id="o1"/>
+                        <outletCollection property="starButtons" destination="Star1" collectionClass="NSMutableArray" id="s1"/>
+                        <outletCollection property="starButtons" destination="Star2" collectionClass="NSMutableArray" id="s2"/>
+                        <outletCollection property="starButtons" destination="Star3" collectionClass="NSMutableArray" id="s3"/>
+                        <outletCollection property="starButtons" destination="Star4" collectionClass="NSMutableArray" id="s4"/>
+                        <outletCollection property="starButtons" destination="Star5" collectionClass="NSMutableArray" id="s5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="123" y="-2"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="star" catalog="system" width="128" height="116"/>
+        <systemColor name="systemBackgroundColor"><color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/></systemColor>
+        <systemColor name="systemGray6Color"><color red="0.94" green="0.94" blue="0.96" alpha="1" colorSpace="custom" customColorSpace="sRGB"/></systemColor>
+        <systemColor name="systemOrangeColor"><color red="1" green="0.58" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/></systemColor>
+        <systemColor name="systemRedColor"><color red="1" green="0.23" blue="0.18" alpha="1" colorSpace="custom" customColorSpace="sRGB"/></systemColor>
     </resources>
 </document>
