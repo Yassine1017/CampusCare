@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+import UIKit
+
+class EditRepairRequestViewController: UIViewController {
+    var request: RepairRequest!
+}

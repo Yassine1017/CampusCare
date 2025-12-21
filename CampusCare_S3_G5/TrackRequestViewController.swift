@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+import UIKit
+
+class TrackRequestViewController: UIViewController {
+    var request: RepairRequest!
+}
