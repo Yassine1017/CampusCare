@@ -13,48 +13,58 @@ class RequestTableViewCell: UITableViewCell {
     @IBOutlet weak var issueLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
-    
+
+    // 🔑 THIS is how the cell talks to the ViewController
+    var actionHandler: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        preservesSuperviewLayoutMargins = false
-        layoutMargins = .zero
-        contentView.preservesSuperviewLayoutMargins = false
-        contentView.layoutMargins = .zero
-    }
-    
-    func configure(with request: RepairRequest) {
+        selectionStyle = .none
 
+        // 🔑 CRITICAL
+        contentView.isUserInteractionEnabled = true
+
+        // 🔑 CRITICAL
+        actionButton.isUserInteractionEnabled = true
+
+        // Prevent other views stealing touches
+        idLabel.isUserInteractionEnabled = false
+        issueLabel.isUserInteractionEnabled = false
+        statusLabel.isUserInteractionEnabled = false
+    }
+
+    
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        actionHandler = nil
+    }
+
+    // 🔥 THIS must be connected to the button
+    @IBAction func actionButtonTapped(_ sender: UIButton) {
+        print("🔥 BUTTON TAPPED")
+        actionHandler?()
+    }
+
+    func configure(with request: RepairRequest) {
         idLabel.text = "#\(request.id)"
         issueLabel.text = request.issue
         statusLabel.text = request.status.rawValue
 
-        actionButton.isHidden = false   // 👈 IMPORTANT
+        let title = request.status == .new ? "Edit" : "View"
+        actionButton.setTitle(title, for: .normal)
 
-        switch request.status {
-        case .new:
-            actionButton.setTitle("Edit", for: .normal)
-            actionButton.backgroundColor = .systemRed
+        actionButton.setTitleColor(.systemBlue, for: .normal)
+        actionButton.backgroundColor = .clear
+        actionButton.layer.cornerRadius = 6
 
-        case .inProgress, .completed:
-            actionButton.setTitle("View", for: .normal)
-            actionButton.backgroundColor = .systemBlue
-        }
+    }
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, with: event)
+        print("Hit view:", view ?? "nil")
+        return view
     }
 
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        actionButton.isHidden = true
-    }
-
-
-    // Callback to the ViewController
-    var actionHandler: (() -> Void)?
-
-    @IBAction func actionButtonTapped(_ sender: UIButton) {
-        actionHandler?()
-    }
 }
-
-

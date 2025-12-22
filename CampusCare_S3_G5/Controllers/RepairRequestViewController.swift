@@ -14,7 +14,9 @@ class RepairRequestViewController: UIViewController {
   
     @IBOutlet weak var statusTextField: UITextField!
     
-    var requests: [RepairRequest] = []
+   var requests: [RepairRequest] = []
+    private var selectedRequest: RepairRequest?
+
 
     
     // MARK: - Properties
@@ -31,6 +33,13 @@ class RepairRequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.allowsSelection = false
+        tableView.separatorInset = .zero
+        tableView.layoutMargins = .zero
+        tableView.contentInset = .zero
+        tableView.contentInsetAdjustmentBehavior = .never
+
+        
         loadSampleData()
         
 
@@ -39,12 +48,16 @@ class RepairRequestViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-
+        
         tableView.register(
             RequestsHeaderView.self,
             forHeaderFooterViewReuseIdentifier: RequestsHeaderView.identifier
         )
+
+
     }
+    
+    
     
     func loadSampleData() {
         requests = [
@@ -68,7 +81,7 @@ class RepairRequestViewController: UIViewController {
             )
         ]
     }
-
+    
 
     // MARK: - Picker Setup
     func setupStatusPicker() {
@@ -116,18 +129,25 @@ class RepairRequestViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let request = sender as? RepairRequest else { return }
+        guard let request = selectedRequest else { return }
 
         if segue.identifier == "showEditRequest" {
-            let vc = segue.destination as! EditRequestViewController
-            vc.request = request
+            let dest = segue.destination
+            let vc = (dest as? UINavigationController)?.topViewController as? EditRepairRequestViewController
+                     ?? dest as? EditRepairRequestViewController
+            vc?.request = request
         }
 
         if segue.identifier == "showTrackRequest" {
-            let vc = segue.destination as! TrackRequestViewController
-            vc.request = request
+            let dest = segue.destination
+            let vc = (dest as? UINavigationController)?.topViewController as? TrackRequestViewController
+                     ?? dest as? TrackRequestViewController
+            vc?.request = request
         }
     }
+
+
+
 }
 
 // All functions for picker button
@@ -154,6 +174,11 @@ extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSou
         statusTextField.text = statusOptions[row]
     }
 }
+
+
+
+
+
 //All functions for table view
 extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSource {
 
@@ -165,58 +190,55 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
                    numberOfRowsInSection section: Int) -> Int {
         return requests.count
     }
+   
+        func tableView(_ tableView: UITableView,
+                       heightForRowAt indexPath: IndexPath) -> CGFloat {
+            return 44        }
+
+      
+    
+
 
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
 
-        guard let cell = tableView.dequeueReusableCell(
+        let cell = tableView.dequeueReusableCell(
             withIdentifier: "RequestCell",
             for: indexPath
-        ) as? RequestTableViewCell else {
-            fatalError("RequestCell not connected properly")
-        }
+        ) as! RequestTableViewCell
+        
+        cell.preservesSuperviewLayoutMargins = false
+        cell.layoutMargins = .zero
+        cell.contentView.layoutMargins = .zero
+
 
         let request = requests[indexPath.row]
 
-        cell.idLabel.text = "#\(request.id)"
-        cell.issueLabel.text = request.issue
-        cell.statusLabel.text = request.status.rawValue
-
-        if request.status == .new {
-            cell.actionButton.setTitle("Edit", for: .normal)
-        } else {
-            cell.actionButton.setTitle("View", for: .normal)
-        }
+        cell.configure(with: request)
 
         cell.actionHandler = { [weak self] in
-            self?.handleAction(for: request)
-        }
+            guard let self = self else { return }
 
+            self.selectedRequest = request   // IMPORTANT
+
+            if request.status == .new {
+                self.performSegue(withIdentifier: "showEditRequest", sender: self)
+            } else {
+                self.performSegue(withIdentifier: "showTrackRequest", sender: self)
+            }
+        }
         return cell
     }
-    
-    
-    func handleAction(for request: RepairRequest) {
-        if request.status == .new {
-            performSegue(withIdentifier: "showEditRequest", sender: request)
-        } else {
-            performSegue(withIdentifier: "showTrackRequest", sender: request)
-        }
-    }
-
-
 
     
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
-
-        guard let header = tableView.dequeueReusableHeaderFooterView(
+        let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: RequestsHeaderView.identifier
-        ) as? RequestsHeaderView else {
-            return nil
-        }
-
+        ) as! RequestsHeaderView
         return header
     }
 
@@ -225,12 +247,13 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
         return 44
     }
 
+
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-
+        
         guard indexPath.row != 0 else { return }
         tableView.deselectRow(at: indexPath, animated: true)
-
+        
         print("Tapped row \(indexPath.row)")
     }
 }

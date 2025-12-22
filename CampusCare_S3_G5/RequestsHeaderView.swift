@@ -19,35 +19,52 @@ final class RequestsHeaderView: UITableViewHeaderFooterView {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.distribution = .fillEqually
+        stack.distribution = .fill          // ✅ IMPORTANT
         stack.alignment = .center
-        stack.spacing = 8
+        stack.spacing = 12
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        setupUI()
+        isUserInteractionEnabled = false
+        //setupUI()//
     }
+    
+
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     private func setupUI() {
+        
+        isUserInteractionEnabled = false
+        contentView.isUserInteractionEnabled = false
+
+        
+        
+        preservesSuperviewLayoutMargins = false
+        contentView.preservesSuperviewLayoutMargins = false
+        contentView.layoutMargins = .zero
+
         contentView.backgroundColor = .systemGray6
 
         stackView.addArrangedSubview(idLabel)
         stackView.addArrangedSubview(issueLabel)
         stackView.addArrangedSubview(statusLabel)
         stackView.addArrangedSubview(actionLabel)
+        
+        idLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        statusLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        actionLabel.widthAnchor.constraint(equalToConstant: 90).isActive = true
 
         contentView.addSubview(stackView)
 
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
@@ -57,7 +74,7 @@ final class RequestsHeaderView: UITableViewHeaderFooterView {
         let label = UILabel()
         label.text = text
         label.font = .systemFont(ofSize: 14, weight: .semibold)
-        label.textAlignment = .center
+        label.textAlignment = .left          // ✅ match cells
         label.textColor = .label
         return label
     }
