@@ -28,6 +28,7 @@ class CreateNewRepairRequestViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         setupCategoryPicker()
+        addDoneToolbar()
     }
 
     private func setupCategoryPicker() {
@@ -56,8 +57,32 @@ extension CreateNewRepairRequestViewController: UIPickerViewDelegate, UIPickerVi
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         categoryTextField.text = categories[row]
+    }
+    
+    private func addDoneToolbar() {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+
+        let flexSpace = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil
+        )
+
+        let doneButton = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(doneTapped)
+        )
+
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        categoryTextField.inputAccessoryView = toolbar
+    }
+    @objc private func doneTapped() {
         categoryTextField.resignFirstResponder()
     }
+
+
 }
 
 

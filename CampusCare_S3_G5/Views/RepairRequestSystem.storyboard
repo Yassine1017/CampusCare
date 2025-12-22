@@ -11,7 +11,7 @@
         <!--CampusCare-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" customClass="RepairRequestViewController" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditRequestVC" id="Y6W-OH-hqX" customClass="RepairRequestViewController" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -26,13 +26,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Requests" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iM3-0X-leL">
-                                        <rect key="frame" x="0.0" y="42.333333333333343" width="361" height="21.666666666666671"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <rect key="frame" x="0.0" y="42.333333333333343" width="361" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dzS-y6-ZmO">
-                                        <rect key="frame" x="0.0" y="80" width="361" height="229"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dzS-y6-ZmO">
+                                        <rect key="frame" x="0.0" y="82.3333333333333" width="361" height="226.66666666666663"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Requests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hrG-cF-Cve">
                                                 <rect key="frame" x="0.0" y="0.0" width="361" height="20.333333333333332"/>
@@ -41,20 +41,20 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <searchBar contentMode="redraw" placeholder="Search by ID" translatesAutoresizingMaskIntoConstraints="NO" id="NAT-j5-1pM">
-                                                <rect key="frame" x="0.0" y="36.333333333333307" width="361" height="106.33333333333331"/>
+                                                <rect key="frame" x="0.0" y="36.333333333333371" width="361" height="104"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <connections>
                                                     <outlet property="delegate" destination="Y6W-OH-hqX" id="bwj-qm-P8j"/>
                                                 </connections>
                                             </searchBar>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fliter by Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hsI-od-0e4">
-                                                <rect key="frame" x="0.0" y="158.66666666666669" width="361" height="20.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="156.33333333333337" width="361" height="20.333333333333343"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select Status" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wJr-Xv-WkY">
-                                                <rect key="frame" x="0.0" y="195" width="361" height="34"/>
+                                                <rect key="frame" x="0.0" y="192.66666666666669" width="361" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
@@ -230,13 +230,13 @@
                     <connections>
                         <outlet property="statusTextField" destination="wJr-Xv-WkY" id="Rme-Ba-2Dh"/>
                         <outlet property="tableView" destination="jeN-8J-qUI" id="dWh-ee-pCx"/>
-                        <segue destination="m2v-M4-P9F" kind="show" identifier="showEditRequest" id="a6c-H0-Xbc"/>
-                        <segue destination="Za1-yg-c0L" kind="show" identifier="showTrackRequest" id="mpI-qq-osx"/>
+                        <segue destination="Za1-yg-c0L" kind="show" identifier="showEditRequest" id="dcZ-cQ-mNx"/>
+                        <segue destination="m2v-M4-P9F" kind="show" identifier="showTrackRequest" id="R9l-ZU-vwc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1973.2824427480916" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="1978" y="25"/>
         </scene>
         <!--Create New Repair Request-->
         <scene sceneID="cYI-qL-Vv4">
@@ -391,7 +391,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXG-dc-qXF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1476" y="393"/>
+            <point key="canvasLocation" x="1705" y="437"/>
         </scene>
     </scenes>
     <resources>

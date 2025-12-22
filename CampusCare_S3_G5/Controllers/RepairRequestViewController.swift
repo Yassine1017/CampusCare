@@ -196,10 +196,6 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
             return 44        }
 
       
-    
-
-
-
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -217,19 +213,22 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
 
         let request = requests[indexPath.row]
 
+        
         cell.configure(with: request)
 
-        cell.actionHandler = { [weak self] in
+        cell.actionHandler = { [weak self] action in
             guard let self = self else { return }
 
-            self.selectedRequest = request   // IMPORTANT
+            self.selectedRequest = request
 
-            if request.status == .new {
+            switch action {
+            case .edit:
                 self.performSegue(withIdentifier: "showEditRequest", sender: self)
-            } else {
+            case .view:
                 self.performSegue(withIdentifier: "showTrackRequest", sender: self)
             }
         }
+
         return cell
     }
 

@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum RequestAction {
+    case edit
+    case view
+}
+
+
 class RequestTableViewCell: UITableViewCell {
 
     @IBOutlet weak var idLabel: UILabel!
@@ -15,7 +21,7 @@ class RequestTableViewCell: UITableViewCell {
     @IBOutlet weak var actionButton: UIButton!
 
     // 🔑 THIS is how the cell talks to the ViewController
-    var actionHandler: (() -> Void)?
+    var actionHandler: ((RequestAction) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,10 +47,15 @@ class RequestTableViewCell: UITableViewCell {
         actionHandler = nil
     }
 
-    // 🔥 THIS must be connected to the button
+   
     @IBAction func actionButtonTapped(_ sender: UIButton) {
-        print("🔥 BUTTON TAPPED")
-        actionHandler?()
+        guard let title = sender.currentTitle else { return }
+
+        if title == "Edit" {
+            actionHandler?(.edit)
+        } else {
+            actionHandler?(.view)
+        }
     }
 
     func configure(with request: RepairRequest) {
@@ -54,17 +65,14 @@ class RequestTableViewCell: UITableViewCell {
 
         let title = request.status == .new ? "Edit" : "View"
         actionButton.setTitle(title, for: .normal)
-
         actionButton.setTitleColor(.systemBlue, for: .normal)
         actionButton.backgroundColor = .clear
         actionButton.layer.cornerRadius = 6
-
     }
+
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, with: event)
         print("Hit view:", view ?? "nil")
         return view
     }
-
-
 }
