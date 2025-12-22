@@ -5,18 +5,16 @@
 //  Created by BP-36-201-17 on 08/12/2025.
 //
 
-import Foundation
-
-enum TaskStatus {
-    case pending
-    case inProgress
-    case completed
+enum TaskStatus: String {
+    case pending = "Pending"
+    case inProgress = "In Progress"
+    case completed = "Completed"
 }
 
-enum TaskPriority {
-    case low
-    case medium
-    case high
+enum TaskPriority: String {
+    case low = "Low"
+    case medium = "Medium"
+    case high = "High"
 }
 
 struct Task {
