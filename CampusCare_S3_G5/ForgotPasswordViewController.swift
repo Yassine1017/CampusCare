@@ -8,7 +8,8 @@
 import UIKit
 
 class ForgotPasswordViewController: UIViewController {
-
+    @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var emailOrPhoneTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -16,7 +17,9 @@ class ForgotPasswordViewController: UIViewController {
         
     }
     
-
+    @IBAction func confirmButtonTapped(_ sender: Any) {
+    }
+    
     /*
     // MARK: - Navigation
 

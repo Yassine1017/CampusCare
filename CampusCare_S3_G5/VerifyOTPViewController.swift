@@ -9,6 +9,9 @@ import UIKit
 
 class VerifyOTPViewController: UIViewController {
 
+    @IBOutlet weak var otpInput3: UITextField!
+    @IBOutlet weak var otpInput2: UITextField!
+    @IBOutlet weak var otpInput1: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
