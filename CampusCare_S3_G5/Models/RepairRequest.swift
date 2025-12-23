@@ -7,25 +7,42 @@
 
 
 import Foundation
+import FirebaseFirestore
 
-struct RepairRequest {
-    let id: Int
+struct RepairRequest: Identifiable, Codable {
+    
+    // Firestore document ID
+    var id: String
+    
+    // Request details
     let issue: String
-    let status: Status
-    let assignmentDate: Date?
+    let description: String
+    let location: String
+    
+    // Status
+    let status: RequestStatus
+    
+    // User & technician info
+    let userId: String
     let technicianName: String?
-    let category: String
-    let notes: [RequestNote]
+    
+    // Dates
+    let createdAt: Timestamp
+    let assignmentDate: Timestamp?
+    
+    // Optional notes
+    let notes: [RequestNote]?
 }
 
-enum Status: String {
+enum RequestStatus: String, Codable {
     case new = "New"
     case inProgress = "In Progress"
     case completed = "Completed"
 }
-struct RequestNote {
+
+struct RequestNote: Codable {
     let message: String
-    let date: Date
+    let date: Timestamp
 }
 
 

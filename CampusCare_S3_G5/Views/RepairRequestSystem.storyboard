@@ -250,10 +250,10 @@
                                 <rect key="frame" x="0.0" y="162" width="393" height="622"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ln-NV-c3w">
-                                        <rect key="frame" x="0.0" y="0.0" width="385" height="432.66666666666669"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="385" height="433.66666666666669"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="sCl-E7-YvZ">
-                                                <rect key="frame" x="16" y="16" width="353" height="400.66666666666669"/>
+                                                <rect key="frame" x="16" y="16" width="353" height="401.66666666666669"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Issue Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5u-vC-589">
                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="20.333333333333332"/>
@@ -261,55 +261,56 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" scrollEnabled="NO" text="Describe the issue" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wU8-7b-7RL">
-                                                        <rect key="frame" x="0.0" y="40.333333333333343" width="353" height="33"/>
-                                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                                        <color key="textColor" systemColor="labelColor"/>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Short Issue Description" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BZk-CT-gpN" userLabel="Issue Text Field">
+                                                        <rect key="frame" x="0.0" y="40.333333333333343" width="353" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                    </textView>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                    </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="woY-yM-Fpq">
-                                                        <rect key="frame" x="0.0" y="93.333333333333314" width="353" height="20.333333333333329"/>
+                                                        <rect key="frame" x="0.0" y="94.333333333333314" width="353" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qug-Us-fkJ">
-                                                        <rect key="frame" x="0.0" y="133.66666666666669" width="353" height="34"/>
+                                                        <rect key="frame" x="0.0" y="134.66666666666669" width="353" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4J-2H-ebg">
-                                                        <rect key="frame" x="0.0" y="187.66666666666669" width="353" height="20.333333333333343"/>
+                                                        <rect key="frame" x="0.0" y="188.66666666666669" width="353" height="20.333333333333343"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select Category" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tuB-Zd-AWh">
-                                                        <rect key="frame" x="0.0" y="228" width="353" height="34"/>
+                                                        <rect key="frame" x="0.0" y="229" width="353" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload Image (Optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ivd-F6-Jn8">
-                                                        <rect key="frame" x="0.0" y="282" width="353" height="20.333333333333314"/>
+                                                        <rect key="frame" x="0.0" y="283" width="353" height="20.333333333333314"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VXQ-Do-pEW">
-                                                        <rect key="frame" x="0.0" y="322.33333333333331" width="353" height="24.333333333333314"/>
+                                                        <rect key="frame" x="0.0" y="323.33333333333331" width="353" height="24.333333333333314"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="filled" image="camera" catalog="system" title="Choose Photo">
                                                             <directionalEdgeInsets key="contentInsets" top="0.0" leading="12" bottom="0.0" trailing="12"/>
                                                         </buttonConfiguration>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZzR-oX-6EM">
-                                                        <rect key="frame" x="0.0" y="366.66666666666663" width="353" height="34"/>
+                                                        <rect key="frame" x="0.0" y="367.66666666666663" width="353" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="gPT-aF-NEA"/>
                                                         </constraints>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="filled" title="Submit Request"/>
+                                                        <connections>
+                                                            <action selector="submitRequestTapped:" destination="lyh-BS-kU0" eventType="touchUpInside" id="pOe-PW-jrY"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -347,6 +348,8 @@
                     <value key="contentSizeForViewInPopover" type="size" width="393" height="852"/>
                     <connections>
                         <outlet property="categoryTextField" destination="tuB-Zd-AWh" id="2uv-1Y-UEj"/>
+                        <outlet property="issueTextField" destination="BZk-CT-gpN" id="ICx-6z-SBr"/>
+                        <outlet property="locationTextField" destination="qug-Us-fkJ" id="1Ib-ZQ-YOn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lQ2-QJ-gOE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -399,17 +402,11 @@
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class RepairRequestViewController: UIViewController {
 
@@ -13,6 +14,31 @@ class RepairRequestViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
   
     @IBOutlet weak var statusTextField: UITextField!
+    
+    
+    private let db = Firestore.firestore()
+    
+    func fetchRequests() {
+        db.collection("requests")
+            .order(by: "createdAt", descending: true)
+            .addSnapshotListener { [weak self] snapshot, error in
+                
+                guard let self = self else { return }
+                guard let documents = snapshot?.documents else {
+                    print("No documents")
+                    return
+                }
+
+                self.requests = documents.compactMap {
+                    try? $0.data(as: RepairRequest.self)
+                }
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+    }
+
     
    var requests: [RepairRequest] = []
     private var selectedRequest: RepairRequest?
@@ -33,15 +59,14 @@ class RepairRequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchRequests()
+
+        
         tableView.allowsSelection = false
         tableView.separatorInset = .zero
         tableView.layoutMargins = .zero
         tableView.contentInset = .zero
         tableView.contentInsetAdjustmentBehavior = .never
-
-        
-        loadSampleData()
-        
 
         setupStatusPicker()
         setupNavigationBar()
@@ -57,30 +82,6 @@ class RepairRequestViewController: UIViewController {
 
     }
     
-    
-    
-    func loadSampleData() {
-        requests = [
-            RepairRequest(
-                id: 1,
-                issue: "Leaking Faucet",
-                status: .new,
-                assignmentDate: nil,
-                technicianName: nil,
-                category: "Plumbing",
-                notes: []
-            ),
-            RepairRequest(
-                id: 2,
-                issue: "Broken Light",
-                status: .completed,
-                assignmentDate: Date(),
-                technicianName: "Ahmed Hussain",
-                category: "Electrical",
-                notes: []
-            )
-        ]
-    }
     
 
     // MARK: - Picker Setup
