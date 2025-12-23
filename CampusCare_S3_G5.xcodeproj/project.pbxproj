@@ -6,8 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D96993B92EFB253C00AD94AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D96993B82EFB253C00AD94AC /* GoogleService-Info.plist */; };
+		D96993BC2EFB2EC300AD94AC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D96993BB2EFB2EC300AD94AC /* FirebaseAuth */; };
+		D96993BE2EFB2EC300AD94AC /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = D96993BD2EFB2EC300AD94AC /* FirebaseCore */; };
+		D96993C02EFB2EC300AD94AC /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = D96993BF2EFB2EC300AD94AC /* FirebaseDatabase */; };
+		D96993C22EFB2EC300AD94AC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D96993C12EFB2EC300AD94AC /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		50E9D5802EE03B6F002F20C4 /* CampusCare_S3_G5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CampusCare_S3_G5.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D96993B82EFB253C00AD94AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +45,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D96993C02EFB2EC300AD94AC /* FirebaseDatabase in Frameworks */,
+				D96993C22EFB2EC300AD94AC /* FirebaseFirestore in Frameworks */,
+				D96993BE2EFB2EC300AD94AC /* FirebaseCore in Frameworks */,
+				D96993BC2EFB2EC300AD94AC /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +58,7 @@
 		50E9D5772EE03B6F002F20C4 = {
 			isa = PBXGroup;
 			children = (
+				D96993B82EFB253C00AD94AC /* GoogleService-Info.plist */,
 				50E9D5822EE03B6F002F20C4 /* CampusCare_S3_G5 */,
 				50E9D5812EE03B6F002F20C4 /* Products */,
 			);
@@ -78,6 +92,10 @@
 			);
 			name = CampusCare_S3_G5;
 			packageProductDependencies = (
+				D96993BB2EFB2EC300AD94AC /* FirebaseAuth */,
+				D96993BD2EFB2EC300AD94AC /* FirebaseCore */,
+				D96993BF2EFB2EC300AD94AC /* FirebaseDatabase */,
+				D96993C12EFB2EC300AD94AC /* FirebaseFirestore */,
 			);
 			productName = CampusCare_S3_G5;
 			productReference = 50E9D5802EE03B6F002F20C4 /* CampusCare_S3_G5.app */;
@@ -107,6 +125,9 @@
 			);
 			mainGroup = 50E9D5772EE03B6F002F20C4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D96993BA2EFB2EC300AD94AC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50E9D5812EE03B6F002F20C4 /* Products */;
 			projectDirPath = "";
@@ -122,6 +143,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D96993B92EFB253C00AD94AC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +179,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "Bahrain-Polytechnic.CampusCare-S3-G5";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bahrainpolytechnic.campuscare-s3g5";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -184,7 +206,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "Bahrain-Polytechnic.CampusCare-S3-G5";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bahrainpolytechnic.campuscare-s3g5";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -333,6 +355,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D96993BA2EFB2EC300AD94AC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D96993BB2EFB2EC300AD94AC /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D96993BA2EFB2EC300AD94AC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		D96993BD2EFB2EC300AD94AC /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D96993BA2EFB2EC300AD94AC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		D96993BF2EFB2EC300AD94AC /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D96993BA2EFB2EC300AD94AC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		D96993C12EFB2EC300AD94AC /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D96993BA2EFB2EC300AD94AC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 50E9D5782EE03B6F002F20C4 /* Project object */;
 }

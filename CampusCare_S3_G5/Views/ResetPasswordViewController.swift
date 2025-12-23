@@ -1,26 +1,25 @@
 //
-//  VerifyOTPViewController.swift
+//  ResetPasswordViewController.swift
 //  CampusCare_S3_G5
 //
-//  Created by MOHAMED ALTAJER on 18/12/2025.
+//  Created by MOHAMED ALTAJER on 23/12/2025.
 //
 
 import UIKit
 
-class VerifyOTPViewController: UIViewController {
-
-    @IBOutlet weak var otpInput3: UITextField!
-    @IBOutlet weak var otpInput2: UITextField!
-    @IBOutlet weak var otpInput1: UITextField!
+class ResetPasswordViewController: UIViewController {
+    @IBOutlet weak var newPassword: UITextField!
+    @IBOutlet weak var confirmPassword: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-  
-
     }
     
-
+    @IBAction func resetPasswordButtonTapped(_ sender: UIButton) {
+    }
+    
     /*
     // MARK: - Navigation
 
