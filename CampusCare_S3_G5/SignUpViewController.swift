@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SignUpViewController: UIViewController {
 
@@ -84,26 +85,53 @@ class SignUpViewController: UIViewController {
             return
         }
 
-        // 5️⃣ Save data (temporary using UserDefaults)
-        UserDefaults.standard.set(fullName, forKey: "fullName")
-        UserDefaults.standard.set(emailPhone, forKey: "emailPhone")
-        UserDefaults.standard.set(username, forKey: "username")
-        UserDefaults.standard.set(password, forKey: "password")
+        // 5️⃣ Firebase Authentication - Register User
+        Auth.auth().createUser(withEmail: emailPhone, password: password) { [weak self] (authResult, error) in
+            if let error = error {
+                self?.showAlert(
+                    title: "Error",
+                    message: error.localizedDescription
+                )
+                return
+            }
 
-        // 6️⃣ Success alert
-        let alert = UIAlertController(
-            title: "Success",
-            message: "Account created successfully.",
-            preferredStyle: .alert
-        )
+            // 6️⃣ Successfully created user
+            guard let user = authResult?.user else { return }
+            
+            // Optionally, save additional user data (full name, username, etc.)
+            let changeRequest = user.createProfileChangeRequest()
+            changeRequest.displayName = username // set the display name as username
+            changeRequest.commitChanges { (error) in
+                if let error = error {
+                    self?.showAlert(
+                        title: "Profile Update Error",
+                        message: error.localizedDescription
+                    )
+                    return
+                }
+                
+                // 7️⃣ Save additional data (temporary using UserDefaults)
+                UserDefaults.standard.set(fullName, forKey: "fullName")
+                UserDefaults.standard.set(emailPhone, forKey: "emailPhone")
+                UserDefaults.standard.set(username, forKey: "username")
+                UserDefaults.standard.set(password, forKey: "password")
 
-        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-            // Go back to Login page
-            self?.navigationController?.popViewController(animated: true)
+                // 8️⃣ Success alert
+                let alert = UIAlertController(
+                    title: "Success",
+                    message: "Account created successfully.",
+                    preferredStyle: .alert
+                )
+
+                let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+                    // Go back to Login page
+                    self?.navigationController?.popViewController(animated: true)
+                }
+
+                alert.addAction(okAction)
+                self?.present(alert, animated: true)
+            }
         }
-
-        alert.addAction(okAction)
-        present(alert, animated: true)
     }
 
     @IBAction func loginTapped(_ sender: UIButton) {
@@ -128,3 +156,4 @@ class SignUpViewController: UIViewController {
         return predicate.evaluate(with: email)
     }
 }
+

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class signInPageViewController: UIViewController {
 
@@ -43,7 +44,6 @@ class signInPageViewController: UIViewController {
 
     // MARK: - Actions
     @IBAction func loginButtonTapped(_ sender: UIButton) {
-
         view.endEditing(true)
 
         let enteredEmail = emailOrPhoneTextField.text ?? ""
@@ -58,42 +58,57 @@ class signInPageViewController: UIViewController {
             return
         }
 
-        // 2️⃣ Get saved Sign Up data
-        let savedEmail = UserDefaults.standard.string(forKey: "emailPhone")
-        let savedPassword = UserDefaults.standard.string(forKey: "password")
+        // 2️⃣ Firebase Sign-In
+        Auth.auth().signIn(withEmail: enteredEmail, password: enteredPassword) { [weak self] (result, error) in
+            if let error = error {
+                self?.showAlert(
+                    title: "Login Failed",
+                    message: error.localizedDescription
+                )
+                return
+            }
 
-        // 3️⃣ Check if user has signed up
-        if savedEmail == nil || savedPassword == nil {
-            showAlert(
-                title: "No Account Found",
-                message: "Please sign up first."
-            )
-            return
-        }
-
-        // 4️⃣ Validate login credentials
-        if enteredEmail == savedEmail && enteredPassword == savedPassword {
-
-            showAlert(
+            // 3️⃣ Login Success
+            self?.showAlert(
                 title: "Success",
                 message: "Login successful. Welcome."
             )
-
-        } else {
-
-            showAlert(
-                title: "Login Failed",
-                message: "Incorrect email or password."
-            )
+            
+            // Proceed to next screen or user flow
+            // self?.performSegue(withIdentifier: "goToHomePage", sender: nil)
         }
     }
 
     @IBAction func forgotPasswordTapped(_ sender: UIButton) {
-        //performSegue(withIdentifier: "goToForgotPassword", sender: nil)
+        let email = emailOrPhoneTextField.text ?? ""
+        if email.isEmpty {
+            showAlert(
+                title: "Missing Information",
+                message: "Please enter your email to reset the password."
+            )
+            return
+        }
+        
+        // Firebase Password Reset
+        Auth.auth().sendPasswordReset(withEmail: email) { [weak self] error in
+            if let error = error {
+                self?.showAlert(
+                    title: "Error",
+                    message: error.localizedDescription
+                )
+                return
+            }
+
+            self?.showAlert(
+                title: "Password Reset",
+                message: "A password reset link has been sent to your email."
+            )
+        }
     }
 
     @IBAction func registerButtonTapped(_ sender: UIButton) {
-       
+        // Transition to registration page
+        // performSegue(withIdentifier: "goToSignUp", sender: nil)
     }
 
     // MARK: - Alert Helper
