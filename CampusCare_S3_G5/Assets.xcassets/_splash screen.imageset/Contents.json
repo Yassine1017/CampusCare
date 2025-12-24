@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "_splash screen.jpeg",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -10,6 +9,7 @@
       "scale" : "2x"
     },
     {
+      "filename" : "splash_screen 1.jpeg",
       "idiom" : "universal",
       "scale" : "3x"
     }
