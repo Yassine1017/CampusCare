@@ -15,7 +15,17 @@ class ReportIssuesViewController: UIViewController {
         // Do any additional setup after loading the view.
         navigationController?.navigationBar.isTranslucent = false
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on this screen
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar again when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
 
     /*
     // MARK: - Navigation

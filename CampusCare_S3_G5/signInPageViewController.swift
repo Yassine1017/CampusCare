@@ -36,7 +36,17 @@ class signInPageViewController: UIViewController {
         )
         view.addGestureRecognizer(tapGesture)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on this screen
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar again when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     // MARK: - Keyboard
     @objc func dismissKeyboard() {
         view.endEditing(true)
@@ -110,7 +120,15 @@ class signInPageViewController: UIViewController {
         // Transition to registration page
         // performSegue(withIdentifier: "goToSignUp", sender: nil)
     }
-
+    
+    @IBAction func backButtonTapped(_ sender: Any) {
+        if let nav = navigationController {
+                nav.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
+    }
+    
     // MARK: - Alert Helper
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(

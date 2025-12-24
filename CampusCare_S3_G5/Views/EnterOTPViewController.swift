@@ -24,7 +24,25 @@ class EnterOTPViewController: UIViewController {
         // Display email or phone number for reference
         lblemail.text = "example@example.com"  // Update with actual value
     }
+    
+    @IBAction func backButtonTapped(_ sender: Any) {
+        if let nav = navigationController {
+                nav.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on this screen
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar again when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     // MARK: - Setup OTP Fields
     func setupOTPFields() {
         otpTextField1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)

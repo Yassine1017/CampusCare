@@ -22,6 +22,25 @@ class ForgotPasswordViewController: UIViewController {
         emailOrPhoneTextField.autocorrectionType = .no
     }
     
+    @IBAction func backButtonTapped(_ sender: Any) {
+        if let nav = navigationController {
+                nav.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on this screen
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar again when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     @IBAction func confirmButtonTapped(_ sender: Any) {
         // Get the entered email/phone number
         let emailOrPhone = emailOrPhoneTextField.text ?? ""

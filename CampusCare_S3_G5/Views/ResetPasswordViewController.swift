@@ -21,6 +21,25 @@ class ResetPasswordViewController: UIViewController {
         // You can display the user's email here for reference, if needed
         // For example, to show the email in a label: emailLabel.text = email
     }
+    @IBAction func backButtonTapped(_ sender: Any) {
+        if let nav = navigationController {
+                nav.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on this screen
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar again when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     
     @IBAction func resetPasswordButtonTapped(_ sender: Any) {
         guard let newPasswordText = newPassword.text, !newPasswordText.isEmpty else {

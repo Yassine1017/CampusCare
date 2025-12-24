@@ -37,6 +37,17 @@ class SignUpViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on this screen
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Show the navigation bar again when leaving this screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
 
     // MARK: - Keyboard
     @objc func dismissKeyboard() {
@@ -134,11 +145,15 @@ class SignUpViewController: UIViewController {
         }
     }
 
-    @IBAction func loginTapped(_ sender: UIButton) {
-        // Go back to Login page
-        navigationController?.popViewController(animated: true)
+    
+    @IBAction func backButtonTapped(_ sender: Any) {
+        if let nav = navigationController {
+                nav.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
     }
-
+    
     // MARK: - Helpers
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(
