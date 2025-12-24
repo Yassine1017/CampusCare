@@ -18,116 +18,137 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var txtConfirmPassword: UITextField!
 
     @IBOutlet weak var btnSignUp: UIButton!
-    @IBOutlet weak var btnLogin: UIButton!
+    
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Email / Phone field setup
-        txtEmailPhone.keyboardType = .emailAddress
-        txtEmailPhone.autocapitalizationType = .none
-        txtEmailPhone.autocorrectionType = .no
-
-        // Password fields setup
-        txtPassword.isSecureTextEntry = true
-        txtConfirmPassword.isSecureTextEntry = true
-
-        // Dismiss keyboard on tap
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tap)
+        configureTextFields()
+        configurePasswordFields()
+        setupKeyboardDismiss()
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide the navigation bar on this screen
+        // Hide navigation bar on Sign Up screen
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Show the navigation bar again when leaving this screen
+        // Show navigation bar when leaving screen
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
+    // MARK: - UI Configuration
+
+    /// Configures non-password text fields
+    private func configureTextFields() {
+        txtEmailPhone.keyboardType = .emailAddress
+        txtEmailPhone.autocapitalizationType = .none
+        txtEmailPhone.autocorrectionType = .no
+
+        txtUsername.autocapitalizationType = .none
+        txtUsername.autocorrectionType = .no
+    }
+
+    /// Configures password fields to work correctly with iOS AutoFill
+    private func configurePasswordFields() {
+        txtPassword.isSecureTextEntry = true
+        txtPassword.textContentType = .newPassword
+        txtPassword.passwordRules = UITextInputPasswordRules(
+            descriptor: "required: upper; required: lower; required: digit; minlength: 6;"
+        )
+        txtPassword.autocapitalizationType = .none
+        txtPassword.autocorrectionType = .no
+
+        txtConfirmPassword.isSecureTextEntry = true
+        txtConfirmPassword.textContentType = .newPassword
+        txtConfirmPassword.autocapitalizationType = .none
+        txtConfirmPassword.autocorrectionType = .no
+    }
+
+    /// Dismisses keyboard when tapping outside text fields
+    private func setupKeyboardDismiss() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+
     // MARK: - Keyboard
-    @objc func dismissKeyboard() {
+
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 
     // MARK: - Actions
+
     @IBAction func signUpTapped(_ sender: UIButton) {
 
-        let fullName = txtFullName.text ?? ""
-        let emailPhone = txtEmailPhone.text ?? ""
-        let username = txtUsername.text ?? ""
+        let fullName = txtFullName.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let email = txtEmailPhone.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let username = txtUsername.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let password = txtPassword.text ?? ""
         let confirmPassword = txtConfirmPassword.text ?? ""
 
-        // 1️⃣ Check empty fields
-        if fullName.isEmpty ||
-           emailPhone.isEmpty ||
-           username.isEmpty ||
-           password.isEmpty ||
-           confirmPassword.isEmpty {
-
+        // Check for empty fields
+        guard !fullName.isEmpty,
+              !email.isEmpty,
+              !username.isEmpty,
+              !password.isEmpty,
+              !confirmPassword.isEmpty else {
             showAlert(title: "Missing Information",
                       message: "Please fill in all fields.")
             return
         }
 
-        // 2️⃣ Validate email format
-        if !isValidEmail(emailPhone) {
+        // Validate email format
+        guard isValidEmail(email) else {
             showAlert(title: "Invalid Email",
                       message: "Please enter a valid email address.")
             return
         }
 
-        // 3️⃣ Validate password length
-        if password.count < 6 {
+        // Validate password length
+        guard password.count >= 6 else {
             showAlert(title: "Weak Password",
                       message: "Password must be at least 6 characters.")
             return
         }
 
-        // 4️⃣ Validate password match
-        if password != confirmPassword {
-            showAlert(title: "Password Error",
+        // Validate password match
+        guard password == confirmPassword else {
+            showAlert(title: "Password Mismatch",
                       message: "Passwords do not match.")
             return
         }
 
-        // 5️⃣ Firebase Authentication - Register User
-        Auth.auth().createUser(withEmail: emailPhone, password: password) { [weak self] (authResult, error) in
+        // Firebase Authentication - Create user
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             if let error = error {
-                self?.showAlert(
-                    title: "Error",
-                    message: error.localizedDescription
-                )
+                self?.showAlert(title: "Error",
+                                message: error.localizedDescription)
                 return
             }
 
-            // 6️⃣ Successfully created user
-            guard let user = authResult?.user else { return }
-            
-            // Optionally, save additional user data (full name, username, etc.)
+            guard let user = result?.user else { return }
+
+            // Update Firebase display name
             let changeRequest = user.createProfileChangeRequest()
-            changeRequest.displayName = username // set the display name as username
-            changeRequest.commitChanges { (error) in
+            changeRequest.displayName = username
+            changeRequest.commitChanges { error in
                 if let error = error {
-                    self?.showAlert(
-                        title: "Profile Update Error",
-                        message: error.localizedDescription
-                    )
+                    self?.showAlert(title: "Profile Error",
+                                    message: error.localizedDescription)
                     return
                 }
-                
-                // 7️⃣ Save additional data (temporary using UserDefaults)
-                UserDefaults.standard.set(fullName, forKey: "fullName")
-                UserDefaults.standard.set(emailPhone, forKey: "emailPhone")
-                UserDefaults.standard.set(username, forKey: "username")
-                UserDefaults.standard.set(password, forKey: "password")
 
-                // 8️⃣ Success alert
+                // Save non-sensitive user data locally
+                UserDefaults.standard.set(fullName, forKey: "fullName")
+                UserDefaults.standard.set(email, forKey: "email")
+                UserDefaults.standard.set(username, forKey: "username")
+
+                // Success alert
                 let alert = UIAlertController(
                     title: "Success",
                     message: "Account created successfully.",
@@ -135,7 +156,6 @@ class SignUpViewController: UIViewController {
                 )
 
                 let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-                    // Go back to Login page
                     self?.navigationController?.popViewController(animated: true)
                 }
 
@@ -145,17 +165,18 @@ class SignUpViewController: UIViewController {
         }
     }
 
-    
     @IBAction func backButtonTapped(_ sender: Any) {
         if let nav = navigationController {
-                nav.popViewController(animated: true)
-            } else {
-                dismiss(animated: true, completion: nil)
-            }
+            nav.popViewController(animated: true)
+        } else {
+            dismiss(animated: true)
+        }
     }
-    
+
     // MARK: - Helpers
-    func showAlert(title: String, message: String) {
+
+    /// Displays a simple alert
+    private func showAlert(title: String, message: String) {
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -165,10 +186,9 @@ class SignUpViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    func isValidEmail(_ email: String) -> Bool {
-        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return predicate.evaluate(with: email)
+    /// Validates email format
+    private func isValidEmail(_ email: String) -> Bool {
+        let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        return NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: email)
     }
 }
-
