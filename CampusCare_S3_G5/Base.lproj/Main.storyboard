@@ -71,10 +71,10 @@ admins manage repairs efficiently.</string>
             </objects>
             <point key="canvasLocation" x="4240.2985074626868" y="4.805491990846682"/>
         </scene>
-        <!--Sign In Page View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="signInPageViewController" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -200,8 +200,8 @@ admins manage repairs efficiently.</string>
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email or Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yB8-dN-kjS">
-                                <rect key="frame" x="16" y="222" width="180" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yB8-dN-kjS">
+                                <rect key="frame" x="16" y="222" width="41" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -211,7 +211,7 @@ admins manage repairs efficiently.</string>
                                 <rect key="frame" x="16" y="251" width="326" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Full Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9nW-zv-pdF">
                                 <rect key="frame" x="15" y="301" width="76" height="21"/>
@@ -298,7 +298,7 @@ admins manage repairs efficiently.</string>
                     <connections>
                         <outlet property="btnSignUp" destination="2Gn-pt-Tfg" id="gn8-AR-1zh"/>
                         <outlet property="txtConfirmPassword" destination="Kdy-g6-4Ml" id="cSl-V3-JCw"/>
-                        <outlet property="txtEmailPhone" destination="5jO-tc-tTA" id="BH8-5n-Yi7"/>
+                        <outlet property="txtEmail" destination="5jO-tc-tTA" id="BH8-5n-Yi7"/>
                         <outlet property="txtFullName" destination="f3i-Xe-rXJ" id="JyX-6d-BxX"/>
                         <outlet property="txtPassword" destination="Zok-qR-21W" id="HbR-ZV-SDA"/>
                         <outlet property="txtUsername" destination="pbd-fI-48w" id="oxG-Sh-KaD"/>
@@ -320,10 +320,10 @@ admins manage repairs efficiently.</string>
                                 <rect key="frame" x="16" y="313" width="331" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" textContentType="email"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email Or Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kd-l1-27N">
-                                <rect key="frame" x="16" y="279" width="164" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kd-l1-27N">
+                                <rect key="frame" x="16" y="279" width="37" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
@@ -361,8 +361,8 @@ admins manage repairs efficiently.</string>
                     </view>
                     <navigationItem key="navigationItem" id="shG-rp-2kD"/>
                     <connections>
-                        <outlet property="confirmButton" destination="VdY-O2-s5m" id="eJi-V3-abk"/>
-                        <outlet property="emailOrPhoneTextField" destination="kJx-7c-gKW" id="lKL-P6-T0d"/>
+                        <outlet property="btSubmit" destination="VdY-O2-s5m" id="eJi-V3-abk"/>
+                        <outlet property="txtEmail" destination="kJx-7c-gKW" id="lKL-P6-T0d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gMO-SU-bD0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -372,6 +372,7 @@ admins manage repairs efficiently.</string>
         <!--EnterOTP View Controller-->
         <scene sceneID="Psn-hT-9Mf">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oc0-PC-I8d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="FNF-Hv-DK5" customClass="EnterOTPViewController" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="obC-bZ-pZI">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
@@ -467,8 +468,8 @@ admins manage repairs efficiently.</string>
                     </view>
                     <navigationItem key="navigationItem" id="692-HD-MGL"/>
                     <connections>
+                        <outlet property="btnConfirm" destination="H1g-NB-SAY" id="lV8-DQ-1pg"/>
                         <outlet property="btnResendCode" destination="iyt-GR-QDW" id="vzX-44-4du"/>
-                        <outlet property="btnSubmit" destination="H1g-NB-SAY" id="lV8-DQ-1pg"/>
                         <outlet property="lblemail" destination="VfS-6k-fO9" id="BY2-RY-Hli"/>
                         <outlet property="otpTextField1" destination="GXD-Sq-f65" id="eqi-mI-WjG"/>
                         <outlet property="otpTextField2" destination="oEb-TC-oa2" id="uhH-9q-j30"/>
@@ -478,7 +479,6 @@ admins manage repairs efficiently.</string>
                         <outlet property="otpTextField6" destination="SXD-EQ-Gus" id="mAY-ro-PJO"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oc0-PC-I8d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7590" y="5"/>
         </scene>

@@ -10,16 +10,16 @@ import FirebaseAuth
 
 class ForgotPasswordViewController: UIViewController {
     
-    @IBOutlet weak var confirmButton: UIButton!
-    @IBOutlet weak var emailOrPhoneTextField: UITextField!
+    @IBOutlet weak var btSubmit: UIButton!
+    @IBOutlet weak var txtEmail: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Setup for the email/phone number field (email validation is optional)
-        emailOrPhoneTextField.keyboardType = .emailAddress
-        emailOrPhoneTextField.autocapitalizationType = .none
-        emailOrPhoneTextField.autocorrectionType = .no
+        txtEmail.keyboardType = .emailAddress
+        txtEmail.autocapitalizationType = .none
+        txtEmail.autocorrectionType = .no
         navigationItem.title = "Forgot Password"
     }
     
@@ -43,23 +43,23 @@ class ForgotPasswordViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     @IBAction func confirmButtonTapped(_ sender: Any) {
-        // Get the entered email/phone number
-        let emailOrPhone = emailOrPhoneTextField.text ?? ""
+        // Get the entered email number
+        let email = txtEmail.text ?? ""
         
         // 1️⃣ Check if the field is empty
-        if emailOrPhone.isEmpty {
-            showAlert(title: "Missing Information", message: "Please enter your email or phone number.")
+        if email.isEmpty {
+            showAlert(title: "Missing Information", message: "Please enter your email.")
             return
         }
 
         // 2️⃣ Validate email format
-        if !isValidEmail(emailOrPhone) {
+        if !isValidEmail(email) {
             showAlert(title: "Invalid Email", message: "Please enter a valid email address.")
             return
         }
 
         // 3️⃣ Firebase Password Reset
-        Auth.auth().sendPasswordReset(withEmail: emailOrPhone) { [weak self] (error) in
+        Auth.auth().sendPasswordReset(withEmail: email) { [weak self] (error) in
             if let error = error {
                 self?.showAlert(
                     title: "Error",

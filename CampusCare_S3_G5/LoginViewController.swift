@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseAuth
 
-class signInPageViewController: UIViewController {
+class LoginViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var loginButton: UIButton!

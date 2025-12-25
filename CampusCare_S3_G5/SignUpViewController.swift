@@ -12,7 +12,7 @@ class SignUpViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var txtFullName: UITextField!
-    @IBOutlet weak var txtEmailPhone: UITextField!
+    @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var txtConfirmPassword: UITextField!
@@ -47,9 +47,9 @@ class SignUpViewController: UIViewController {
 
     /// Configures non-password text fields
     private func configureTextFields() {
-        txtEmailPhone.keyboardType = .emailAddress
-        txtEmailPhone.autocapitalizationType = .none
-        txtEmailPhone.autocorrectionType = .no
+        txtEmail.keyboardType = .emailAddress
+        txtEmail.autocapitalizationType = .none
+        txtEmail.autocorrectionType = .no
 
         txtUsername.autocapitalizationType = .none
         txtUsername.autocorrectionType = .no
@@ -88,7 +88,7 @@ class SignUpViewController: UIViewController {
     @IBAction func signUpTapped(_ sender: UIButton) {
 
         let fullName = txtFullName.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let email = txtEmailPhone.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let email = txtEmail.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let username = txtUsername.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let password = txtPassword.text ?? ""
         let confirmPassword = txtConfirmPassword.text ?? ""

@@ -7,7 +7,7 @@ class EnterOTPViewController: UIViewController {
     @IBOutlet weak var otpTextField5: UITextField!
     @IBOutlet weak var otpTextField4: UITextField!
     @IBOutlet weak var otpTextField3: UITextField!
-    @IBOutlet weak var btnSubmit: UIButton!
+    @IBOutlet weak var btnConfirm: UIButton!
     @IBOutlet weak var otpTextField2: UITextField!
     @IBOutlet weak var otpTextField1: UITextField!
     @IBOutlet weak var lblemail: UILabel!
