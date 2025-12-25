@@ -120,12 +120,12 @@ class EditRepairRequestViewController: UIViewController,
             return
         }
 
-        let docRef = db.collection("requests").document(request.id)
+        let docRef = db.collection("tickets").document(request.id)
 
         docRef.updateData([
             "issue": issue,
             "location": location,
-            "description": category
+            "category": category
         ]) { error in
             if let error = error {
                 self.showAlert(title: "Error", message: error.localizedDescription)
@@ -169,7 +169,7 @@ class EditRepairRequestViewController: UIViewController,
     }
     
     private func deleteRequest() {
-        let docRef = db.collection("requests").document(request.id)
+        let docRef = db.collection("tickets").document(request.id)
 
         docRef.delete { error in
             if let error = error {

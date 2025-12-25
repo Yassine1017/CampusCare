@@ -29,7 +29,6 @@ class RepairRequestViewController: UIViewController {
     private let statusOptions = [
         "All",
         "new",
-        "open",
         "inProgress",
         "resolved",
         "closed"
