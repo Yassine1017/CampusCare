@@ -13,7 +13,7 @@ class EditRepairRequestViewController: UIViewController,
                                        UIPickerViewDataSource {
 
 
-    var request: RepairRequest!
+    var request: Ticket!
 
     @IBOutlet weak var issueTextField: UITextField!
     @IBOutlet weak var locationTextField: UITextField!
@@ -96,13 +96,13 @@ class EditRepairRequestViewController: UIViewController,
 
 
     private func populateFields() {
-        guard let request = request else { return }
+        guard let Ticket = request else { return }
 
-        issueTextField.text = request.issue
-        locationTextField.text = request.location
-        categoryTextField.text = request.description
+        issueTextField.text = Ticket.issue
+        locationTextField.text = Ticket.location
+        categoryTextField.text = Ticket.category
         
-        if let index = categories.firstIndex(of: request.description) {
+        if let index = categories.firstIndex(of: Ticket.description) {
             pickerView.selectRow(index, inComponent: 0, animated: false)
         }
 

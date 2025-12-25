@@ -13,6 +13,7 @@ class CreateNewRepairRequestViewController: UIViewController {
 
     @IBOutlet weak var categoryTextField: UITextField!
     
+    @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var issueTextField: UITextField!
     
     @IBOutlet weak var locationTextField: UITextField!
@@ -51,15 +52,17 @@ class CreateNewRepairRequestViewController: UIViewController {
             return
         }
 
-        guard let userId = Auth.auth().currentUser?.uid else {
+        let description = descriptionTextField.text ?? ""
+
+        guard Auth.auth().currentUser != nil else {
             showAlert(title: "Error", message: "User not logged in.")
             return
         }
 
         let counterRef = db.collection("counters").document("requests")
-        let requestsRef = db.collection("requests")
+        let ticketsRef = db.collection("tickets")
 
-        db.runTransaction({ transaction, errorPointer -> Any? in
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
 
             let counterSnapshot: DocumentSnapshot
             do {
@@ -72,24 +75,25 @@ class CreateNewRepairRequestViewController: UIViewController {
             let current = counterSnapshot.data()?["current"] as? Int ?? 0
             let newId = current + 1
 
-            let request = RepairRequest(
+            let ticket = Ticket(
                 id: String(newId),
-                issue: issue,
-                description: category,
+                title: issue,
+                dateCommenced: Date(),
+                status: .new,          // must exist in enum
+                priority: .medium,
+                tasks: [],
                 location: location,
-                status: .new,
-                userId: userId,
-                technicianName: nil,
-                createdAt: Timestamp(),
-                assignmentDate: nil,
-                notes: nil
+                issue: issue,
+                category: category,
+                description: description,
+                assignedTo: nil
             )
 
-            let newRequestRef = requestsRef.document(String(newId))
+            let ticketRef = ticketsRef.document(ticket.id)
 
             do {
-                let encoded = try Firestore.Encoder().encode(request)
-                transaction.setData(encoded, forDocument: newRequestRef)
+                let encoded = try Firestore.Encoder().encode(ticket)
+                transaction.setData(encoded, forDocument: ticketRef)
                 transaction.updateData(["current": newId], forDocument: counterRef)
             } catch let error as NSError {
                 errorPointer?.pointee = error
@@ -98,15 +102,18 @@ class CreateNewRepairRequestViewController: UIViewController {
 
             return nil
 
-        }) { _, error in
+        }) { [weak self] _, error in
+            guard let self = self else { return }
+
             if let error = error {
                 self.showAlert(title: "Error", message: error.localizedDescription)
             } else {
                 self.navigationController?.popViewController(animated: true)
             }
         }
-
     }
+
+
 
 
 

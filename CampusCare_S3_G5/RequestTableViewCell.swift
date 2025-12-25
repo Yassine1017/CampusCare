@@ -63,7 +63,7 @@ class RequestTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(with request: RepairRequest) {
+    func configure(with request: Ticket) {
         idLabel.text = "#\(request.id)"
         issueLabel.text = request.issue
         statusLabel.text = request.status.rawValue

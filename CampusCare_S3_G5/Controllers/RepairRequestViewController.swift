@@ -8,132 +8,132 @@
 import UIKit
 import FirebaseFirestore
 
-class RepairRequestViewController: UIViewController, UISearchBarDelegate {
+class RepairRequestViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var statusTextField: UITextField!
-    
     @IBOutlet weak var searchBar: UISearchBar!
 
-    
-    
+    // MARK: - Firebase
     private let db = Firestore.firestore()
-    
-    func fetchRequests() {
-        db.collection("requests")
-            .order(by: "createdAt", descending: true)
-            .addSnapshotListener { [weak self] snapshot, error in
-                
-                guard let self = self else { return }
-                guard let documents = snapshot?.documents else {
-                    print("No documents")
-                    return
-                }
+    private var listener: ListenerRegistration?
 
-                self.requests = documents.compactMap {
-                    try? $0.data(as: RepairRequest.self)
-                }
-                self.filteredRequests = self.requests
+    // MARK: - Data
+    private var tickets: [Ticket] = []
+    private var filteredTickets: [Ticket] = []
+    private var selectedTicket: Ticket?
 
-
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-    }
-
-    
-   var requests: [RepairRequest] = []
-    private var selectedRequest: RepairRequest?
-    
-    private var filteredRequests: [RepairRequest] = []
-
-    
-    
-
-
-    
-    // MARK: - Properties
-    let statusPicker = UIPickerView()
-
-    let statusOptions = [
+    // MARK: - Picker
+    private let statusPicker = UIPickerView()
+    private let statusOptions = [
         "All",
-        "New",
-        "In Progress",
-        "Completed"
+        "new",
+        "open",
+        "inProgress",
+        "resolved",
+        "closed"
     ]
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fetchRequests()
-
-        
-        tableView.allowsSelection = false
-        tableView.separatorInset = .zero
-        tableView.layoutMargins = .zero
-        tableView.contentInset = .zero
-        tableView.contentInsetAdjustmentBehavior = .never
-
-        setupStatusPicker()
-        setupNavigationBar()
 
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
 
-        
+        setupStatusPicker()
+        setupNavigationBar()
         setupTableHeader()
-        
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
-        }
-        
-        
-    }
- 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else {
-            filteredRequests = requests
-            tableView.reloadData()
-            return
-        }
 
-        filteredRequests = requests.filter {
-            $0.id == searchText
+        tableView.separatorInset = .zero
+        tableView.layoutMargins = .zero
+        tableView.contentInsetAdjustmentBehavior = .never
+
+        listenForTickets()
+    }
+
+    deinit {
+        listener?.remove()
+    }
+
+    // MARK: - Firestore Listener (NEW TICKETS DB)
+    private func listenForTickets() {
+        listener = db.collection("tickets")
+            .order(by: "dateCommenced", descending: true)
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self = self else { return }
+
+                if let error = error {
+                    print("Firestore error:", error)
+                    return
+                }
+
+                guard let documents = snapshot?.documents else { return }
+
+                self.tickets = documents.compactMap {
+                    try? $0.data(as: Ticket.self)
+                }
+
+                self.applyFilters()
+            }
+    }
+
+    // MARK: - Filtering Logic
+    private func applyFilters() {
+
+        let statusFilter = statusTextField.text ?? "All"
+        let searchText = searchBar.text ?? ""
+
+        filteredTickets = tickets.filter { ticket in
+
+            let matchesStatus: Bool = {
+                if statusFilter == "All" { return true }
+                return ticket.status.rawValue == statusFilter
+            }()
+
+            let matchesSearch: Bool = {
+                if searchText.isEmpty { return true }
+                return ticket.id.localizedCaseInsensitiveContains(searchText)
+            }()
+
+            return matchesStatus && matchesSearch
         }
 
         tableView.reloadData()
     }
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let ticket = selectedTicket else { return }
+
+        if segue.identifier == "showEditRequest" {
+            let dest = segue.destination as? UINavigationController
+            let vc = dest?.topViewController as? EditRepairRequestViewController
+                ?? segue.destination as? EditRepairRequestViewController
+            vc?.request = ticket
+        }
+
+        if segue.identifier == "showTrackRequest" {
+            let dest = segue.destination as? UINavigationController
+            let vc = dest?.topViewController as? TrackRequestViewController
+                ?? segue.destination as? TrackRequestViewController
+            vc?.request = ticket
+        }
     }
 
-
-    
-    
+    // MARK: - UI Setup
     private func setupTableHeader() {
         let header = RequestsTableHeaderView(
-            frame: CGRect(
-                x: 0,
-                y: 0,
-                width: tableView.bounds.width,
-                height: 44
-            )
+            frame: CGRect(x: 0, y: 0,
+                          width: tableView.bounds.width,
+                          height: 44)
         )
-
         tableView.tableHeaderView = header
     }
-    
-    
-    
 
-    // MARK: - Picker Setup
-    func setupStatusPicker() {
+    private func setupStatusPicker() {
         statusPicker.delegate = self
         statusPicker.dataSource = self
 
@@ -152,125 +152,49 @@ class RepairRequestViewController: UIViewController, UISearchBarDelegate {
 
         toolbar.items = [doneButton]
         statusTextField.inputAccessoryView = toolbar
-        
-        statusPicker.selectRow(0, inComponent: 0, animated: false)
-        statusTextField.text = statusOptions[0]
 
+        statusTextField.text = statusOptions.first
     }
 
-    @objc func doneTapped() {
+    @objc private func doneTapped() {
         statusTextField.resignFirstResponder()
+        applyFilters()
     }
 
-    // MARK: - Navigation Bar
     private func setupNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .systemBlue
-        appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
 
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.tintColor = .white
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let request = selectedRequest else { return }
-
-        if segue.identifier == "showEditRequest" {
-            let dest = segue.destination
-            let vc = (dest as? UINavigationController)?.topViewController as? EditRepairRequestViewController
-                     ?? dest as? EditRepairRequestViewController
-            vc?.request = request
-        }
-
-        if segue.identifier == "showTrackRequest" {
-            let dest = segue.destination
-            let vc = (dest as? UINavigationController)?.topViewController as? TrackRequestViewController
-                     ?? dest as? TrackRequestViewController
-            vc?.request = request
-        }
-    }
-
-
-
 }
 
-// All functions for picker button
-extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView,
-                    numberOfRowsInComponent component: Int) -> Int {
-        return statusOptions.count
-    }
-
-    func pickerView(_ pickerView: UIPickerView,
-                    titleForRow row: Int,
-                    forComponent component: Int) -> String? {
-        return statusOptions[row]
-    }
-
-    func pickerView(_ pickerView: UIPickerView,
-                    didSelectRow row: Int,
-                    inComponent component: Int) {
-        statusTextField.text = statusOptions[row]
-    }
-}
-
-
-
-
-
-//All functions for table view
-
-
+// MARK: - UITableView
 extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
 
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return filteredRequests.count
+        filteredTickets.count
     }
-   
-        func tableView(_ tableView: UITableView,
-                       heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 44        }
 
-      
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
 
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "RequestCell",
             for: indexPath
         ) as! RequestTableViewCell
-        
-        cell.preservesSuperviewLayoutMargins = false
-        cell.layoutMargins = .zero
-        cell.contentView.layoutMargins = .zero
 
-
-        let request = filteredRequests[indexPath.row]
-
-        
-        cell.configure(with: request)
+        let ticket = filteredTickets[indexPath.row]
+        cell.configure(with: ticket)
 
         cell.actionHandler = { [weak self] action in
             guard let self = self else { return }
-
-            self.selectedRequest = request
+            self.selectedTicket = ticket
 
             switch action {
             case .edit:
@@ -283,35 +207,44 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
         return cell
     }
 
-    
-
     func tableView(_ tableView: UITableView,
-                   heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        44
     }
-
-
-    func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath) {
-        
-        guard indexPath.row != 0 else { return }
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        print("Tapped row \(indexPath.row)")
-    }
-          
 }
 
-extension RepairRequestViewController: UITextFieldDelegate {}
+// MARK: - UIPickerView
+extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
 
+    func pickerView(_ pickerView: UIPickerView,
+                    numberOfRowsInComponent component: Int) -> Int {
+        statusOptions.count
+    }
 
+    func pickerView(_ pickerView: UIPickerView,
+                    titleForRow row: Int,
+                    forComponent component: Int) -> String? {
+        statusOptions[row]
+    }
 
+    func pickerView(_ pickerView: UIPickerView,
+                    didSelectRow row: Int,
+                    inComponent component: Int) {
+        statusTextField.text = statusOptions[row]
+    }
+}
 
+// MARK: - Search Bar
+extension RepairRequestViewController: UISearchBarDelegate {
 
+    func searchBar(_ searchBar: UISearchBar,
+                   textDidChange searchText: String) {
+        applyFilters()
+    }
 
-
-
-    
-
-
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+}
