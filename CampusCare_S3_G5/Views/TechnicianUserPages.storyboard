@@ -270,6 +270,9 @@
                                                                     <rect key="frame" x="0.0" y="85" width="338" height="48"/>
                                                                     <state key="normal" title="Button"/>
                                                                     <buttonConfiguration key="configuration" style="tinted" title="View Request in Detail"/>
+                                                                    <connections>
+                                                                        <action selector="detailButtonTapped:" destination="svo-Q8-qVz" eventType="touchUpInside" id="Obh-sz-HEQ"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
@@ -293,6 +296,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="cardView" destination="s1Y-lQ-4og" id="kgm-8b-JNt"/>
+                                            <outlet property="detailButton" destination="brl-Oq-8yf" id="xhN-fE-vtB"/>
                                             <outlet property="requestDateStartLabel" destination="x7X-0P-pn4" id="7sD-gY-MJP"/>
                                             <outlet property="requestIDLabel" destination="hua-kH-VrT" id="enk-Ff-lKb"/>
                                             <outlet property="requestTitleLabel" destination="HsJ-if-eaJ" id="eDE-x6-yIx"/>
@@ -315,16 +319,17 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="aiS-YJ-DA4" id="vh8-fy-Mt4"/>
+                        <segue destination="h0L-VD-chc" kind="show" identifier="showTicketDetail" id="7eS-mh-IU3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eOV-KN-qDH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1649.2537313432836" y="-2.7459954233409607"/>
         </scene>
-        <!--View Controller-->
+        <!--Detailed Request View Controller-->
         <scene sceneID="V6I-eR-qqA">
             <objects>
-                <viewController id="h0L-VD-chc" sceneMemberID="viewController">
+                <viewController id="h0L-VD-chc" customClass="DetailedRequestViewController" customModule="CampusCare_S3_G5" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Dn3-yN-69W">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -346,8 +351,8 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="YWg-hW-KWs"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" spacing="17" translatesAutoresizingMaskIntoConstraints="NO" id="mBd-V7-7SR">
-                                <rect key="frame" x="27" y="118.00000000000003" width="312" height="389.66666666666674"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="17" translatesAutoresizingMaskIntoConstraints="NO" id="mBd-V7-7SR">
+                                <rect key="frame" x="27" y="118" width="312" height="389.66666666666674"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Request Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DO-eJ-rI9">
                                         <rect key="frame" x="0.0" y="0.0" width="312" height="31.333333333333332"/>
@@ -442,11 +447,23 @@
                         <viewLayoutGuide key="safeArea" id="80s-gU-XQe"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="80s-gU-XQe" firstAttribute="trailing" secondItem="mBd-V7-7SR" secondAttribute="trailing" constant="63" id="4ED-Vf-LM5"/>
                             <constraint firstItem="pYi-oi-deu" firstAttribute="top" secondItem="Dn3-yN-69W" secondAttribute="top" id="Amx-72-HwI"/>
                             <constraint firstItem="pYi-oi-deu" firstAttribute="leading" secondItem="Dn3-yN-69W" secondAttribute="leading" id="PLi-LD-giE"/>
+                            <constraint firstItem="mBd-V7-7SR" firstAttribute="top" secondItem="pYi-oi-deu" secondAttribute="bottom" constant="5" id="Z9X-S4-hRv"/>
+                            <constraint firstItem="mBd-V7-7SR" firstAttribute="leading" secondItem="80s-gU-XQe" secondAttribute="leading" constant="27" id="a4J-4f-fdj"/>
                             <constraint firstAttribute="trailing" secondItem="pYi-oi-deu" secondAttribute="trailing" id="vDI-5p-0z7"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="6Go-el-JOt"/>
+                    <connections>
+                        <outlet property="dateStartedLabel" destination="SH6-3F-S9d" id="Q28-QE-i85"/>
+                        <outlet property="descriptionTextView" destination="oBN-Ng-JaM" id="O5x-P5-wZV"/>
+                        <outlet property="maintenanceIDLabel" destination="f8e-yV-c4V" id="msd-bl-nbn"/>
+                        <outlet property="priorityLevelLabel" destination="yN7-QO-i0e" id="leW-vK-u5M"/>
+                        <outlet property="requestDueWarningLabel" destination="Zx4-rZ-Ykf" id="8PZ-um-w7B"/>
+                        <outlet property="statusPicker" destination="Okc-hq-dhf" id="DV4-Ec-qXB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eSc-rU-d2Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -478,7 +495,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="FMw-e2-Ly8">
-                                <rect key="frame" x="24" y="123.99999999999977" width="332" height="367.66666666666663"/>
+                                <rect key="frame" x="24" y="123.99999999999977" width="332" height="367.66666666666669"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Describe Your Situation:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cjw-U1-4Rr">
                                         <rect key="frame" x="0.0" y="0.0" width="332" height="33.666666666666664"/>

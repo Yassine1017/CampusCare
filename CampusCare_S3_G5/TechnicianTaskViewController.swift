@@ -8,7 +8,7 @@
 import UIKit
 
 class TechnicianTaskViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSampleData()
@@ -23,82 +23,73 @@ class TechnicianTaskViewController: UIViewController {
     @IBOutlet weak var tasksInProgressLabel: UILabel!
     @IBOutlet weak var highPriTaskLabel: UILabel!
     // MARK: - Properties
-        var technician: Technician?
-        var tasks: [Task] = []
+    var technician: Technician?
+    var tickets: [Ticket] = []
+    
+    // MARK: - Setup
+    func setupSampleData() {
+        technician = Technician(id: "13", firstName: "John", lastName: "Appleseed", email: "johndoe@test.com", specialization: "IT Technician", phone: "399")
         
-        // MARK: - Setup
-        func setupSampleData() {
-            // Sample user data
-            technician = Technician(id: "13",firstName: "John", lastName: "Appleseed", email: "johndoe@test.com", specialization: "IT Technician", phone: "399")
-            
-            // Sample tasks - Educational Campus Maintenance
-            tasks = [
-                Task(title: "Inspect classroom HVAC systems", status: .pending, priority: .high),
-                Task(title: "Replace library light fixtures", status: .inProgress, priority: .medium),
-                Task(title: "Clean science lab equipment", status: .pending, priority: .medium),
-                Task(title: "Fix leaking roof in auditorium", status: .completed, priority: .high),
-                Task(title: "Trim trees near walkways", status: .pending, priority: .low),
-                Task(title: "Repair gymnasium flooring", status: .inProgress, priority: .high),
-                Task(title: "Test emergency lighting systems", status: .completed, priority: .medium),
-                Task(title: "Restock restroom supplies", status: .pending, priority: .low),
-                Task(title: "Service campus shuttle buses", status: .inProgress, priority: .medium),
-                Task(title: "Clean cafeteria kitchen vents", status: .pending, priority: .high),
-                Task(title: "Inspect fire extinguishers", status: .completed, priority: .medium),
-                Task(title: "Repair broken classroom desks", status: .pending, priority: .medium),
-                Task(title: "Maintain athletic field irrigation", status: .inProgress, priority: .low),
-                Task(title: "Update campus signage", status: .completed, priority: .low)
-            ]
-        }
-        
-        func updateUI() {
-            // Update greeting
-            greetingLabel.text = getGreeting()
-            
-            // Calculate task counts
-            let pendingCount = tasks.filter { $0.status == .pending }.count
-            let completedCount = tasks.filter { $0.status == .completed }.count
-            let inProgressCount = tasks.filter { $0.status == .inProgress }.count
-            let highPriorityCount = tasks.filter { $0.priority == .high }.count
-            
-            // Update labels with counts
-            updatesLabel.text = getUpdateMessage(pendingCount: pendingCount)
-            tasksTodayLabel.text = "Tasks Pending Today: \(pendingCount)"
-            tasksCompletedLabel.text = "Tasks Completed: \(completedCount)"
-            tasksInProgressLabel.text = "Tasks In Progress: \(inProgressCount)"
-            highPriTaskLabel.text = "High Priority Tasks: \(highPriorityCount)"
-        }
-        
-        // MARK: - Helper Methods
-        func getGreeting() -> String {
-            let hour = Calendar.current.component(.hour, from: Date())
-            var greeting = ""
-            
-            switch hour {
-            case 0..<12:
-                greeting = "Good Morning"
-            case 12..<17:
-                greeting = "Good Afternoon"
-            default:
-                greeting = "Good Evening"
-            }
-            
-            if let technician = technician {
-                return "\(greeting), \(technician.firstName) \(technician.lastName)!"
-            }
-            return "\(greeting)!"
-        }
-        
-        func getUpdateMessage(pendingCount: Int) -> String {
-            if pendingCount > 0 {
-                return "You have \(pendingCount) new tasks."
-            } else {
-                return "No new developments at the moment..."
-            }
-        }
-        
-        // MARK: - Actions (Optional - for refreshing data)
-        @IBAction func refreshButtonTapped(_ sender: UIButton) {
-            updateUI()
-        }
-    }
+        // Create dates for testing: one in the future, one in the past
+        let futureDate = Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date()
+        let pastDate = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()
 
+        let hvacTasks = [
+            TicketTask(id: "t1", title: "Inspect classroom HVAC systems", status: .pending, priority: .high),
+            TicketTask(id: "t2", title: "Clean cafeteria kitchen vents", status: .pending, priority: .high)
+        ]
+
+        tickets = [
+            Ticket(id: "14", title: "HVAC Maintenance", dateCommenced: Date(), status: .new, priority: .high, tasks: hvacTasks, location: "Building A", issue: "Air flow", category: "Maintenance", description: "Routine check", assignedTo: "13", dueDate: futureDate),
+            Ticket(id: "15", title: "Library Electrical", dateCommenced: Date(), status: .inProgress, priority: .medium, tasks: [], location: "Library", issue: "Flickering lights", category: "Electrical", description: "Standard repair", assignedTo: "13", dueDate: pastDate) // Overdue
+        ]
+    }
+    
+    func updateUI() {
+        // Update greeting
+        greetingLabel.text = getGreeting()
+        
+        // Flatten all tasks from all tickets into one array for calculation
+        let allTasks = tickets.flatMap { $0.tasks }
+        
+        // Calculate task counts from the flattened array
+        let pendingCount = allTasks.filter { $0.status == .pending }.count
+        let completedCount = allTasks.filter { $0.status == .completed }.count
+        let inProgressCount = allTasks.filter { $0.status == .inProgress }.count
+        let highPriorityCount = allTasks.filter { $0.priority == .high }.count
+        
+        // Update labels with counts
+        updatesLabel.text = getUpdateMessage(pendingCount: pendingCount)
+        tasksTodayLabel.text = "Tasks Pending Today: \(pendingCount)"
+        tasksCompletedLabel.text = "Tasks Completed: \(completedCount)"
+        tasksInProgressLabel.text = "Tasks In Progress: \(inProgressCount)"
+        highPriTaskLabel.text = "High Priority Tasks: \(highPriorityCount)"
+    }
+    
+    // MARK: - Helper Methods
+    func getGreeting() -> String {
+        let hour = Calendar.current.component(.hour, from: Date())
+        let greeting: String
+        
+        switch hour {
+        case 0..<12: greeting = "Good Morning"
+        case 12..<17: greeting = "Good Afternoon"
+        default: greeting = "Good Evening"
+        }
+        
+        if let technician = technician {
+            return "\(greeting), \(technician.firstName) \(technician.lastName)!"
+        }
+        return "\(greeting)!"
+    }
+    
+    func getUpdateMessage(pendingCount: Int) -> String {
+        return pendingCount > 0 ? "You have \(pendingCount) new tasks." : "No new developments at the moment..."
+    }
+    
+    // MARK: - Actions
+    @IBAction func refreshButtonTapped(_ sender: UIButton) {
+        updateUI()
+    }
+    
+}

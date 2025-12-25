@@ -17,6 +17,7 @@ class TicketCell: UITableViewCell {
     @IBOutlet weak var requestIDLabel: UILabel!
     @IBOutlet weak var requestTitleLabel: UILabel!
     @IBOutlet weak var requestDateStartLabel: UILabel!
+    @IBOutlet weak var detailButton: UIButton!
     // Callback closure for when the button is tapped
     var onButtonTapped: (() -> Void)?
 

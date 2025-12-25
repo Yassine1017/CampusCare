@@ -16,95 +16,109 @@ class TechnicianDashboardViewController: UIViewController {
         setupTableView()
         generateSampleData()
     }
-    func setupTableView() {
-        tableView.dataSource = self
-        tableView.delegate = self
-        // Ensure this matches the ID you typed in Storyboard
-        // If using a separate XIB, register it here.
-        // If purely Storyboard prototype, just ensure the ID matches.
-    }
     
-    // MARK: - Creating Data (Tickets + Tasks)
+    func setupTableView() {
+            tableView.dataSource = self
+            tableView.delegate = self
+        }
+        
+        // MARK: - Creating Data (Updated Models)
     func generateSampleData() {
-        // 1. Create some Tasks
+        let calendar = Calendar.current
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: Date()) ?? Date()
+        let nextWeek = calendar.date(byAdding: .day, value: 7, to: Date()) ?? Date()
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date()) ?? Date()
+
         let tasksForElevator = [
-            Task(title: "Inspect Cables", status: .completed, priority: .high),
-            Task(title: "Replace Fuse", status: .inProgress, priority: .high),
-            Task(title: "Final Safety Check", status: .pending, priority: .medium)
+            TicketTask(id: "t1", title: "Inspect Cables", status: .completed, priority: .high),
+            TicketTask(id: "t2", title: "Replace Fuse", status: .inProgress, priority: .high)
         ]
-        
-        let tasksForAC = [
-            Task(title: "Clean Filter", status: .pending, priority: .low)
-        ]
-        
-        // 2. Create Tickets containing those Tasks
+
         let ticket1 = Ticket(
             id: "14",
             title: "Elevator Not Working",
             dateCommenced: Date(),
-            status: .open,
-            priority: .critical,
-            tasks: tasksForElevator, // <--- Tasks assigned here
+            status: .new,
+            priority: .high,
+            tasks: tasksForElevator,
             location: "Building A",
-            assignedTo: "John Doe"
+            issue: "Mechanical Failure",
+            category: "Maintenance",
+            description: "Main elevator in West Wing is stuck between floors.",
+            assignedTo: "13",
+            dueDate: tomorrow // Due soon
         )
         
         let ticket2 = Ticket(
             id: "15",
             title: "Door Lock Malfunction",
-            dateCommenced: Date().addingTimeInterval(-86400), // Yesterday
+            dateCommenced: Date().addingTimeInterval(-86400),
             status: .inProgress,
             priority: .medium,
             tasks: [],
             location: "Building B",
-            assignedTo: nil
+            issue: "Electronic Lock",
+            category: "Security",
+            description: "Room 204 keypad not responding to student IDs.",
+            assignedTo: "13",
+            dueDate: yesterday // This will trigger the overdue warning in Detail View
         )
         
         let ticket3 = Ticket(
             id: "8",
             title: "Broken AC",
-            dateCommenced: Date().addingTimeInterval(-172800), // 2 days ago
-            status: .open,
+            dateCommenced: Date().addingTimeInterval(-172800),
+            status: .onHold,
             priority: .low,
-            tasks: tasksForAC, // <--- Tasks assigned here
+            tasks: [],
             location: "Lobby",
-            assignedTo: "Jane Smith"
+            issue: "Cooling System",
+            category: "HVAC",
+            description: "Unit making loud grinding noise.",
+            assignedTo: "13",
+            dueDate: nextWeek // Plenty of time
         )
         
         self.tickets = [ticket1, ticket2, ticket3]
         tableView.reloadData()
-    }
+      }
     
-}
-// MARK: - TableView Data Source
-extension TechnicianDashboardViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tickets.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TicketCell", for: indexPath) as? TicketCell else {
-            return UITableViewCell()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showTicketDetail",
+           let destinationVC = segue.destination as? DetailedRequestViewController,
+           let ticket = sender as? Ticket {
+            destinationVC.selectedTicket = ticket
         }
-        
-        let ticket = tickets[indexPath.row]
-        cell.configure(with: ticket)
-        
-        cell.onButtonTapped = { [weak self] in
-            print("Tapped ticket \(ticket.id)")
-        }
-        
-        return cell
+     }
     }
-}
 
-// MARK: - UITableViewDelegate
-extension TechnicianDashboardViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return false
+    // MARK: - TableView Data Source
+    extension TechnicianDashboardViewController: UITableViewDataSource {
+        
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return tickets.count
+        }
+        
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TicketCell", for: indexPath) as? TicketCell else {
+                return UITableViewCell()
+            }
+            
+            let ticket = tickets[indexPath.row]
+            cell.configure(with: ticket)
+            
+            // This callback is where we will trigger navigation later
+            cell.onButtonTapped = { [weak self] in
+                self?.performSegue(withIdentifier: "showTicketDetail", sender: ticket)
+            }
+            
+            return cell
+        }
     }
-    
-    
-    
+
+    // MARK: - UITableViewDelegate
+    extension TechnicianDashboardViewController: UITableViewDelegate {
+        func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+            return false
+        }
 }

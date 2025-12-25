@@ -2,15 +2,19 @@
 import UIKit
 import Foundation
 
-struct Ticket: Identifiable {
+struct Ticket: Identifiable, Codable{
     let id: String
     let title: String
     let dateCommenced: Date
     let status: TicketStatus
     let priority: TicketPriority
-    let tasks: [Task]
+    let tasks: [TicketTask]
     let location: String
+    let issue: String
+    let category:String
+    let description: String
     let assignedTo: String?
+    let dueDate: Date
     
     // Computed properties
     var formattedDate: String {
@@ -29,25 +33,25 @@ struct Ticket: Identifiable {
     }
 }
 
-enum TicketStatus: String {
-    case open = "Open"
+enum TicketStatus: String, Codable, CaseIterable{
+    case new = "New"
     case inProgress = "In Progress"
     case onHold = "On Hold"
     case resolved = "Resolved"
-    case closed = "Closed"
+    case completed = "Completed"
     
     var color: UIColor {
         switch self {
-        case .open: return .systemBlue
+        case .new: return .systemBlue
         case .inProgress: return .systemOrange
         case .onHold: return .systemYellow
         case .resolved: return .systemGreen
-        case .closed: return .systemGray
+        case .completed: return .systemGray
         }
     }
 }
 
-enum TicketPriority: String {
+enum TicketPriority: String, Codable{
     case low = "Low"
     case medium = "Medium"
     case high = "High"
