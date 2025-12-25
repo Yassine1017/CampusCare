@@ -190,7 +190,7 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5056.7164179104475" y="-4.1189931350114417"/>
+            <point key="canvasLocation" x="5036" y="-4"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="AIl-aV-lyA">
@@ -306,7 +306,7 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CiB-EJ-VvN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5888.059701492537" y="-4.1189931350114417"/>
+            <point key="canvasLocation" x="6004" y="5"/>
         </scene>
         <!--Forgot Password View Controller-->
         <scene sceneID="VJR-Ej-Nes">
@@ -367,7 +367,7 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gMO-SU-bD0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6600" y="4.805491990846682"/>
+            <point key="canvasLocation" x="6736" y="-4"/>
         </scene>
         <!--EnterOTP View Controller-->
         <scene sceneID="Psn-hT-9Mf">
@@ -480,7 +480,7 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oc0-PC-I8d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7479.1044776119397" y="4.805491990846682"/>
+            <point key="canvasLocation" x="7590" y="5"/>
         </scene>
         <!--Reset Password View Controller-->
         <scene sceneID="uER-zY-uY2">
@@ -548,7 +548,7 @@ admins manage repairs efficiently.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I0u-2h-I5c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8473.1343283582082" y="15.789473684210526"/>
+            <point key="canvasLocation" x="8442" y="5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7ZY-Mc-Uow">
