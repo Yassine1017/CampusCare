@@ -56,27 +56,34 @@ class signInPageViewController: UIViewController {
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        let enteredEmail = emailOrPhoneTextField.text ?? ""
-        let enteredPassword = passwordTextField.text ?? ""
-
         // 1️⃣ Check empty fields
-        if enteredEmail.isEmpty || enteredPassword.isEmpty {
-            showAlert(
-                title: "Missing Information",
-                message: "Please enter your email/phone and password."
-            )
-            return
-        }
-
-        // 2️⃣ Firebase Sign-In
-        Auth.auth().signIn(withEmail: enteredEmail, password: enteredPassword) { [weak self] (result, error) in
-            if let error = error {
-                self?.showAlert(
-                    title: "Login Failed",
-                    message: error.localizedDescription
+                guard let enteredEmail = emailOrPhoneTextField.text,
+                      !enteredEmail.isEmpty else {
+                    showAlert(
+                        title: "Missing Email",
+                        message: "Please enter your email address."
+                    )
+                    return
+                }
+        guard let enteredPassword = passwordTextField.text,
+                  !enteredPassword.isEmpty else {
+                showAlert(
+                    title: "Missing Password",
+                    message: "Please enter your password."
                 )
                 return
             }
+
+        // 2️⃣ Firebase Sign-In
+        Auth.auth().signIn(withEmail: enteredEmail,
+                              password: enteredPassword) { [weak self] result, error in
+               if let error = error {
+                   self?.showAlert(
+                       title: "Login Failed",
+                       message: error.localizedDescription
+                   )
+                   return
+               }
 
             // 3️⃣ Login Success
             self?.showAlert(
