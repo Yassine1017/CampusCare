@@ -27,13 +27,15 @@ class ResetPasswordViewController: UIViewController {
             } else {
                 dismiss(animated: true, completion: nil)
             }
+        navigationItem.title = "Reset Password"
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide the navigation bar on this screen
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
+
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

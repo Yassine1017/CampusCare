@@ -27,13 +27,15 @@ class SignUpViewController: UIViewController {
         configureTextFields()
         configurePasswordFields()
         setupKeyboardDismiss()
+        title = "Sign up"
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide navigation bar on Sign Up screen
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
+
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

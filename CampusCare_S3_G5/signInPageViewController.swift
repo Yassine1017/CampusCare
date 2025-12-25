@@ -35,11 +35,11 @@ class signInPageViewController: UIViewController {
             action: #selector(dismissKeyboard)
         )
         view.addGestureRecognizer(tapGesture)
+        title = "Login"
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide the navigation bar on this screen
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -20,6 +20,7 @@ class ForgotPasswordViewController: UIViewController {
         emailOrPhoneTextField.keyboardType = .emailAddress
         emailOrPhoneTextField.autocapitalizationType = .none
         emailOrPhoneTextField.autocorrectionType = .no
+        navigationItem.title = "Forgot Password"
     }
     
     @IBAction func backButtonTapped(_ sender: Any) {
@@ -32,9 +33,9 @@ class ForgotPasswordViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide the navigation bar on this screen
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
+
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
