@@ -38,6 +38,11 @@ class RequestTableViewCell: UITableViewCell {
         idLabel.isUserInteractionEnabled = false
         issueLabel.isUserInteractionEnabled = false
         statusLabel.isUserInteractionEnabled = false
+        
+        idLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        statusLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        actionButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+
     }
 
     

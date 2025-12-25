@@ -8,12 +8,15 @@
 import UIKit
 import FirebaseFirestore
 
-class RepairRequestViewController: UIViewController {
+class RepairRequestViewController: UIViewController, UISearchBarDelegate {
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
-  
+    
     @IBOutlet weak var statusTextField: UITextField!
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+
     
     
     private let db = Firestore.firestore()
@@ -32,6 +35,8 @@ class RepairRequestViewController: UIViewController {
                 self.requests = documents.compactMap {
                     try? $0.data(as: RepairRequest.self)
                 }
+                self.filteredRequests = self.requests
+
 
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -42,6 +47,11 @@ class RepairRequestViewController: UIViewController {
     
    var requests: [RepairRequest] = []
     private var selectedRequest: RepairRequest?
+    
+    private var filteredRequests: [RepairRequest] = []
+
+    
+    
 
 
     
@@ -73,14 +83,52 @@ class RepairRequestViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
+
         
-        tableView.register(
-            RequestsHeaderView.self,
-            forHeaderFooterViewReuseIdentifier: RequestsHeaderView.identifier
+        setupTableHeader()
+        
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
+        
+        
+    }
+ 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            filteredRequests = requests
+            tableView.reloadData()
+            return
+        }
+
+        filteredRequests = requests.filter {
+            $0.id == searchText
+        }
+
+        tableView.reloadData()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+
+    
+    
+    private func setupTableHeader() {
+        let header = RequestsTableHeaderView(
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: tableView.bounds.width,
+                height: 44
+            )
         )
 
-
+        tableView.tableHeaderView = header
     }
+    
     
     
 
@@ -181,6 +229,8 @@ extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSou
 
 
 //All functions for table view
+
+
 extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -189,7 +239,7 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return requests.count
+        return filteredRequests.count
     }
    
         func tableView(_ tableView: UITableView,
@@ -212,7 +262,7 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
         cell.contentView.layoutMargins = .zero
 
 
-        let request = requests[indexPath.row]
+        let request = filteredRequests[indexPath.row]
 
         
         cell.configure(with: request)
@@ -234,13 +284,6 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     
-    func tableView(_ tableView: UITableView,
-                   viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: RequestsHeaderView.identifier
-        ) as! RequestsHeaderView
-        return header
-    }
 
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
@@ -256,7 +299,11 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
         
         print("Tapped row \(indexPath.row)")
     }
+          
 }
+
+extension RepairRequestViewController: UITextFieldDelegate {}
+
 
 
 
