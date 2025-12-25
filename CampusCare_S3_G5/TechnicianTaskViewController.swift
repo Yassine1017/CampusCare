@@ -23,13 +23,13 @@ class TechnicianTaskViewController: UIViewController {
     @IBOutlet weak var tasksInProgressLabel: UILabel!
     @IBOutlet weak var highPriTaskLabel: UILabel!
     // MARK: - Properties
-        var user: User?
+        var technician: Technician?
         var tasks: [Task] = []
         
         // MARK: - Setup
         func setupSampleData() {
             // Sample user data
-            user = User(firstName: "John", lastName: "Appleseed")
+            technician = Technician(id: "13",firstName: "John", lastName: "Appleseed", email: "johndoe@test.com", specialization: "IT Technician", phone: "399")
             
             // Sample tasks - Educational Campus Maintenance
             tasks = [
@@ -82,8 +82,8 @@ class TechnicianTaskViewController: UIViewController {
                 greeting = "Good Evening"
             }
             
-            if let user = user {
-                return "\(greeting), \(user.firstName) \(user.lastName)!"
+            if let technician = technician {
+                return "\(greeting), \(technician.firstName) \(technician.lastName)!"
             }
             return "\(greeting)!"
         }

@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  Technician.swift
 //  CampusCare_S3_G5
 //
 //  Created by Guest User on 25/12/2025.
@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct User: Identifiable, Codable {
+struct Technician: Identifiable, Codable {
 
     // Firestore document ID (Firebase Auth UID)
     var id: String
@@ -17,16 +17,17 @@ struct User: Identifiable, Codable {
     let firstName: String
     let lastName: String
 
-    // Student details
+    // Technician details
     let email: String
-    let studentId: String?
+    let specialization: String
 
     // Optional contact info
     let phone: String?
 
     // Dates
-    let createdAt: Timestamp
+    //let createdAt: Timestamp?
 }
+
 
 
 
