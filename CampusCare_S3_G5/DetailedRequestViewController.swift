@@ -23,8 +23,15 @@ class DetailedRequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        configureWithTicket()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            // Data binding should happen here or in viewDidLoad
+            // to ensure outlets are connected
+            configureWithTicket()
+            print("Ticket Description is: \(selectedTicket?.description ?? "N/A")")
+        }
     
 
     private func setupUI() {
@@ -86,6 +93,19 @@ class DetailedRequestViewController: UIViewController {
             print("Ticket \(selectedTicket?.id ?? "") updated to \(newStatus.rawValue)")
             // Here you would typically call a Firebase update function
         }
+    
+    @IBAction func escalateRequestTapped(_ sender: UIButton) {
+        // Trigger the transition
+        performSegue(withIdentifier: "showEscalation", sender: self)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showEscalation",
+           let destinationVC = segue.destination as? EscalationViewController {
+            // Pass the ID of the current selected ticket
+            destinationVC.ticketID = selectedTicket?.id
+        }
+    }
     }
 
     // MARK: - Picker View Methods
