@@ -1,16 +1,18 @@
 import Foundation
 
-// The data model
+// Keep this! Your FeedbackStats.swift uses 'Review'
 struct Review {
     let rating: Int
     let comment: String
 }
 
-// The Manager that holds the "Collection"
 class FeedbackManager {
-    static let shared = FeedbackManager() // This makes it accessible everywhere
+    static let shared = FeedbackManager()
     
-    var allReviews: [Review] = []
+    // We will use 'allReviews' as the master list for EVERYTHING
+    var allReviews: [Review] = [
+        Review(rating: 5, comment: "Initial sample feedback")
+    ]
     
-    private init() {} // Prevents creating multiple copies
+    private init() {}
 }

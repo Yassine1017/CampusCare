@@ -1,70 +1,53 @@
 import UIKit
 
-// 1. New independent data structure for this page
-struct ActivityHistory {
-    let requestTitle: String
-    let completionDate: String
-    let starRating: Int
-    let comment: String
-}
-
-class FeedbackHistoryViewController: UITableViewController {
-
-    // 2. Independent Test Data (This replaces the old Manager)
-    // You can add more items here to test how the list looks
-    var myHistory: [ActivityHistory] = [
-        ActivityHistory(requestTitle: "AC Maintenance - Room 302", completionDate: "Dec 20, 2025", starRating: 5, comment: "The technician was very professional and fixed the issue quickly."),
-        ActivityHistory(requestTitle: "Leaking Pipe - Kitchen", completionDate: "Dec 18, 2025", starRating: 4, comment: "Good service, but arrived 10 minutes late."),
-        ActivityHistory(requestTitle: "Broken Window - Hallway", completionDate: "Dec 15, 2025", starRating: 5, comment: "Perfect job, cleaned up all the glass after finishing.")
-    ]
+// 1. We added 'FeedbackDelegate' here.
+// This fixes the error: "Cannot assign value... to type 'FeedbackDelegate'"
+class FeedbackHistoryViewController: UITableViewController, FeedbackDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "My Activity History"
+        self.title = "My Feedbacks"
         
-        // Customizing the TableView appearance
-        tableView.tableFooterView = UIView() // Removes empty lines at the bottom
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableView.automaticDimension
+        // This ensures the table view uses the identifier you set in Storyboard
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
+    // 2. This is the REQUIRED function for the FeedbackDelegate.
+    // When the user clicks "Submit" on the rating page, this code runs.
+    func didSubmitNewFeedback(_ activity: ActivityHistory) {
+        // We take the data from the 'ActivityHistory' and save it into our 'allReviews' list
+        let newReview = Review(rating: activity.starRating, comment: activity.comment)
+        FeedbackManager.shared.allReviews.insert(newReview, at: 0)
+        
+        // Refresh the UI to show the new comment immediately
+        tableView.reloadData()
+    }
+
+    // Refresh the list every time the screen appears (e.g., coming back from the rating page)
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
 
-    // MARK: - Table View Data Source
+    // MARK: - Table View Methods
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return myHistory.count
+        // Safe: Pulls from the manager you already created
+        return FeedbackManager.shared.allReviews.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Using Subtitle style to organize the 4 required features
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "HistoryCell")
-        let activity = myHistory[indexPath.row]
+        // We create the cell with a 'subtitle' style to show stars on top and comment below
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         
-        // FEATURE: Request Title and Completion Date
-        cell.textLabel?.text = "\(activity.requestTitle)"
-        cell.textLabel?.font = .boldSystemFont(ofSize: 17)
+        let data = FeedbackManager.shared.allReviews[indexPath.row]
         
-        // FEATURE: Star Rating and Comment and Date
-        // We use string repeating to show actual stars based on the number
-        let stars = String(repeating: "⭐", count: activity.starRating)
+        // Convert the number (1-5) into star emojis
+        let stars = String(repeating: "⭐", count: data.rating)
         
-        let detailText = """
-        Date: \(activity.completionDate)
-        Rating: \(stars)
-        Comment: \(activity.comment)
-        """
-        
-        cell.detailTextLabel?.text = detailText
-        cell.detailTextLabel?.numberOfLines = 0 // Allows the text to expand
-        cell.detailTextLabel?.font = .systemFont(ofSize: 14)
-        cell.detailTextLabel?.textColor = .darkGray
-        
-        // Adds a nice arrow on the right
-        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = "Rating: \(stars)"
+        cell.detailTextLabel?.text = data.comment
+        cell.detailTextLabel?.numberOfLines = 0 // Allows long comments to wrap to the next line
         
         return cell
     }

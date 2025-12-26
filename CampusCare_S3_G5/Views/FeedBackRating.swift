@@ -1,10 +1,16 @@
 import UIKit
 
+// The protocol acts as the "river" to carry data back to the list
+protocol FeedbackDelegate: AnyObject {
+    func didSubmitNewFeedback(_ activity: ActivityHistory)
+}
+
 class FeedBackRating: UIViewController {
 
     @IBOutlet weak var reviewTextView: UITextView!
     @IBOutlet var starButtons: [UIButton]!
     
+    weak var delegate: FeedbackDelegate?
     var currentRating: Int = 0
     
     override func viewDidLoad() {
@@ -17,32 +23,24 @@ class FeedBackRating: UIViewController {
     @IBAction func starTapped(_ sender: UIButton) {
         currentRating = sender.tag
         for button in starButtons {
-            button.setImage(UIImage(systemName: button.tag <= currentRating ? "star.fill" : "star"), for: .normal)
+            let imageName = button.tag <= currentRating ? "star.fill" : "star"
+            button.setImage(UIImage(systemName: imageName), for: .normal)
         }
     }
 
     @IBAction func submitPressed(_ sender: UIButton) {
         let userComment = reviewTextView.text ?? ""
         
-        // 1. Save data (This works and carries over!)
+        // 1. Create a Review using your existing model
         let newReview = Review(rating: currentRating, comment: userComment)
-        FeedbackManager.shared.allReviews.append(newReview)
         
-        // 2. Alert
+        // 2. Save it to the Manager (This is what makes it "show up" later)
+        FeedbackManager.shared.allReviews.insert(newReview, at: 0)
+        
+        // 3. Show success message
         let alert = UIAlertController(title: "Success", message: "Feedback saved!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            // 3. Navigate back to Main
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let rootVC = storyboard.instantiateInitialViewController() {
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                   let window = windowScene.windows.first {
-                    window.rootViewController = rootVC
-                    UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
-                }
-            } else {
-                // Emergency fallback if you forgot the arrow in step 1
-                self.dismiss(animated: true)
-            }
+            self.dismiss(animated: true)
         })
         present(alert, animated: true)
     }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_3" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" customClass="PerformanceViewController" customModule="CampusCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="headerView">
+                                <rect key="frame" x="0.0" y="0.0" width="402" height="130"/>
+                                <subviews>
+                                    <label opaque="NO" userLabel="Title" contentMode="left" text="Technical Performance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="titleLabel">
+                                        <rect key="frame" x="20" y="75" width="224" height="26.333333333333343"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="130" id="h1"/>
+                                    <constraint firstItem="titleLabel" firstAttribute="leading" secondItem="headerView" secondAttribute="leading" constant="20" id="l1"/>
+                                    <constraint firstAttribute="bottom" secondItem="titleLabel" secondAttribute="bottom" constant="28.670000000000002" id="b1"/>
+                                </constraints>
+                            </view>
+                            
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="statStack">
+                                <rect key="frame" x="20" y="150" width="362" height="90"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stat1">
+                                        <rect key="frame" x="0.0" y="0.0" width="175" height="90"/>
+                                        <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius"><integer key="value" value="15"/></userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stat2">
+                                        <rect key="frame" x="187" y="0.0" width="175" height="90"/>
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius"><integer key="value" value="15"/></userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <constraints><constraint firstAttribute="height" constant="90" id="h2"/></constraints>
+                            </stackView>
+
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="registryBox">
+                                <rect key="frame" x="20" y="700" width="362" height="110"/>
+                                <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+                                <constraints><constraint firstAttribute="height" constant="110" id="h3"/></constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius"><integer key="value" value="20"/></userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="headerView" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="c1"/>
+                            <constraint firstItem="headerView" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="c2"/>
+                            <constraint firstItem="headerView" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="c3"/>
+                            <constraint firstItem="statStack" firstAttribute="top" secondItem="headerView" secondAttribute="bottom" constant="20" id="c4"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="statStack" secondAttribute="trailing" constant="20" id="c5"/>
+                            <constraint firstItem="statStack" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="c6"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="registryBox" secondAttribute="bottom" constant="30" id="c7"/>
+                            <constraint firstItem="registryBox" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="c8"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="registryBox" secondAttribute="trailing" constant="20" id="c9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="registryContainer" destination="registryBox" id="out1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.0" y="0.0"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBlueColor"><color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/></systemColor>
+        <systemColor name="systemGroupedBackgroundColor"><color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/></systemColor>
+        <systemColor name="secondarySystemGroupedBackgroundColor"><color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/></systemColor>
+    </resources>
+</document>
