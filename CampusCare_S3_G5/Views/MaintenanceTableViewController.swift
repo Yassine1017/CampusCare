@@ -6,75 +6,173 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
-class MaintenanceTableViewController: UITableViewController {
+class MaintenanceTableViewController: UITableViewController, UITextViewDelegate {
 
+    // MARK: - Outlets (Storyboard)
+    @IBOutlet weak var issueTextField: UITextField!
+    @IBOutlet weak var prioritySegment: UISegmentedControl!
+    @IBOutlet weak var locationTextField: UITextField!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var detailsTextView: UITextView!
+    @IBOutlet weak var submitButton: UIButton!
+
+    // MARK: - Properties
+    private let detailsPlaceholder = "Additional details..."
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        navigationItem.title = "Maintenance Schedule"
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        navigationItem.title = "Maintenance schedule"
+        setupUI()
+        setupTextViewPlaceholder()
     }
 
+    // MARK: - UI Setup
+    private func setupUI() {
 
+        // TextView styling
+        detailsTextView.layer.borderWidth = 0.5
+        detailsTextView.layer.borderColor = UIColor.systemGray4.cgColor
+        detailsTextView.layer.cornerRadius = 8
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        // Button styling
+        submitButton.layer.cornerRadius = 10
+        submitButton.setTitle("Submit", for: .normal)
 
-        // Configure the cell...
+        // Default values
+        prioritySegment.selectedSegmentIndex = 0
 
-        return cell
+        // Scheduling should be for now or future
+        datePicker.minimumDate = Date()
     }
-    */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    // MARK: - TextView Placeholder
+    private func setupTextViewPlaceholder() {
+        detailsTextView.delegate = self
+        detailsTextView.text = detailsPlaceholder
+        detailsTextView.textColor = .lightGray
     }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .lightGray {
+            textView.text = ""
+            textView.textColor = .label
+        }
     }
-    */
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = detailsPlaceholder
+            textView.textColor = .lightGray
+        }
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    // MARK: - Actions
+    @IBAction func submitTapped(_ sender: UIButton) {
+
+        let issue = issueTextField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+        let location = locationTextField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+        let priority = prioritySegment.titleForSegment(
+            at: prioritySegment.selectedSegmentIndex
+        ) ?? "Low"
+
+        let scheduledDate = datePicker.date
+
+        let details =
+            detailsTextView.textColor == .lightGray
+            ? ""
+            : detailsTextView.text ?? ""
+
+        // Validation
+        if issue.isEmpty || location.isEmpty {
+            showAlert(
+                title: "Missing Information",
+                message: "Please fill in the Issue and Location fields."
+            )
+            return
+        }
+
+        saveScheduleToFirebase(
+            issue: issue,
+            priority: priority,
+            location: location,
+            scheduledDate: scheduledDate,
+            details: details
+        )
     }
-    */
 
-    /*
-    // MARK: - Navigation
+    // MARK: - Firebase Firestore (Maintenance Schedule)
+    private func saveScheduleToFirebase(
+        issue: String,
+        priority: String,
+        location: String,
+        scheduledDate: Date,
+        details: String
+    ) {
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        let db = Firestore.firestore()
+
+        let data: [String: Any] = [
+            "issue": issue,
+            "priority": priority,
+            "location": location,
+            "scheduledDate": Timestamp(date: scheduledDate),
+            "details": details,
+            "scheduleStatus": "Scheduled",
+            "createdAt": Timestamp(),
+            "scheduledBy": Auth.auth().currentUser?.uid ?? "anonymous"
+        ]
+
+        submitButton.isEnabled = false
+        submitButton.alpha = 0.6
+
+        db.collection("maintenance_schedules").addDocument(data: data) { error in
+
+            self.submitButton.isEnabled = true
+            self.submitButton.alpha = 1.0
+
+            if let error = error {
+                self.showAlert(
+                    title: "Error",
+                    message: error.localizedDescription
+                )
+            } else {
+                self.showAlert(
+                    title: "Success",
+                    message: "Maintenance has been scheduled successfully."
+                )
+                self.clearForm()
+            }
+        }
     }
-    */
 
+    // MARK: - Helpers
+    private func clearForm() {
+        issueTextField.text = ""
+        locationTextField.text = ""
+        prioritySegment.selectedSegmentIndex = 0
+        datePicker.date = Date()
+
+        detailsTextView.text = detailsPlaceholder
+        detailsTextView.textColor = .lightGray
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
 }

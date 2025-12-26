@@ -86,8 +86,8 @@ admins manage repairs efficiently.</string>
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email or phone Number " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tkm-Oh-RqC">
-                                <rect key="frame" x="34" y="266" width="220" height="26"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tkm-Oh-RqC">
+                                <rect key="frame" x="34" y="266" width="50" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
@@ -178,7 +178,7 @@ admins manage repairs efficiently.</string>
                     </view>
                     <navigationItem key="navigationItem" id="wSb-D4-ixd"/>
                     <connections>
-                        <outlet property="emailOrPhoneTextField" destination="Liy-rt-SVW" id="4LO-qd-zGe"/>
+                        <outlet property="email" destination="Liy-rt-SVW" id="4LO-qd-zGe"/>
                         <outlet property="loginButton" destination="4tr-EF-6co" id="DfG-ce-vCF"/>
                         <outlet property="passwordTextField" destination="fpR-bR-Euh" id="DwU-tm-Jsk"/>
                         <outlet property="registerButton" destination="Qvk-8a-x12" id="CA3-SV-NXZ"/>

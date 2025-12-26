@@ -141,12 +141,14 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Additional details....." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bUt-4h-asT">
-                                                    <rect key="frame" x="12" y="44" width="322" height="114"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4RC-NU-17H">
+                                                    <rect key="frame" x="12" y="39" width="240" height="128"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <color key="textColor" systemColor="labelColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -171,6 +173,9 @@
                                                             <integer key="value" value="10"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="submitTapped:" destination="DKM-kd-sqt" eventType="touchUpInside" id="SJl-0P-OPt"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -184,6 +189,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="hzT-nl-mGZ"/>
+                    <connections>
+                        <outlet property="datePicker" destination="TBJ-Df-Dqw" id="e4z-5r-ikJ"/>
+                        <outlet property="detailsTextView" destination="4RC-NU-17H" id="zAm-xH-rYu"/>
+                        <outlet property="issueTextField" destination="83a-RY-P8h" id="2fh-M8-gdO"/>
+                        <outlet property="locationTextField" destination="V8A-4R-ImT" id="G1c-Dy-Giu"/>
+                        <outlet property="prioritySegment" destination="bq3-o2-c6u" id="aii-Ja-W7V"/>
+                        <outlet property="submitButton" destination="sMo-W8-dsF" id="T8W-S1-xru"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Yl-oT-3h1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -209,6 +222,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
