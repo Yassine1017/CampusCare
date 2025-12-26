@@ -16,9 +16,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var txtConfirmPassword: UITextField!
-
     @IBOutlet weak var btnSignUp: UIButton!
-    
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -27,8 +25,7 @@ class SignUpViewController: UIViewController {
         configureTextFields()
         configurePasswordFields()
         setupKeyboardDismiss()
-        title = "Sign up"
-
+        title = "Sign Up"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -36,16 +33,13 @@ class SignUpViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Show navigation bar when leaving screen
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     // MARK: - UI Configuration
 
-    /// Configures non-password text fields
     private func configureTextFields() {
         txtEmail.keyboardType = .emailAddress
         txtEmail.autocapitalizationType = .none
@@ -55,7 +49,6 @@ class SignUpViewController: UIViewController {
         txtUsername.autocorrectionType = .no
     }
 
-    /// Configures password fields to work correctly with iOS AutoFill
     private func configurePasswordFields() {
         txtPassword.isSecureTextEntry = true
         txtPassword.textContentType = .newPassword
@@ -71,20 +64,17 @@ class SignUpViewController: UIViewController {
         txtConfirmPassword.autocorrectionType = .no
     }
 
-    /// Dismisses keyboard when tapping outside text fields
     private func setupKeyboardDismiss() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
 
     // MARK: - Keyboard
-
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 
     // MARK: - Actions
-
     @IBAction func signUpTapped(_ sender: UIButton) {
 
         let fullName = txtFullName.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -125,7 +115,7 @@ class SignUpViewController: UIViewController {
             return
         }
 
-        // Firebase Authentication - Create user
+        // Create user with Firebase
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             if let error = error {
                 self?.showAlert(title: "Error",
@@ -135,7 +125,7 @@ class SignUpViewController: UIViewController {
 
             guard let user = result?.user else { return }
 
-            // Update Firebase display name
+            // Update display name
             let changeRequest = user.createProfileChangeRequest()
             changeRequest.displayName = username
             changeRequest.commitChanges { error in
@@ -145,52 +135,48 @@ class SignUpViewController: UIViewController {
                     return
                 }
 
-                // Save non-sensitive user data locally
-                UserDefaults.standard.set(fullName, forKey: "fullName")
-                UserDefaults.standard.set(email, forKey: "email")
-                UserDefaults.standard.set(username, forKey: "username")
+                // Send email verification
+                user.sendEmailVerification { error in
+                    if let error = error {
+                        self?.showAlert(title: "Verification Error",
+                                        message: error.localizedDescription)
+                        return
+                    }
 
-                // Success alert
-                let alert = UIAlertController(
-                    title: "Success",
-                    message: "Account created successfully.",
-                    preferredStyle: .alert
-                )
+                    // Save non-sensitive user data locally (optional)
+                    UserDefaults.standard.set(fullName, forKey: "fullName")
+                    UserDefaults.standard.set(email, forKey: "email")
+                    UserDefaults.standard.set(username, forKey: "username")
 
-                let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-                    self?.navigationController?.popViewController(animated: true)
+                    // Success alert
+                    let alert = UIAlertController(
+                        title: "Verify Your Email",
+                        message: "A verification email has been sent. Please check your inbox and verify your email before logging in.",
+                        preferredStyle: .alert
+                    )
+
+                    alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                        self?.navigationController?.popViewController(animated: true)
+                    })
+
+                    self?.present(alert, animated: true)
                 }
-
-                alert.addAction(okAction)
-                self?.present(alert, animated: true)
             }
         }
     }
 
-    @IBAction func backButtonTapped(_ sender: Any) {
-        if let nav = navigationController {
-            nav.popViewController(animated: true)
-        } else {
-            dismiss(animated: true)
-        }
-    }
-
     // MARK: - Helpers
-
-    /// Displays a simple alert
     private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
 
-    /// Validates email format
     private func isValidEmail(_ email: String) -> Bool {
         let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         return NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: email)
     }
 }
+

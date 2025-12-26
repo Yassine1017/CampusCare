@@ -96,45 +96,14 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @IBAction func forgotPasswordTapped(_ sender: UIButton) {
-        let email = emailOrPhoneTextField.text ?? ""
-        if email.isEmpty {
-            showAlert(
-                title: "Missing Information",
-                message: "Please enter your email to reset the password."
-            )
-            return
-        }
-        
-        // Firebase Password Reset
-        Auth.auth().sendPasswordReset(withEmail: email) { [weak self] error in
-            if let error = error {
-                self?.showAlert(
-                    title: "Error",
-                    message: error.localizedDescription
-                )
-                return
-            }
-
-            self?.showAlert(
-                title: "Password Reset",
-                message: "A password reset link has been sent to your email."
-            )
-        }
-    }
+    
 
     @IBAction func registerButtonTapped(_ sender: UIButton) {
         // Transition to registration page
         // performSegue(withIdentifier: "goToSignUp", sender: nil)
     }
     
-    @IBAction func backButtonTapped(_ sender: Any) {
-        if let nav = navigationController {
-                nav.popViewController(animated: true)
-            } else {
-                dismiss(animated: true, completion: nil)
-            }
-    }
+ 
     
     // MARK: - Alert Helper
     func showAlert(title: String, message: String) {
