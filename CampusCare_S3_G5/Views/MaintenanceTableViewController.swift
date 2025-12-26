@@ -1,4 +1,3 @@
-//
 //  MaintenanceTableViewController.swift
 //  CampusCare_S3_G5
 //
@@ -11,14 +10,21 @@ import FirebaseAuth
 
 class MaintenanceTableViewController: UITableViewController, UITextViewDelegate {
 
-    // MARK: - Outlets (Storyboard)
+    // MARK: - Outlets (Labels)
+    @IBOutlet weak var detailsLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var priorityLabel: UILabel!
+    @IBOutlet weak var issueLabel: UILabel!
+    
+    // MARK: - Outlets (Inputs)
     @IBOutlet weak var issueTextField: UITextField!
     @IBOutlet weak var prioritySegment: UISegmentedControl!
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var detailsTextView: UITextView!
     @IBOutlet weak var submitButton: UIButton!
-
+    
     // MARK: - Properties
     private let detailsPlaceholder = "Additional details..."
 
@@ -30,7 +36,23 @@ class MaintenanceTableViewController: UITableViewController, UITextViewDelegate 
 
         setupUI()
         setupTextViewPlaceholder()
+        
+        // Setup tap gesture to dismiss keyboard when tapping outside
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
+
+    // MARK: - Table View Overrides
+    
+    // هذه الدالة تبقيها كما هي لأنها تمنع اللون الرمادي وتعمل بشكل صحيح
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.selectionStyle = .none
+        return cell
+    }
+    
+    // (تم حذف دالة setupAlignment لأنها خربت التصميم)
 
     // MARK: - UI Setup
     private func setupUI() {
@@ -49,6 +71,10 @@ class MaintenanceTableViewController: UITableViewController, UITextViewDelegate 
 
         // Scheduling should be for now or future
         datePicker.minimumDate = Date()
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     // MARK: - TextView Placeholder
