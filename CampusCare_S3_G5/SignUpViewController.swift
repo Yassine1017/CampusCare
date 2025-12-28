@@ -5,7 +5,6 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseFirestore
 
 class SignUpViewController: UIViewController {
 
@@ -20,37 +19,17 @@ class SignUpViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Sign Up"
 
         configureTextFields()
         configurePasswordFields()
         setupKeyboardDismiss()
-        title = "Sign Up"
-        // Password field
-        txtPassword.isSecureTextEntry = true
-        txtPassword.textContentType = nil
-        txtPassword.passwordRules = nil
-        txtPassword.autocorrectionType = .no
-        txtPassword.autocapitalizationType = .none
-        txtPassword.smartInsertDeleteType = .no
-        txtPassword.smartDashesType = .no
-        txtPassword.smartQuotesType = .no
-
-        // Confirm password field
-        txtConfirmPassword.isSecureTextEntry = true
-        txtConfirmPassword.textContentType = nil
-        txtConfirmPassword.passwordRules = nil
-        txtConfirmPassword.autocorrectionType = .no
-        txtConfirmPassword.autocapitalizationType = .none
-        txtConfirmPassword.smartInsertDeleteType = .no
-        txtConfirmPassword.smartDashesType = .no
-        txtConfirmPassword.smartQuotesType = .no
-
     }
 
     // MARK: - TextField Configuration
     private func configureTextFields() {
 
-        // Full name field
+        // Full name
         txtFullName.autocapitalizationType = .words
         txtFullName.autocorrectionType = .no
         txtFullName.textContentType = .name
@@ -58,7 +37,7 @@ class SignUpViewController: UIViewController {
         txtFullName.smartDashesType = .no
         txtFullName.smartQuotesType = .no
 
-        // Email field
+        // Email
         txtEmail.keyboardType = .emailAddress
         txtEmail.autocapitalizationType = .none
         txtEmail.autocorrectionType = .no
@@ -67,7 +46,7 @@ class SignUpViewController: UIViewController {
         txtEmail.smartDashesType = .no
         txtEmail.smartQuotesType = .no
 
-        // Username field
+        // Username
         txtUsername.autocapitalizationType = .none
         txtUsername.autocorrectionType = .no
         txtUsername.textContentType = .username
@@ -79,41 +58,31 @@ class SignUpViewController: UIViewController {
     // MARK: - Password Configuration
     private func configurePasswordFields() {
 
-        // IMPORTANT:
-        // iOS may still show "Strong Password" in some cases because it's controlled by the OS.
-        // These settings attempt to disable AutoFill/password suggestions as much as possible.
-
         // Password
         txtPassword.isSecureTextEntry = true
         txtPassword.autocapitalizationType = .none
         txtPassword.autocorrectionType = .no
 
-        // Avoid `.newPassword` (it strongly triggers "Strong Password")
-        // Using nil removes AutoFill hints in many cases.
-        txtPassword.textContentType = nil
-
-        // Remove any password rules that may suggest strong passwords
+        // ✅ Helps remove "Strong Password" in most cases
+        txtPassword.textContentType = .oneTimeCode
         txtPassword.passwordRules = nil
-
-        // Disable smart typing features
         txtPassword.smartInsertDeleteType = .no
         txtPassword.smartDashesType = .no
         txtPassword.smartQuotesType = .no
+        txtPassword.keyboardType = .asciiCapable
 
-        // Confirm Password
+        // Confirm password
         txtConfirmPassword.isSecureTextEntry = true
         txtConfirmPassword.autocapitalizationType = .none
         txtConfirmPassword.autocorrectionType = .no
-        txtConfirmPassword.textContentType = nil
+
+        // ✅ Same workaround
+        txtConfirmPassword.textContentType = .oneTimeCode
         txtConfirmPassword.passwordRules = nil
         txtConfirmPassword.smartInsertDeleteType = .no
         txtConfirmPassword.smartDashesType = .no
         txtConfirmPassword.smartQuotesType = .no
-
-        // Optional:
-        // If you still see suggestions, you can also try:
-        // txtPassword.keyboardType = .asciiCapable
-        // txtConfirmPassword.keyboardType = .asciiCapable
+        txtConfirmPassword.keyboardType = .asciiCapable
     }
 
     // MARK: - Keyboard Handling
@@ -145,7 +114,7 @@ class SignUpViewController: UIViewController {
             return
         }
 
-        // Validate email format
+        // Validate email
         guard isValidEmail(email) else {
             showAlert(title: "Invalid Email", message: "Please enter a valid email address.")
             return
@@ -157,7 +126,7 @@ class SignUpViewController: UIViewController {
             return
         }
 
-        // Minimum password length (Firebase usually requires at least 6)
+        // Minimum length
         guard password.count >= 6 else {
             showAlert(title: "Weak Password", message: "Password must be at least 6 characters.")
             return
@@ -181,36 +150,22 @@ class SignUpViewController: UIViewController {
                 return
             }
 
-            // Set display name to full name (optional)
+            // ✅ Save full name to FirebaseAuth profile (displayName)
             let changeRequest = user.createProfileChangeRequest()
             changeRequest.displayName = fullName
-            changeRequest.commitChanges { _ in
-                // Ignore errors; Firestore still stores fullName.
-            }
 
-            let db = Firestore.firestore()
-            let userRef = db.collection("users").document(user.uid)
-
-            // Save user profile in Firestore (NO EMAIL SENDING)
-            let userData: [String: Any] = [
-                "fullName": fullName,
-                "username": username,
-                "email": email,
-                "role": "student",
-                "createdAt": Timestamp(date: Date()),
-                "firstLoginAt": FieldValue.delete(),
-                "firstLoginEmailSent": false,
-                "lastLoginAt": FieldValue.delete(),
-                "loginCount": 0
-            ]
-
-            userRef.setData(userData, merge: true) { [weak self] err in
+            changeRequest.commitChanges { [weak self] commitError in
                 guard let self = self else { return }
 
-                if let err = err {
-                    self.showAlert(title: "Error", message: err.localizedDescription)
+                // Even if commit fails, we can still continue, but name might not show later.
+                if let commitError = commitError {
+                    self.showAlert(title: "Warning", message: "Account created, but name couldn't be saved: \(commitError.localizedDescription)")
                     return
                 }
+
+                // Optional: store locally too (useful if your login screen reads from UserDefaults)
+                UserDefaults.standard.set(fullName, forKey: "currentUserFullName")
+                UserDefaults.standard.set(username, forKey: "currentUsername")
 
                 // Success alert
                 let alert = UIAlertController(
@@ -240,4 +195,3 @@ class SignUpViewController: UIViewController {
         return NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: email)
     }
 }
-
