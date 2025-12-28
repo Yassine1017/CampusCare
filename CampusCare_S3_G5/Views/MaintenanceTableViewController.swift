@@ -45,14 +45,14 @@ class MaintenanceTableViewController: UITableViewController, UITextViewDelegate 
 
     // MARK: - Table View Overrides
     
-    // هذه الدالة تبقيها كما هي لأنها تمنع اللون الرمادي وتعمل بشكل صحيح
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.selectionStyle = .none
         return cell
     }
     
-    // (تم حذف دالة setupAlignment لأنها خربت التصميم)
+    
 
     // MARK: - UI Setup
     private func setupUI() {
