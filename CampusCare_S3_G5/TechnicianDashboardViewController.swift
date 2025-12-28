@@ -7,19 +7,47 @@
 
 import UIKit
 
+enum DashboardMode {
+    case all
+    case completed
+    case escalated
+}
+
 class TechnicianDashboardViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
-    var tickets: [Ticket] = []
+    var allTickets: [Ticket] = [] // Holds every ticket
+    var displayedTickets: [Ticket] = []
+    var viewMode: DashboardMode = .all // Use this instead of a simple Bool
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        generateSampleData()
+        if allTickets.isEmpty {
+            generateSampleData()
+        }
+                
+        applyFilters()
     }
     
     func setupTableView() {
             tableView.dataSource = self
             tableView.delegate = self
+        }
+    func applyFilters() {
+            switch viewMode {
+            case .completed:
+                displayedTickets = allTickets.filter { $0.status == .completed }
+                self.title = "Completed Requests"
+            case .escalated:
+                // Filters for tickets where the escalation flag is set to true
+                displayedTickets = allTickets.filter { $0.isEscalated == true }
+                self.title = "Escalated Requests"
+            case .all:
+                displayedTickets = allTickets
+                self.title = "All Requests"
+            }
+            tableView.reloadData()
         }
         
         // MARK: - Creating Data (Updated Models)
@@ -76,10 +104,13 @@ class TechnicianDashboardViewController: UIViewController {
             category: "HVAC",
             description: "Unit making loud grinding noise.",
             assignedTo: "13",
-            dueDate: nextWeek // Plenty of time
+            dueDate: Date(),
+            isEscalated: true,
+            escalationReason: "Parts on backorder for 3 weeks"
+            
         )
         
-        self.tickets = [ticket1, ticket2, ticket3]
+        self.allTickets = [ticket1, ticket2, ticket3]
         tableView.reloadData()
       }
     
@@ -96,24 +127,21 @@ class TechnicianDashboardViewController: UIViewController {
     extension TechnicianDashboardViewController: UITableViewDataSource {
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return tickets.count
-        }
-        
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TicketCell", for: indexPath) as? TicketCell else {
-                return UITableViewCell()
+                return displayedTickets.count
             }
-            
-            let ticket = tickets[indexPath.row]
-            cell.configure(with: ticket)
-            
-            // This callback is where we will trigger navigation later
-            cell.onButtonTapped = { [weak self] in
-                self?.performSegue(withIdentifier: "showTicketDetail", sender: ticket)
+
+            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "TicketCell", for: indexPath) as? TicketCell else {
+                    return UITableViewCell()
+                }
+                let ticket = displayedTickets[indexPath.row]
+                cell.configure(with: ticket)
+                
+                cell.onButtonTapped = { [weak self] in
+                    self?.performSegue(withIdentifier: "showTicketDetail", sender: ticket)
+                }
+                return cell
             }
-            
-            return cell
-        }
     }
 
     // MARK: - UITableViewDelegate

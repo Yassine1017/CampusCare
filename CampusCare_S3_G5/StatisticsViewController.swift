@@ -50,4 +50,19 @@ class StatisticsViewController: UIViewController {
         performSegue(withIdentifier: "showCompletedRequests", sender: self)
     }
 
+    @IBAction func viewEscalatedRequestsTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "showDashboardFiltered", sender: "escalated")
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDashboardFiltered",
+           let destinationVC = segue.destination as? TechnicianDashboardViewController {
+            
+            destinationVC.allTickets = self.tickets
+            
+            if let mode = sender as? String {
+                destinationVC.viewMode = (mode == "escalated") ? .escalated : .completed
+            }
+        }
+    }
 }

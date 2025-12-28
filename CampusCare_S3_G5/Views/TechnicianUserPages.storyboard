@@ -219,15 +219,6 @@
                         <subviews>
                             <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6I-w7-9bx" userLabel="Top Blue Bar">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="100"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Requests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7h-D4-RGb">
-                                        <rect key="frame" x="161" y="59" width="71" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="GO4-4i-9Mc"/>
@@ -320,6 +311,7 @@
                             <constraint firstItem="Sci-lD-Gnl" firstAttribute="trailing" secondItem="aiS-YJ-DA4" secondAttribute="trailing" id="vcw-VH-G7v"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="zNm-Nn-rMQ"/>
                     <connections>
                         <outlet property="tableView" destination="aiS-YJ-DA4" id="vh8-fy-Mt4"/>
                         <segue destination="h0L-VD-chc" kind="show" identifier="showTicketDetail" id="7eS-mh-IU3"/>
@@ -668,6 +660,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="224.33333333333334" height="38.333333333333336"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="View Completed Requests"/>
+                                        <connections>
+                                            <segue destination="LaI-LQ-irq" kind="show" identifier="showCompletedRequests" id="jC8-kd-SYm"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygs-TK-5bA">
                                         <rect key="frame" x="0.0" y="62.333333333333314" width="224.33333333333334" height="38.333333333333343"/>
@@ -1046,6 +1041,9 @@
             <point key="canvasLocation" x="46.564885496183201" y="-2.1126760563380285"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="jC8-kd-SYm"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
