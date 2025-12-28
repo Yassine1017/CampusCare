@@ -25,6 +25,26 @@ class SignUpViewController: UIViewController {
         configurePasswordFields()
         setupKeyboardDismiss()
         title = "Sign Up"
+        // Password field
+        txtPassword.isSecureTextEntry = true
+        txtPassword.textContentType = nil
+        txtPassword.passwordRules = nil
+        txtPassword.autocorrectionType = .no
+        txtPassword.autocapitalizationType = .none
+        txtPassword.smartInsertDeleteType = .no
+        txtPassword.smartDashesType = .no
+        txtPassword.smartQuotesType = .no
+
+        // Confirm password field
+        txtConfirmPassword.isSecureTextEntry = true
+        txtConfirmPassword.textContentType = nil
+        txtConfirmPassword.passwordRules = nil
+        txtConfirmPassword.autocorrectionType = .no
+        txtConfirmPassword.autocapitalizationType = .none
+        txtConfirmPassword.smartInsertDeleteType = .no
+        txtConfirmPassword.smartDashesType = .no
+        txtConfirmPassword.smartQuotesType = .no
+
     }
 
     // MARK: - TextField Configuration
