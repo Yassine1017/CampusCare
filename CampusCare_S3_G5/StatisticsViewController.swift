@@ -46,23 +46,18 @@ class StatisticsViewController: UIViewController {
         overallFeedbackLabel.text = "Mostly Positive"
     }
     
-    @IBAction func viewCompletedRequestsTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "showCompletedRequests", sender: self)
-    }
-
-    @IBAction func viewEscalatedRequestsTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "showDashboardFiltered", sender: "escalated")
-    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDashboardFiltered",
-           let destinationVC = segue.destination as? TechnicianDashboardViewController {
+        if segue.identifier == "showCompletedList",
+           let destinationVC = segue.destination as? CompletedRequestsViewController {
             
+            // Pass the master list that came from the Home Page
             destinationVC.allTickets = self.tickets
-            
-            if let mode = sender as? String {
-                destinationVC.viewMode = (mode == "escalated") ? .escalated : .completed
-            }
+            print("Passing \(self.tickets.count) tickets to Completed View")
+        }
+        if segue.identifier == "showEscalatedList",
+           let destinationVC = segue.destination as? EscalatedRequestsViewController {
+            destinationVC.allTickets = self.tickets
         }
     }
 }

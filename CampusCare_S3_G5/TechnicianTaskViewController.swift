@@ -40,9 +40,15 @@ class TechnicianTaskViewController: UIViewController {
         ]
 
         tickets = [
-            Ticket(id: "14", title: "HVAC Maintenance", dateCommenced: Date(), status: .new, priority: .high, tasks: hvacTasks, location: "Building A", issue: "Air flow", category: "Maintenance", description: "Routine check", assignedTo: "13", dueDate: futureDate),
-            Ticket(id: "15", title: "Library Electrical", dateCommenced: Date(), status: .inProgress, priority: .medium, tasks: [], location: "Library", issue: "Flickering lights", category: "Electrical", description: "Standard repair", assignedTo: "13", dueDate: pastDate) // Overdue
-        ]
+                // Ticket 1: New/Active
+                Ticket(id: "14", title: "HVAC Maintenance", dateCommenced: Date(), status: .new, priority: .high, tasks: hvacTasks, location: "Building A", issue: "Air flow", category: "Maintenance", description: "Routine check", assignedTo: "13", dueDate: futureDate),
+                
+                // Ticket 2: In Progress/Overdue
+                Ticket(id: "15", title: "Library Electrical", dateCommenced: Date(), status: .inProgress, priority: .medium, tasks: [], location: "Library", issue: "Flickering lights", category: "Electrical", description: "Standard repair", assignedTo: "13", dueDate: pastDate),
+                
+                // NEW Ticket 3: Completed (To test the "View Completed" button)
+                Ticket(id: "16", title: "Server Room Setup", dateCommenced: pastDate, status: .completed, priority: .low, tasks: [], location: "Server Room", issue: "Installation", category: "IT", description: "Install new rack and cables.", assignedTo: "13", dueDate: Date())
+            ]
     }
     
     func updateUI() {
@@ -93,9 +99,17 @@ class TechnicianTaskViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // 1. Fixing the main Requests button
+        if segue.identifier == "showDashboard",
+           let destinationVC = segue.destination as? TechnicianDashboardViewController {
+            // Only pass the data. The Dashboard will handle showing everything.
+            destinationVC.allTickets = self.tickets
+            print("DEBUG: Sending \(self.tickets.count) tickets to main Dashboard")
+        }
+        
+        // 2. Statistics Page bridge
         if segue.identifier == "showStatistics",
            let destinationVC = segue.destination as? StatisticsViewController {
-            // Pass the already loaded technician and tickets data
             destinationVC.technician = self.technician
             destinationVC.tickets = self.tickets
         }
