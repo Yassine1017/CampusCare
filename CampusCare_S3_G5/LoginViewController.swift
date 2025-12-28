@@ -5,6 +5,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class LoginViewController: UIViewController {
 
@@ -32,7 +33,7 @@ class LoginViewController: UIViewController {
         passwordTextField.autocapitalizationType = .none
         passwordTextField.autocorrectionType = .no
 
-        // ✅ Helps reduce strong password/AutoFill UI
+        // Helps reduce strong password/AutoFill UI (not 100% guaranteed by iOS)
         passwordTextField.textContentType = .oneTimeCode
         passwordTextField.passwordRules = nil
         passwordTextField.smartInsertDeleteType = .no
@@ -93,30 +94,72 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            // ✅ Get the full name from FirebaseAuth profile
-            let fullName = Auth.auth().currentUser?.displayName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard let user = Auth.auth().currentUser else {
+                self.showAlert(title: "Error", message: "Could not get current user.")
+                return
+            }
 
-            // Fallback if displayName is missing
-            let nameToShow = fullName.isEmpty ? "User" : fullName
+            let uid = user.uid
+            let emailToSave = user.email ?? enteredEmail
 
-            let alert = UIAlertController(
-                title: "Success",
-                message: "Welcome \(nameToShow)",
-                preferredStyle: .alert
-            )
+            // Get fullName from FirebaseAuth profile
+            let fullNameFromAuth = (user.displayName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            let safeFullName = fullNameFromAuth.isEmpty ? "User" : fullNameFromAuth
 
-            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                // Navigate after login (optional)
-                // self.performSegue(withIdentifier: "goToHomePage", sender: nil)
-            })
+            // Save/update user data in Firestore (email + fullName only)
+            self.saveUserToFirestore(uid: uid, email: emailToSave, fullName: safeFullName) { [weak self] savedName, err in
+                guard let self = self else { return }
 
-            self.present(alert, animated: true)
+                if let err = err {
+                    self.showAlert(title: "Error", message: err.localizedDescription)
+                    return
+                }
+
+                let alert = UIAlertController(
+                    title: "Success",
+                    message: "Welcome \(savedName)",
+                    preferredStyle: .alert
+                )
+
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    // Navigate after login (optional)
+                    // self.performSegue(withIdentifier: "goToHomePage", sender: nil)
+                })
+
+                self.present(alert, animated: true)
+            }
         }
     }
 
     @IBAction func registerButtonTapped(_ sender: UIButton) {
         // Navigate to Sign Up screen (optional)
         // self.performSegue(withIdentifier: "goToSignUp", sender: nil)
+    }
+
+    // MARK: - Firestore Save
+    private func saveUserToFirestore(
+        uid: String,
+        email: String,
+        fullName: String,
+        completion: @escaping (_ finalFullName: String, _ error: Error?) -> Void
+    ) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(uid)
+
+        // Prepare data to save
+        let dataToSave: [String: Any] = [
+            "email": email,
+            "fullName": fullName,
+            "lastLoginAt": Timestamp(date: Date())
+        ]
+
+        userRef.setData(dataToSave, merge: true) { err in
+            if let err = err {
+                completion(fullName, err)
+                return
+            }
+            completion(fullName, nil)
+        }
     }
 
     // MARK: - Alert Helper
