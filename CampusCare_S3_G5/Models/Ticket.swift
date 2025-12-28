@@ -1,5 +1,5 @@
 // Models/Ticket.swift
-import UIKit
+import FirebaseFirestore
 import Foundation
 
 struct Ticket: Identifiable, Codable{
@@ -14,6 +14,7 @@ struct Ticket: Identifiable, Codable{
     let category:String
     let description: String
     let assignedTo: String?
+    let dueDate: Date
     
     // Computed properties
     var formattedDate: String {
@@ -32,7 +33,7 @@ struct Ticket: Identifiable, Codable{
     }
 }
 
-enum TicketStatus: String,Codable{
+enum TicketStatus: String, Codable, CaseIterable{
     case new = "New"
     case inProgress = "In Progress"
     case onHold = "On Hold"

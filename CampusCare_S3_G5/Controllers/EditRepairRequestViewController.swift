@@ -12,13 +12,11 @@ class EditRepairRequestViewController: UIViewController,
                                        UIPickerViewDelegate,
                                        UIPickerViewDataSource {
 
-
     var request: Ticket!
 
     @IBOutlet weak var issueTextField: UITextField!
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var categoryTextField: UITextField!
-    
 
     private let categories = [
         "Electrical",
@@ -29,8 +27,6 @@ class EditRepairRequestViewController: UIViewController,
     ]
 
     private let pickerView = UIPickerView()
-
-
     private let db = Firestore.firestore()
 
     override func viewDidLoad() {
@@ -39,16 +35,16 @@ class EditRepairRequestViewController: UIViewController,
         setupCategoryPicker()
         addDoneToolbar()
     }
-    
-    //Picker Logic
-    
+
+    // MARK: - Picker Logic
+
     private func setupCategoryPicker() {
         pickerView.delegate = self
         pickerView.dataSource = self
         categoryTextField.inputView = pickerView
         categoryTextField.placeholder = "Select Category"
     }
-    
+
     private func addDoneToolbar() {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -68,24 +64,22 @@ class EditRepairRequestViewController: UIViewController,
         toolbar.setItems([flexSpace, doneButton], animated: false)
         categoryTextField.inputAccessoryView = toolbar
     }
-    
+
     @objc private func doneTapped() {
         categoryTextField.resignFirstResponder()
     }
 
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
 
     func pickerView(_ pickerView: UIPickerView,
                     numberOfRowsInComponent component: Int) -> Int {
-        return categories.count
+        categories.count
     }
 
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
-        return categories[row]
+        categories[row]
     }
 
     func pickerView(_ pickerView: UIPickerView,
@@ -94,21 +88,22 @@ class EditRepairRequestViewController: UIViewController,
         categoryTextField.text = categories[row]
     }
 
+    // MARK: - Populate Fields
 
     private func populateFields() {
-        guard let Ticket = request else { return }
+        guard let request = request else { return }
 
-        issueTextField.text = Ticket.issue
-        locationTextField.text = Ticket.location
-        categoryTextField.text = Ticket.category
-        
-        if let index = categories.firstIndex(of: Ticket.description) {
+        issueTextField.text = request.issue
+        locationTextField.text = request.location
+        categoryTextField.text = request.category
+
+        if let index = categories.firstIndex(of: request.category) {
             pickerView.selectRow(index, inComponent: 0, animated: false)
         }
-
     }
 
-    // Update Button Logic
+    // MARK: - Update Button Logic
+
     @IBAction func saveChangesTapped(_ sender: UIButton) {
 
         guard
@@ -126,16 +121,31 @@ class EditRepairRequestViewController: UIViewController,
             "issue": issue,
             "location": location,
             "category": category
-        ]) { error in
+        ]) { [weak self] error in
+            guard let self = self else { return }
+
             if let error = error {
                 self.showAlert(title: "Error", message: error.localizedDescription)
             } else {
-                self.navigationController?.popViewController(animated: true)
+
+                
+                let alert = UIAlertController(
+                    title: "Updated",
+                    message: "The repair request was updated successfully.",
+                    preferredStyle: .alert
+                )
+
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                })
+
+                self.present(alert, animated: true)
             }
         }
     }
 
-    // Alert helper
+    // MARK: - Alert Helper
+
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(
             title: title,
@@ -145,13 +155,13 @@ class EditRepairRequestViewController: UIViewController,
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
-    
-    
-    // Delete Button Logic
+
+    // MARK: - Delete Button Logic
+
     @IBAction func deleteRequestTapped(_ sender: UIButton) {
         showDeleteConfirmation()
     }
-    
+
     private func showDeleteConfirmation() {
         let alert = UIAlertController(
             title: "Delete Request",
@@ -167,11 +177,13 @@ class EditRepairRequestViewController: UIViewController,
 
         present(alert, animated: true)
     }
-    
+
     private func deleteRequest() {
         let docRef = db.collection("tickets").document(request.id)
 
-        docRef.delete { error in
+        docRef.delete { [weak self] error in
+            guard let self = self else { return }
+
             if let error = error {
                 self.showAlert(title: "Error", message: error.localizedDescription)
             } else {
@@ -179,9 +191,4 @@ class EditRepairRequestViewController: UIViewController,
             }
         }
     }
-
-
-
-    
 }
-

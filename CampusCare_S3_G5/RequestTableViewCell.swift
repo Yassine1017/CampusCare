@@ -12,7 +12,6 @@ enum RequestAction {
     case view
 }
 
-
 class RequestTableViewCell: UITableViewCell {
 
     @IBOutlet weak var idLabel: UILabel!
@@ -23,44 +22,37 @@ class RequestTableViewCell: UITableViewCell {
     // 🔑 THIS is how the cell talks to the ViewController
     var actionHandler: ((RequestAction) -> Void)?
 
+    // 🔑 NEW (minimal but important)
+    private var actionType: RequestAction = .view
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
         selectionStyle = .none
 
-        // 🔑 CRITICAL
         contentView.isUserInteractionEnabled = true
-
-        // 🔑 CRITICAL
         actionButton.isUserInteractionEnabled = true
 
-        // Prevent other views stealing touches
         idLabel.isUserInteractionEnabled = false
         issueLabel.isUserInteractionEnabled = false
         statusLabel.isUserInteractionEnabled = false
         
         idLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
         statusLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        actionButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        actionButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
+        
+        actionButton.titleLabel?.numberOfLines = 1
+        actionButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
     }
-
-    
 
     override func prepareForReuse() {
         super.prepareForReuse()
         actionHandler = nil
     }
 
-   
     @IBAction func actionButtonTapped(_ sender: UIButton) {
-        guard let title = sender.currentTitle else { return }
-
-        if title == "Edit" {
-            actionHandler?(.edit)
-        } else {
-            actionHandler?(.view)
-        }
+        actionHandler?(actionType)
     }
 
     func configure(with request: Ticket) {
@@ -68,16 +60,17 @@ class RequestTableViewCell: UITableViewCell {
         issueLabel.text = request.issue
         statusLabel.text = request.status.rawValue
 
-        let title = request.status == .new ? "Edit" : "View"
-        actionButton.setTitle(title, for: .normal)
+        // ⭐ SINGLE SOURCE OF TRUTH
+        if request.status == .new {
+            actionType = .edit
+            actionButton.setTitle("Edit", for: .normal)
+        } else {
+            actionType = .view
+            actionButton.setTitle("View", for: .normal)
+        }
+
         actionButton.setTitleColor(.systemBlue, for: .normal)
         actionButton.backgroundColor = .clear
         actionButton.layer.cornerRadius = 6
-    }
-
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let view = super.hitTest(point, with: event)
-        print("Hit view:", view ?? "nil")
-        return view
     }
 }

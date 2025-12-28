@@ -12,15 +12,12 @@ import FirebaseAuth
 class CreateNewRepairRequestViewController: UIViewController {
 
     @IBOutlet weak var categoryTextField: UITextField!
-    
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var issueTextField: UITextField!
-    
     @IBOutlet weak var locationTextField: UITextField!
-    
+
     private let db = Firestore.firestore()
 
-    
     private let categories = [
         "Electrical",
         "Infrastructure",
@@ -40,7 +37,7 @@ class CreateNewRepairRequestViewController: UIViewController {
         setupCategoryPicker()
         addDoneToolbar()
     }
-    
+
     @IBAction func submitRequestTapped(_ sender: UIButton) {
 
         guard
@@ -79,14 +76,15 @@ class CreateNewRepairRequestViewController: UIViewController {
                 id: String(newId),
                 title: issue,
                 dateCommenced: Date(),
-                status: .new,          // must exist in enum
+                status: .new,
                 priority: .medium,
                 tasks: [],
                 location: location,
                 issue: issue,
                 category: category,
                 description: description,
-                assignedTo: nil
+                assignedTo: nil,
+                dueDate: Date()
             )
 
             let ticketRef = ticketsRef.document(ticket.id)
@@ -108,44 +106,29 @@ class CreateNewRepairRequestViewController: UIViewController {
             if let error = error {
                 self.showAlert(title: "Error", message: error.localizedDescription)
             } else {
-                self.navigationController?.popViewController(animated: true)
+
+                let alert = UIAlertController(
+                    title: "Success",
+                    message: "Your repair request has been submitted successfully.",
+                    preferredStyle: .alert
+                )
+
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                })
+
+                self.present(alert, animated: true)
             }
         }
     }
 
-
-
-
-
-
     private func setupCategoryPicker() {
         pickerView.delegate = self
         pickerView.dataSource = self
-
         categoryTextField.inputView = pickerView
-
         categoryTextField.placeholder = "Select Category"
     }
-}
 
-extension CreateNewRepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return categories.count
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return categories[row]
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        categoryTextField.text = categories[row]
-    }
-    
     private func addDoneToolbar() {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -165,10 +148,11 @@ extension CreateNewRepairRequestViewController: UIPickerViewDelegate, UIPickerVi
         toolbar.setItems([flexSpace, doneButton], animated: false)
         categoryTextField.inputAccessoryView = toolbar
     }
+
     @objc private func doneTapped() {
         categoryTextField.resignFirstResponder()
     }
-    
+
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(
             title: title,
@@ -178,9 +162,28 @@ extension CreateNewRepairRequestViewController: UIPickerViewDelegate, UIPickerVi
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+}
 
+extension CreateNewRepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
 
+    func pickerView(_ pickerView: UIPickerView,
+                    numberOfRowsInComponent component: Int) -> Int {
+        categories.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView,
+                    titleForRow row: Int,
+                    forComponent component: Int) -> String? {
+        categories[row]
+    }
+
+    func pickerView(_ pickerView: UIPickerView,
+                    didSelectRow row: Int,
+                    inComponent component: Int) {
+        categoryTextField.text = categories[row]
+    }
 }
 
 
