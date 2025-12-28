@@ -2,15 +2,14 @@
 //  SignUpViewController.swift
 //  CampusCare_S3_G5
 //
-//  Created by MOHAMED ALTAJER on 18/12/2025.
-//
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class SignUpViewController: UIViewController {
 
-    // MARK: - Outlets
+    // MARK: - IBOutlets
     @IBOutlet weak var txtFullName: UITextField!
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtUsername: UITextField!
@@ -28,48 +27,43 @@ class SignUpViewController: UIViewController {
         title = "Sign Up"
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-
-    // MARK: - UI Configuration
-
+    // MARK: - TextField Configuration
     private func configureTextFields() {
+
+        // Email
         txtEmail.keyboardType = .emailAddress
         txtEmail.autocapitalizationType = .none
         txtEmail.autocorrectionType = .no
 
+        // Username
         txtUsername.autocapitalizationType = .none
         txtUsername.autocorrectionType = .no
     }
 
+    // MARK: - Password Configuration
+    /// Completely disables iOS Strong Password & Autofill
     private func configurePasswordFields() {
+
         txtPassword.isSecureTextEntry = true
-        txtPassword.textContentType = .newPassword
-        txtPassword.passwordRules = UITextInputPasswordRules(
-            descriptor: "required: upper; required: lower; required: digit; minlength: 6;"
-        )
+        txtPassword.textContentType = nil
         txtPassword.autocapitalizationType = .none
         txtPassword.autocorrectionType = .no
 
         txtConfirmPassword.isSecureTextEntry = true
-        txtConfirmPassword.textContentType = .newPassword
+        txtConfirmPassword.textContentType = nil
         txtConfirmPassword.autocapitalizationType = .none
         txtConfirmPassword.autocorrectionType = .no
     }
 
+    // MARK: - Keyboard Handling
     private func setupKeyboardDismiss() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tap)
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
+        view.addGestureRecognizer(tapGesture)
     }
 
-    // MARK: - Keyboard
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -83,93 +77,73 @@ class SignUpViewController: UIViewController {
         let password = txtPassword.text ?? ""
         let confirmPassword = txtConfirmPassword.text ?? ""
 
-        // Check for empty fields
+        // Empty field validation
         guard !fullName.isEmpty,
               !email.isEmpty,
               !username.isEmpty,
               !password.isEmpty,
               !confirmPassword.isEmpty else {
-            showAlert(title: "Missing Information",
-                      message: "Please fill in all fields.")
+            showAlert(title: "Missing Information", message: "Please fill in all fields.")
             return
         }
 
-        // Validate email format
+        // Email validation
         guard isValidEmail(email) else {
-            showAlert(title: "Invalid Email",
-                      message: "Please enter a valid email address.")
+            showAlert(title: "Invalid Email", message: "Please enter a valid email address.")
             return
         }
 
-        // Validate password length
-        guard password.count >= 6 else {
-            showAlert(title: "Weak Password",
-                      message: "Password must be at least 6 characters.")
-            return
-        }
-
-        // Validate password match
+        // Password match validation
         guard password == confirmPassword else {
-            showAlert(title: "Password Mismatch",
-                      message: "Passwords do not match.")
+            showAlert(title: "Password Mismatch", message: "Passwords do not match.")
             return
         }
 
-        // Create user with Firebase
+        // Firebase Authentication
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+
             if let error = error {
-                self?.showAlert(title: "Error",
-                                message: error.localizedDescription)
+                self?.showAlert(title: "Error", message: error.localizedDescription)
                 return
             }
 
-            guard let user = result?.user else { return }
+            guard let self = self, let user = result?.user else { return }
 
-            // Update display name
+            // Set display name
             let changeRequest = user.createProfileChangeRequest()
             changeRequest.displayName = username
-            changeRequest.commitChanges { error in
-                if let error = error {
-                    self?.showAlert(title: "Profile Error",
-                                    message: error.localizedDescription)
-                    return
-                }
+            changeRequest.commitChanges()
 
-                // Send email verification
-                user.sendEmailVerification { error in
-                    if let error = error {
-                        self?.showAlert(title: "Verification Error",
-                                        message: error.localizedDescription)
-                        return
-                    }
+            // Save user to Firestore
+            Firestore.firestore()
+                .collection("users")
+                .document(user.uid)
+                .setData([
+                    "fullName": fullName,
+                    "username": username,
+                    "email": email,
+                    "role": "student",
+                    "createdAt": Timestamp()
+                ])
 
-                    // Save non-sensitive user data locally (optional)
-                    UserDefaults.standard.set(fullName, forKey: "fullName")
-                    UserDefaults.standard.set(email, forKey: "email")
-                    UserDefaults.standard.set(username, forKey: "username")
+            // Success alert
+            let alert = UIAlertController(
+                title: "Success",
+                message: "Account created successfully. You can now log in.",
+                preferredStyle: .alert
+            )
 
-                    // Success alert
-                    let alert = UIAlertController(
-                        title: "Verify Your Email",
-                        message: "A verification email has been sent. Please check your inbox and verify your email before logging in.",
-                        preferredStyle: .alert
-                    )
+            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
+            })
 
-                    alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                        self?.navigationController?.popViewController(animated: true)
-                    })
-
-                    self?.present(alert, animated: true)
-                }
-            }
+            self.present(alert, animated: true)
         }
     }
 
     // MARK: - Helpers
     private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }

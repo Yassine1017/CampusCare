@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class LoginViewController: UIViewController {
 
@@ -71,7 +72,7 @@ class LoginViewController: UIViewController {
             return
         }
 
-        // Firebase Sign In
+        // 🔐 Firebase Sign In
         Auth.auth().signIn(withEmail: enteredEmail,
                            password: enteredPassword) { [weak self] result, error in
             if let error = error {
@@ -81,29 +82,41 @@ class LoginViewController: UIViewController {
             }
 
             guard let self = self,
-                  let user = Auth.auth().currentUser else { return }
+                  let uid = Auth.auth().currentUser?.uid else { return }
 
-            // 🔐 Check email verification
-            if !user.isEmailVerified {
-                // User is not verified
+            // 📦 Fetch user data from Firestore
+            let db = Firestore.firestore()
+            db.collection("users").document(uid).getDocument { snapshot, error in
+                if let error = error {
+                    self.showAlert(title: "Error",
+                                   message: error.localizedDescription)
+                    return
+                }
+
+                guard let data = snapshot?.data() else {
+                    self.showAlert(title: "Error",
+                                   message: "User data not found.")
+                    return
+                }
+
+                let username = data["username"] as? String ?? ""
+                let role = data["role"] as? String ?? "student"
+
+                print("Logged in as \(username) | role: \(role)")
+
+                // ✅ Login success
                 self.showAlert(
-                    title: "Email Not Verified",
-                    message: "Please verify your email address before logging in. Check your inbox."
+                    title: "Success",
+                    message: "Welcome \(username)"
                 )
 
-                // Sign out unverified user
-                try? Auth.auth().signOut()
-                return
+                // 🔀 Navigate based on role (optional)
+                // if role == "admin" {
+                //     self.performSegue(withIdentifier: "goToAdminHome", sender: nil)
+                // } else {
+                //     self.performSegue(withIdentifier: "goToHomePage", sender: nil)
+                // }
             }
-
-            // ✅ Login success (email verified)
-            self.showAlert(
-                title: "Success",
-                message: "Login successful. Welcome!"
-            )
-
-            // Navigate to next screen
-            // self.performSegue(withIdentifier: "goToHomePage", sender: nil)
         }
     }
 
