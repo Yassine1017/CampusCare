@@ -16,10 +16,12 @@ class EscalationViewController: UIViewController {
     
     // MARK: - Properties
     var ticketID: String?
+    let characterLimit = 180
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        reasoningTextView.delegate = self
     }
     
     private func setupUI() {
@@ -80,5 +82,19 @@ class EscalationViewController: UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+}
+extension EscalationViewController: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        // Calculate the new length if the change is allowed
+        let currentText = textView.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+        
+        // 2. Enforce the 180 character limit
+        let isWithinLimit = updatedText.count <= characterLimit
+        
+        return isWithinLimit
     }
 }

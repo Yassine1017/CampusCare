@@ -92,4 +92,12 @@ class TechnicianTaskViewController: UIViewController {
         updateUI()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showStatistics",
+           let destinationVC = segue.destination as? StatisticsViewController {
+            // Pass the already loaded technician and tickets data
+            destinationVC.technician = self.technician
+            destinationVC.tickets = self.tickets
+        }
+    }
 }
