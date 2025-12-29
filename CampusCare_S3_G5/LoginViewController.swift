@@ -25,7 +25,10 @@ class LoginViewController: UIViewController {
 
         passwordTextField.isSecureTextEntry = true
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
         view.addGestureRecognizer(tapGesture)
 
         title = "Login"
@@ -62,24 +65,25 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            // ✅ Explicit FirebaseAuth.User
             self.updateUserInFirestore(user: authUser)
         }
     }
 
-    // MARK: - Firestore Update
+    // MARK: - Firestore Update + Admin Check
     private func updateUserInFirestore(user: FirebaseAuth.User) {
+
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(user.uid)
 
         let email = user.email ?? ""
 
         // Extract first & last name from displayName
-        let displayName = (user.displayName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let parts = displayName.split(separator: " ")
+        let displayName = (user.displayName ?? "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let firstName = parts.first.map(String.init) ?? "User"
-        let lastName  = parts.dropFirst().joined(separator: " ")
+        let nameParts = displayName.split(separator: " ")
+        let firstName = nameParts.first.map(String.init) ?? "User"
+        let lastName  = nameParts.dropFirst().joined(separator: " ")
 
         let now = Timestamp(date: Date())
 
@@ -91,10 +95,15 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            // First login time (only once)
-            let loginAt = snapshot?.data()?["loginAt"] as? Timestamp ?? now
+            let existingData = snapshot?.data()
 
-            let data: [String: Any] = [
+            // 🔑 Read role (do NOT change it here)
+            let role = existingData?["role"] as? String ?? "user"
+
+            // First login time (saved once)
+            let loginAt = existingData?["loginAt"] as? Timestamp ?? now
+
+            let dataToSave: [String: Any] = [
                 "email": email,
                 "firstName": firstName,
                 "lastName": lastName,
@@ -102,22 +111,32 @@ class LoginViewController: UIViewController {
                 "lastLogin": now
             ]
 
-            userRef.setData(data, merge: true) { error in
+            userRef.setData(dataToSave, merge: true) { error in
                 if let error = error {
                     self.showAlert(title: "Error", message: error.localizedDescription)
                     return
                 }
 
-                self.showAlert(title: "Success", message: "Login successful.")
+                // ✅ Admin / User check
+                let message: String
+                if role == "admin" {
+                    message = "Login successful. Welcome Admin!"
+                } else {
+                    message = "Login successful. Welcome!"
+                }
+
+                self.showAlert(title: "Success", message: message)
             }
         }
     }
 
     // MARK: - Alert
     private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
