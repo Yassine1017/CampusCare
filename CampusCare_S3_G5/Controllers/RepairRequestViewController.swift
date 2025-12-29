@@ -46,7 +46,7 @@ class RepairRequestViewController: UIViewController {
         setupNavigationAppearance()
         setupTableHeader()
         setupNavigationItems()
-        
+        //setupProfileNavigationTitle()//
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -128,6 +128,7 @@ class RepairRequestViewController: UIViewController {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         guard let ticket = selectedTicket else { return }
         
         if segue.identifier == "showEditRequest" {
@@ -143,6 +144,10 @@ class RepairRequestViewController: UIViewController {
             ?? segue.destination as? TrackRequestViewController
             vc?.request = ticket
         }
+        
+
+        
+
     }
     
     // MARK: - UI Setup
@@ -235,7 +240,7 @@ class RepairRequestViewController: UIViewController {
         navigationItem.titleView = titleLabel
 
         // RIGHT: Profile
-        let profileImage = UIImage(systemName: "person.circle.fill")
+        /* let profileImage = UIImage(systemName: "person.circle.fill")
         let profileButton = UIBarButtonItem(
             image: profileImage,
             style: .plain,
@@ -243,15 +248,11 @@ class RepairRequestViewController: UIViewController {
             action: #selector(profileTapped)
         )
         profileButton.tintColor = .white
-        navigationItem.rightBarButtonItem = profileButton
+        navigationItem.rightBarButtonItem = profileButton */
     }
-
-
     
-    @objc private func profileTapped() {
-        print("Profile icon tapped")
-        // Navigate to Profile screen later
-    }
+    
+
 
 }
     
