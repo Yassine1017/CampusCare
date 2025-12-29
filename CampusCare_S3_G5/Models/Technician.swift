@@ -26,6 +26,7 @@ struct Technician: Identifiable, Codable {
 
     // Dates
     let createdAt: Timestamp
+
 }
 
 

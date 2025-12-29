@@ -16,7 +16,11 @@
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
+
+					<string>TechnicianUserPages</string>
+
 					<string>RepairRequestSystem</string>
+
 				</dict>
 			</array>
 		</dict>
