@@ -9,7 +9,8 @@ import FirebaseAuth
 class SignUpViewController: UIViewController {
 
     // MARK: - IBOutlets
-    @IBOutlet weak var txtFullName: UITextField!
+    @IBOutlet weak var txtFirstName: UITextField!
+    @IBOutlet weak var txtLastName: UITextField!
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
@@ -29,13 +30,21 @@ class SignUpViewController: UIViewController {
     // MARK: - TextField Configuration
     private func configureTextFields() {
 
-        // Full name
-        txtFullName.autocapitalizationType = .words
-        txtFullName.autocorrectionType = .no
-        txtFullName.textContentType = .name
-        txtFullName.smartInsertDeleteType = .no
-        txtFullName.smartDashesType = .no
-        txtFullName.smartQuotesType = .no
+        // First name
+        txtFirstName.autocapitalizationType = .words
+        txtFirstName.autocorrectionType = .no
+        txtFirstName.textContentType = .givenName
+        txtFirstName.smartInsertDeleteType = .no
+        txtFirstName.smartDashesType = .no
+        txtFirstName.smartQuotesType = .no
+
+        // Last name
+        txtLastName.autocapitalizationType = .words
+        txtLastName.autocorrectionType = .no
+        txtLastName.textContentType = .familyName
+        txtLastName.smartInsertDeleteType = .no
+        txtLastName.smartDashesType = .no
+        txtLastName.smartQuotesType = .no
 
         // Email
         txtEmail.keyboardType = .emailAddress
@@ -62,8 +71,6 @@ class SignUpViewController: UIViewController {
         txtPassword.isSecureTextEntry = true
         txtPassword.autocapitalizationType = .none
         txtPassword.autocorrectionType = .no
-
-        // ✅ Helps remove "Strong Password" in most cases
         txtPassword.textContentType = .oneTimeCode
         txtPassword.passwordRules = nil
         txtPassword.smartInsertDeleteType = .no
@@ -75,8 +82,6 @@ class SignUpViewController: UIViewController {
         txtConfirmPassword.isSecureTextEntry = true
         txtConfirmPassword.autocapitalizationType = .none
         txtConfirmPassword.autocorrectionType = .no
-
-        // ✅ Same workaround
         txtConfirmPassword.textContentType = .oneTimeCode
         txtConfirmPassword.passwordRules = nil
         txtConfirmPassword.smartInsertDeleteType = .no
@@ -98,14 +103,18 @@ class SignUpViewController: UIViewController {
     // MARK: - Actions
     @IBAction func signUpTapped(_ sender: UIButton) {
 
-        let fullName = (txtFullName.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let email = (txtEmail.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let username = (txtUsername.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let password = txtPassword.text ?? ""
+        let firstName = (txtFirstName.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName  = (txtLastName.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let email     = (txtEmail.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let username  = (txtUsername.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let password  = txtPassword.text ?? ""
         let confirmPassword = txtConfirmPassword.text ?? ""
 
+        let fullName = "\(firstName) \(lastName)"
+
         // Validate empty fields
-        guard !fullName.isEmpty,
+        guard !firstName.isEmpty,
+              !lastName.isEmpty,
               !email.isEmpty,
               !username.isEmpty,
               !password.isEmpty,
@@ -126,13 +135,13 @@ class SignUpViewController: UIViewController {
             return
         }
 
-        // Minimum length
+        // Minimum password length
         guard password.count >= 6 else {
             showAlert(title: "Weak Password", message: "Password must be at least 6 characters.")
             return
         }
 
-        // Prevent double taps
+        // Prevent multiple taps
         btnSignUp.isEnabled = false
 
         // Create user in Firebase Auth
@@ -150,20 +159,22 @@ class SignUpViewController: UIViewController {
                 return
             }
 
-            // ✅ Save full name to FirebaseAuth profile (displayName)
+            // Save full name to FirebaseAuth profile
             let changeRequest = user.createProfileChangeRequest()
             changeRequest.displayName = fullName
 
             changeRequest.commitChanges { [weak self] commitError in
                 guard let self = self else { return }
 
-                // Even if commit fails, we can still continue, but name might not show later.
                 if let commitError = commitError {
-                    self.showAlert(title: "Warning", message: "Account created, but name couldn't be saved: \(commitError.localizedDescription)")
+                    self.showAlert(
+                        title: "Warning",
+                        message: "Account created, but name could not be saved: \(commitError.localizedDescription)"
+                    )
                     return
                 }
 
-                // Optional: store locally too (useful if your login screen reads from UserDefaults)
+                // Save locally if needed
                 UserDefaults.standard.set(fullName, forKey: "currentUserFullName")
                 UserDefaults.standard.set(username, forKey: "currentUsername")
 
@@ -195,3 +206,4 @@ class SignUpViewController: UIViewController {
         return NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: email)
     }
 }
+

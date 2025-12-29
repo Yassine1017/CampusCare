@@ -13,79 +13,42 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var registerButton: UIButton!
-    @IBOutlet weak var email: UITextField!
+    @IBOutlet weak var txtEmail: UITextField!
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Configure email field
-        email.keyboardType = .emailAddress
-        email.autocapitalizationType = .none
-        email.autocorrectionType = .no
-        email.textContentType = .username
-        email.smartInsertDeleteType = .no
-        email.smartDashesType = .no
-        email.smartQuotesType = .no
+        txtEmail.keyboardType = .emailAddress
+        txtEmail.autocapitalizationType = .none
+        txtEmail.autocorrectionType = .no
 
-        // Secure password field
         passwordTextField.isSecureTextEntry = true
-        passwordTextField.autocapitalizationType = .none
-        passwordTextField.autocorrectionType = .no
 
-        // Helps reduce strong password/AutoFill UI (not 100% guaranteed by iOS)
-        passwordTextField.textContentType = .oneTimeCode
-        passwordTextField.passwordRules = nil
-        passwordTextField.smartInsertDeleteType = .no
-        passwordTextField.smartDashesType = .no
-        passwordTextField.smartQuotesType = .no
-        passwordTextField.keyboardType = .asciiCapable
-
-        // Dismiss keyboard when tapping outside
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
 
         title = "Login"
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-
-    // MARK: - Keyboard
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 
     // MARK: - Actions
     @IBAction func loginButtonTapped(_ sender: UIButton) {
-        view.endEditing(true)
 
-        // Validate email
-        guard let enteredEmail = email.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-              !enteredEmail.isEmpty else {
-            showAlert(title: "Missing Email", message: "Please enter your email address.")
+        guard let email = txtEmail.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !email.isEmpty,
+              let password = passwordTextField.text,
+              !password.isEmpty else {
+            showAlert(title: "Error", message: "Email and password are required.")
             return
         }
 
-        // Validate password
-        guard let enteredPassword = passwordTextField.text,
-              !enteredPassword.isEmpty else {
-            showAlert(title: "Missing Password", message: "Please enter your password.")
-            return
-        }
-
-        // Prevent double taps
         loginButton.isEnabled = false
 
-        // Firebase Sign In
-        Auth.auth().signIn(withEmail: enteredEmail, password: enteredPassword) { [weak self] _, error in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] _, error in
             guard let self = self else { return }
             self.loginButton.isEnabled = true
 
@@ -94,75 +57,63 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            guard let user = Auth.auth().currentUser else {
-                self.showAlert(title: "Error", message: "Could not get current user.")
+            guard let authUser = Auth.auth().currentUser else {
+                self.showAlert(title: "Error", message: "User not found.")
                 return
             }
 
-            let uid = user.uid
-            let emailToSave = user.email ?? enteredEmail
+            // ✅ Explicit FirebaseAuth.User
+            self.updateUserInFirestore(user: authUser)
+        }
+    }
 
-            // Get fullName from FirebaseAuth profile
-            let fullNameFromAuth = (user.displayName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-            let safeFullName = fullNameFromAuth.isEmpty ? "User" : fullNameFromAuth
+    // MARK: - Firestore Update
+    private func updateUserInFirestore(user: FirebaseAuth.User) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
 
-            // Save/update user data in Firestore (email + fullName only)
-            self.saveUserToFirestore(uid: uid, email: emailToSave, fullName: safeFullName) { [weak self] savedName, err in
-                guard let self = self else { return }
+        let email = user.email ?? ""
 
-                if let err = err {
-                    self.showAlert(title: "Error", message: err.localizedDescription)
+        // Extract first & last name from displayName
+        let displayName = (user.displayName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let parts = displayName.split(separator: " ")
+
+        let firstName = parts.first.map(String.init) ?? "User"
+        let lastName  = parts.dropFirst().joined(separator: " ")
+
+        let now = Timestamp(date: Date())
+
+        userRef.getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                self.showAlert(title: "Error", message: error.localizedDescription)
+                return
+            }
+
+            // First login time (only once)
+            let loginAt = snapshot?.data()?["loginAt"] as? Timestamp ?? now
+
+            let data: [String: Any] = [
+                "email": email,
+                "firstName": firstName,
+                "lastName": lastName,
+                "loginAt": loginAt,
+                "lastLogin": now
+            ]
+
+            userRef.setData(data, merge: true) { error in
+                if let error = error {
+                    self.showAlert(title: "Error", message: error.localizedDescription)
                     return
                 }
 
-                let alert = UIAlertController(
-                    title: "Success",
-                    message: "Welcome \(savedName)",
-                    preferredStyle: .alert
-                )
-
-                alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                    // Navigate after login (optional)
-                    // self.performSegue(withIdentifier: "goToHomePage", sender: nil)
-                })
-
-                self.present(alert, animated: true)
+                self.showAlert(title: "Success", message: "Login successful.")
             }
         }
     }
 
-    @IBAction func registerButtonTapped(_ sender: UIButton) {
-        // Navigate to Sign Up screen (optional)
-        // self.performSegue(withIdentifier: "goToSignUp", sender: nil)
-    }
-
-    // MARK: - Firestore Save
-    private func saveUserToFirestore(
-        uid: String,
-        email: String,
-        fullName: String,
-        completion: @escaping (_ finalFullName: String, _ error: Error?) -> Void
-    ) {
-        let db = Firestore.firestore()
-        let userRef = db.collection("users").document(uid)
-
-        // Prepare data to save
-        let dataToSave: [String: Any] = [
-            "email": email,
-            "fullName": fullName,
-            "lastLoginAt": Timestamp(date: Date())
-        ]
-
-        userRef.setData(dataToSave, merge: true) { err in
-            if let err = err {
-                completion(fullName, err)
-                return
-            }
-            completion(fullName, nil)
-        }
-    }
-
-    // MARK: - Alert Helper
+    // MARK: - Alert
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title,
                                       message: message,
@@ -171,3 +122,4 @@ class LoginViewController: UIViewController {
         present(alert, animated: true)
     }
 }
+
