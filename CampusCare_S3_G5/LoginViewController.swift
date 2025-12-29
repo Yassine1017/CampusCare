@@ -39,6 +39,7 @@ class LoginViewController: UIViewController {
     }
 
     // MARK: - Actions
+
     @IBAction func loginButtonTapped(_ sender: UIButton) {
 
         guard let email = txtEmail.text?.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -65,19 +66,24 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            self.updateUserInFirestore(user: authUser)
+            self.handleSuccessfulLogin(user: authUser)
         }
     }
 
-    // MARK: - Firestore Update + Admin Check
-    private func updateUserInFirestore(user: FirebaseAuth.User) {
+    // ✅ Register button enabled – no alert, no crash
+    @IBAction func registerButtonTapped(_ sender: UIButton) {
+        // Intentionally left empty
+        // Will be connected to SignUpViewController later
+    }
+
+    // MARK: - Handle Login Success
+    private func handleSuccessfulLogin(user: FirebaseAuth.User) {
 
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(user.uid)
 
         let email = user.email ?? ""
 
-        // Extract first & last name from displayName
         let displayName = (user.displayName ?? "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -90,18 +96,9 @@ class LoginViewController: UIViewController {
         userRef.getDocument { [weak self] snapshot, error in
             guard let self = self else { return }
 
-            if let error = error {
-                self.showAlert(title: "Error", message: error.localizedDescription)
-                return
-            }
-
-            let existingData = snapshot?.data()
-
-            // 🔑 Read role (do NOT change it here)
-            let role = existingData?["role"] as? String ?? "user"
-
-            // First login time (saved once)
-            let loginAt = existingData?["loginAt"] as? Timestamp ?? now
+            let data = snapshot?.data()
+            let role = data?["role"] as? String ?? "user"
+            let loginAt = data?["loginAt"] as? Timestamp ?? now
 
             let dataToSave: [String: Any] = [
                 "email": email,
@@ -111,19 +108,10 @@ class LoginViewController: UIViewController {
                 "lastLogin": now
             ]
 
-            userRef.setData(dataToSave, merge: true) { error in
-                if let error = error {
-                    self.showAlert(title: "Error", message: error.localizedDescription)
-                    return
-                }
-
-                // ✅ Admin / User check
-                let message: String
-                if role == "admin" {
-                    message = "Login successful. Welcome Admin!"
-                } else {
-                    message = "Login successful. Welcome!"
-                }
+            userRef.setData(dataToSave, merge: true) { _ in
+                let message = role == "admin"
+                    ? "Login successful. Welcome Admin!"
+                    : "Login successful. Welcome!"
 
                 self.showAlert(title: "Success", message: message)
             }
@@ -141,4 +129,3 @@ class LoginViewController: UIViewController {
         present(alert, animated: true)
     }
 }
-
