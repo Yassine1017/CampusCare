@@ -8,6 +8,9 @@ xcuserdata/
 ## Obj-C/Swift specific
 *.hmap
 
+# macOS
+.DS_Store
+
 ## App packaging
 *.ipa
 *.dSYM.zip
@@ -60,3 +63,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+
