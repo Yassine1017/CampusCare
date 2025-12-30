@@ -73,4 +73,9 @@ class FeedBackRating: UIViewController {
             })
             present(alert, animated: true)
         }
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "RepairRequestSystem", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RepairRequestSystem")
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
