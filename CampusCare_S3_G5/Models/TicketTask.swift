@@ -5,8 +5,6 @@
 //  Created by BP-36-201-17 on 08/12/2025.
 //
 
-
-
 struct TicketTask: Identifiable, Codable {
     let id: String
     let title: String
