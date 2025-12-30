@@ -24,4 +24,36 @@ class RoleSelectionViewController: UIViewController {
             self.present(feedbackListVC, animated: true, completion: nil)
         }
     }
+    @IBAction func feedbackStatsTapped(_ sender: UIButton) {
+        // 1. Load the storyboard named "FeedbackStats"
+        let storyboard = UIStoryboard(name: "FeedbackStats", bundle: nil)
+        
+        // 2. Instantiate the first screen (The Entry Point)
+        if let statsVC = storyboard.instantiateInitialViewController() {
+            
+            // 3. Set presentation style (Full Screen looks best for dashboards)
+            statsVC.modalPresentationStyle = .fullScreen
+            
+            // 4. Show the screen
+            self.present(statsVC, animated: true, completion: nil)
+        } else {
+            print("Error: Could not find the initial view controller in FeedbackStats.storyboard")
+        }
+    }
+    @IBAction func technicianPerformanceTapped(_ sender: UIButton) {
+        // 1. Point to the specific storyboard file name
+        let storyboard = UIStoryboard(name: "TechnincanPerformance", bundle: nil)
+        
+        // 2. Instantiate the initial view controller (the one with the arrow)
+        if let performanceVC = storyboard.instantiateInitialViewController() {
+            
+            // 3. Set the presentation style
+            performanceVC.modalPresentationStyle = .fullScreen
+            
+            // 4. Present the screen
+            self.present(performanceVC, animated: true, completion: nil)
+        } else {
+            print("Error: Check if 'Is Initial View Controller' is checked in TechnincanPerformance.storyboard")
+        }
+    }
 }

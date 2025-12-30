@@ -155,6 +155,24 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Tech"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0hp-qk-ypf">
+                                <rect key="frame" x="127" y="595" width="139" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="FeedBackStats"/>
+                                <connections>
+                                    <action selector="feedbackStatsTapped:" destination="6BW-bC-FNG" eventType="touchUpInside" id="gLg-Qi-b1S"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H3N-CS-7C5">
+                                <rect key="frame" x="91" y="721" width="197" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="technincaperformance"/>
+                                <connections>
+                                    <action selector="technicianPerformanceTapped:" destination="6BW-bC-FNG" eventType="touchUpInside" id="5HE-ca-IAg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Tfu-3V-bMf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
