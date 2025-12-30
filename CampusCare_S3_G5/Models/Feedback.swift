@@ -7,8 +7,8 @@
 
 import Foundation
 import FirebaseFirestore
-
 struct yFeedback: Identifiable, Codable {
+
 
     // Firestore document ID
     var id: String
@@ -31,5 +31,3 @@ struct yFeedback: Identifiable, Codable {
     // Date
     let createdAt: Timestamp
 }
-
-

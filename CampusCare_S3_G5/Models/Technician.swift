@@ -30,6 +30,3 @@ struct Technician: Identifiable, Codable {
 
 }
 
-
-
-
