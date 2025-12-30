@@ -2,9 +2,9 @@ import UIKit
 
 class TicketTableViewCell: UITableViewCell {
 
-    private let idLabel = UILabel()
+    private let issueLabel = UILabel()
+    private let locationLabel = UILabel()
     private let statusLabel = UILabel()
-    private let descriptionLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -19,34 +19,37 @@ class TicketTableViewCell: UITableViewCell {
     private func setupUI() {
         selectionStyle = .none
 
-        [idLabel, statusLabel, descriptionLabel].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
-        }
+        issueLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        issueLabel.numberOfLines = 2
 
-        idLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        locationLabel.font = .systemFont(ofSize: 14)
+        locationLabel.textColor = .secondaryLabel
+
         statusLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        descriptionLabel.font = .systemFont(ofSize: 16)
-        descriptionLabel.numberOfLines = 2
+
+        let stack = UIStackView(arrangedSubviews: [
+            issueLabel,
+            locationLabel,
+            statusLabel
+        ])
+        stack.axis = .vertical
+        stack.spacing = 6
+        stack.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(stack)
 
         NSLayoutConstraint.activate([
-            idLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            idLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-
-            statusLabel.topAnchor.constraint(equalTo: idLabel.topAnchor),
-            statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
-            descriptionLabel.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: idLabel.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: statusLabel.trailingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
+            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
         ])
     }
 
     func configure(with ticket: Ticket) {
-        idLabel.text = "Ticket ID: \(ticket.id.prefix(8))"
-        descriptionLabel.text = ticket.description
-        statusLabel.text = ticket.status.rawValue
+        issueLabel.text = "Issue: \(ticket.issue)"
+        locationLabel.text = "Location: \(ticket.location)"
+        statusLabel.text = "Status: \(ticket.status.rawValue)"
         statusLabel.textColor = ticket.status.color
     }
 }
