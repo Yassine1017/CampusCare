@@ -1,5 +1,7 @@
 // Models/Ticket.swift
+
 import UIKit
+import FirebaseFirestore
 import Foundation
 
 struct Ticket: Identifiable, Codable{
