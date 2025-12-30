@@ -6,14 +6,25 @@
 //
 
 import UIKit
+<<<<<<< HEAD
 import FirebaseCore
+=======
+import Firebase
+import FirebaseCore
+import FirebaseAuth
+
+>>>>>>> origin/DevBranch
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+
+
 
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+<<<<<<< HEAD
         // Override point for customization after application launch.
         FirebaseApp.configure()
         let navAppearance = UINavigationBarAppearance()
@@ -23,11 +34,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         
+=======
+
+        
+        // 1. Configure Firebase only once (with safety check)
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
+
+        // 2. Setup Navigation Appearance
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithOpaqueBackground()
+        navAppearance.backgroundColor = .systemBlue
+        navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+
+>>>>>>> origin/DevBranch
         let navBar = UINavigationBar.appearance()
         navBar.standardAppearance = navAppearance
         navBar.scrollEdgeAppearance = navAppearance
         navBar.compactAppearance = navAppearance
         navBar.tintColor = .white
+<<<<<<< HEAD
+=======
+
+        // 3. Handle Authentication
+        if Auth.auth().currentUser == nil {
+            Auth.auth().signInAnonymously { authResult, error in
+                if let error = error {
+                    print("Error signing in anonymously: \(error.localizedDescription)")
+                }
+            }
+        }
+
+
+>>>>>>> origin/DevBranch
         return true
     }
 
