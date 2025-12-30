@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Feedback: Identifiable, Codable {
+struct yFeedback: Identifiable, Codable {
 
     // Firestore document ID
     var id: String
