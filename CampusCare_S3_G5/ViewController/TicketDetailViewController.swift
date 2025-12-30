@@ -97,9 +97,18 @@ class TicketDetailViewController: UIViewController {
 
                 self.technicians = snapshot?.documents.compactMap { doc in
                     let data = doc.data()
-                    guard let name = data["name"] as? String else { return nil }
-                    return (id: doc.documentID, name: name)
+
+                    guard
+                        let firstName = data["firstName"] as? String,
+                        let lastName = data["lastName"] as? String
+                    else {
+                        return nil
+                    }
+
+                    let fullName = "\(firstName) \(lastName)"
+                    return (id: doc.documentID, name: fullName)
                 } ?? []
+
 
                 if self.technicians.isEmpty {
                     print("No technicians found")

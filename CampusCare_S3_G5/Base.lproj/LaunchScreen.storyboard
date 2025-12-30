@@ -30,14 +30,6 @@
             </objects>
             <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
         </scene>
-        <!--AdminDashboard-->
-        <scene sceneID="V3P-E7-0Dt">
-            <objects>
-                <viewControllerPlaceholder storyboardName="AdminDashboard" id="UBt-bq-Vm9" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="o87-we-Jp5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="598" y="353"/>
-        </scene>
     </scenes>
     <resources>
         <image name="ChatGPT Image Dec 3, 2025, 01_16_16 PM" width="1024" height="1024"/>
