@@ -1,101 +1,86 @@
 import UIKit
 import FirebaseFirestore
 
-class AdminRequestTableViewController: UITableViewController, UISearchBarDelegate {
+class AdminTicketTableViewController: UITableViewController, UISearchBarDelegate {
 
-    // MARK: - IBOutlet
-    // Only SearchBar should be connected (non-repeating content)
-    @IBOutlet weak var SearchBar: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar!
 
-    // MARK: - Data
-    private var requests: [[String: Any]] = []
-    private var filteredRequests: [[String: Any]] = []
+    private var tickets: [Ticket] = []
+    private var filteredTickets: [Ticket] = []
 
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Requests"
+        title = "Maintenance Tickets"
 
-        SearchBar.delegate = self
+        searchBar.delegate = self
         tableView.tableFooterView = UIView()
 
-        loadRequestsFromFirebase()
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120
+
+        loadTickets()
     }
 
-    // MARK: - Firebase
-    private func loadRequestsFromFirebase() {
-        let db = Firestore.firestore()
-
-        db.collection("maintenanceTickets")
+    private func loadTickets() {
+        Firestore.firestore()
+            .collection("maintenanceTickets")
             .addSnapshotListener { [weak self] snapshot, error in
-
-                guard let self = self else { return }
+                guard let self else { return }
 
                 if let error = error {
                     print("Firestore error:", error)
                     return
                 }
 
-                guard let documents = snapshot?.documents else { return }
+                self.tickets = snapshot?.documents.compactMap {
+                    Ticket(firestoreData: $0.data(), documentID: $0.documentID)
+                } ?? []
 
-                // Store raw Firestore data (no FirestoreSwift)
-                self.requests = documents.map { doc in
-                    var data = doc.data()
-                    data["id"] = doc.documentID
-                    return data
+                self.filteredTickets = self.tickets.sorted {
+                    $0.dateCommenced > $1.dateCommenced
                 }
 
-                self.filteredRequests = self.requests
                 self.tableView.reloadData()
             }
     }
 
-    // MARK: - TableView DataSource
+    // MARK: - TableView
+
     override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
-        return filteredRequests.count
+        filteredTickets.count
     }
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(
-            withIdentifier: "ContentRequestCell",
+            withIdentifier: "TicketCell",
             for: indexPath
-        )
+        ) as! TicketTableViewCell
 
-        let request = filteredRequests[indexPath.row]
-
-        // Basic display (cell UI handles labels internally if custom)
-        cell.textLabel?.text = request["description"] as? String ?? "No Description"
-        cell.detailTextLabel?.text = request["status"] as? String ?? "-"
-
+        cell.configure(with: filteredTickets[indexPath.row])
         return cell
     }
 
-    // MARK: - TableView Delegate
-    override func tableView(_ tableView: UITableView,
-                            didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
+    // MARK: - Search
 
-    // MARK: - Search Bar
-    func searchBar(_ searchBar: UISearchBar,
-                   textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange text: String) {
+        let text = text.lowercased()
 
-        if searchText.isEmpty {
-            filteredRequests = requests
-        } else {
-            filteredRequests = requests.filter {
-                let description = ($0["description"] as? String ?? "").lowercased()
-                let id = $0["id"] as? String ?? ""
-
-                return description.contains(searchText.lowercased()) ||
-                       id.contains(searchText)
+        filteredTickets = text.isEmpty
+            ? tickets
+            : tickets.filter {
+                $0.description.lowercased().contains(text) ||
+                $0.status.rawValue.lowercased().contains(text) ||
+                $0.id.lowercased().contains(text)
             }
-        }
 
         tableView.reloadData()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

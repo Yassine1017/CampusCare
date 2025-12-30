@@ -31,5 +31,3 @@ struct Feedback: Identifiable, Codable {
     // Date
     let createdAt: Timestamp
 }
-
-

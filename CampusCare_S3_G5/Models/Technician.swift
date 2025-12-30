@@ -25,9 +25,6 @@ struct Technician: Identifiable, Codable {
     let phone: String?
 
     // Dates
-    let createdAt: Timestamp
+    //let createdAt: Timestamp
+
 }
-
-
-
-
