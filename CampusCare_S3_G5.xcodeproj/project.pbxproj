@@ -24,7 +24,9 @@
 		50E9D5922EE03B70002F20C4 /* Exceptions for "CampusCare_S3_G5" folder in "CampusCare_S3_G5" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Controllers/SceneDelegate.swift,
 				Info.plist,
+				Views/ForgotPasswordViewController.swift,
 			);
 			target = 50E9D57F2EE03B6F002F20C4 /* CampusCare_S3_G5 */;
 		};
