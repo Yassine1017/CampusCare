@@ -32,47 +32,54 @@ class FeedBackRating: UIViewController {
 
     let db = Firestore.firestore()
 
-        @IBAction func submitPressed(_ sender: UIButton) {
-            let userComment = reviewTextView.text ?? ""
+    @IBAction func submitPressed(_ sender: UIButton) {
+        let userComment = reviewTextView.text ?? ""
+        
+        // 1. Create the data dictionary for Firebase
+        let feedbackData: [String: Any] = [
+            "rating": currentRating,
+            "comment": userComment,
+            "date": Timestamp(date: Date()), // Saves the exact time
+            "userId": "User123" // You can replace this later with a real user ID
+        ]
+        
+        // 2. Save it to a collection named "feedbacks" in Firestore
+        db.collection("feedbacks").addDocument(data: feedbackData) { error in
             
-            // 1. Create the data dictionary for Firebase
-            let feedbackData: [String: Any] = [
-                "rating": currentRating,
-                "comment": userComment,
-                "date": Timestamp(date: Date()), // Saves the exact time
-                "userId": "User123" // You can replace this later with a real user ID
-            ]
-            
-            // 2. Save it to a collection named "feedbacks" in Firestore
-            db.collection("feedbacks").addDocument(data: feedbackData) { error in
+            if let error = error {
+                // If something goes wrong (e.g., no internet)
+                print("Error saving feedback: \(error)")
+                self.showAlert(title: "Error", message: "Could not save feedback.")
+            } else {
+                // 3. Success! Also save locally so the list updates instantly
+                print("Feedback successfully saved to Cloud!")
                 
-                if let error = error {
-                    // If something goes wrong (e.g., no internet)
-                    print("Error saving feedback: \(error)")
-                    self.showAlert(title: "Error", message: "Could not save feedback.")
-                } else {
-                    // 3. Success! Also save locally so the list updates instantly
-                    print("Feedback successfully saved to Cloud!")
-                    
-                    // Keep this line so your local list updates instantly while offline/online
-                    let newReview = Review(rating: self.currentRating, comment: userComment)
-                    FeedbackManager.shared.allReviews.insert(newReview, at: 0)
-                    
-                    self.showAlert(title: "Success", message: "Feedback sent to database!")
-                }
+                let newReview = Review(rating: self.currentRating, comment: userComment)
+                FeedbackManager.shared.allReviews.insert(newReview, at: 0)
+                
+                self.showAlert(title: "Success", message: "Feedback sent to database!")
             }
         }
+    }
         
-        // Helper function to show alerts easily
-        func showAlert(title: String, message: String) {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                if title == "Success" {
-                    self.dismiss(animated: true)
+    // Helper function to show alerts easily
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            if title == "Success" {
+                // --- NAVIGATION START ---
+                // This manually loads the RepairRequestSystem storyboard and shows it
+                let storyboard = UIStoryboard(name: "RepairRequestSystem", bundle: nil)
+                if let vc = storyboard.instantiateInitialViewController() {
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true, completion: nil)
                 }
-            })
-            present(alert, animated: true)
-        }
+                // --- NAVIGATION END ---
+            }
+        })
+        present(alert, animated: true)
+    }
+
     @IBAction func cancelButtonTapped(_ sender: Any) {
         let storyboard = UIStoryboard(name: "RepairRequestSystem", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "RepairRequestSystem")
