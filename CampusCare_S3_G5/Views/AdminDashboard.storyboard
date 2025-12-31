@@ -34,47 +34,65 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ChatGPT Image Dec 3, 2025, 01_16_16 PM" translatesAutoresizingMaskIntoConstraints="NO" id="VnJ-Sg-5Ch">
-                                <rect key="frame" x="0.0" y="152" width="393" height="321"/>
+                                <rect key="frame" x="0.0" y="151" width="393" height="321"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVn-aP-kn9">
-                                <rect key="frame" x="16" y="455" width="361" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="View Tickets"/>
-                                <connections>
-                                    <action selector="viewRequestsTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="UTN-Um-6xu"/>
-                                    <segue destination="v2p-tI-Duq" kind="show" id="N8Y-Ls-o0P"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z1s-X9-j5h">
-                                <rect key="frame" x="16" y="516" width="361" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="View Technician Preformance"/>
-                                <connections>
-                                    <action selector="viewPerformanceTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="FPe-Bi-xag"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9h-ua-POg">
-                                <rect key="frame" x="16" y="577" width="361" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Manage Technician Account"/>
-                                <connections>
-                                    <action selector="manageTechnicianTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="QMI-2G-WRR"/>
-                                    <segue destination="vAc-Ap-hYw" kind="show" id="jgy-tg-gDL"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-G4-Lfy">
+                                <rect key="frame" x="66" y="337" width="270" height="200"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVn-aP-kn9">
+                                        <rect key="frame" x="75" y="0.0" width="120" height="38.333333333333336"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="gray" title="View Tickets"/>
+                                        <connections>
+                                            <action selector="viewRequestsTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="UTN-Um-6xu"/>
+                                            <segue destination="v2p-tI-Duq" kind="show" id="N8Y-Ls-o0P"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z1s-X9-j5h">
+                                        <rect key="frame" x="19.666666666666686" y="54" width="231" height="38.333333333333343"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="gray" title="Assign Technician to Ticket"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="tCf-3w-ffT">
+                                        <rect key="frame" x="10.666666666666671" y="107.66666666666667" width="248.66666666666663" height="38.333333333333329"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="gray" title="View Technician Preformance"/>
+                                        <connections>
+                                            <action selector="viewPerformanceTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="lEn-sA-bY1"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9h-ua-POg">
+                                        <rect key="frame" x="16" y="161.66666666666669" width="238" height="38.333333333333343"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="gray" title="Manage Technician Account"/>
+                                        <connections>
+                                            <action selector="manageTechnicianTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="QMI-2G-WRR"/>
+                                            <segue destination="vAc-Ap-hYw" kind="show" id="jgy-tg-gDL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="0eG-lg-j8O"/>
+                                    <constraint firstAttribute="width" constant="270" id="Rf5-Ih-ejc"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Fl4-u0-opX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Fl4-u0-opX" firstAttribute="bottom" secondItem="4uH-G4-Lfy" secondAttribute="bottom" constant="269" id="A0G-A9-iTx"/>
+                            <constraint firstItem="4uH-G4-Lfy" firstAttribute="top" secondItem="Fl4-u0-opX" secondAttribute="top" constant="169" id="Hqu-5j-tk5"/>
+                            <constraint firstItem="4uH-G4-Lfy" firstAttribute="leading" secondItem="Fl4-u0-opX" secondAttribute="leading" constant="66" id="m5o-FF-hOU"/>
+                            <constraint firstItem="Fl4-u0-opX" firstAttribute="trailing" secondItem="4uH-G4-Lfy" secondAttribute="trailing" constant="66" id="yrq-FW-Td4"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Hua-Lk-A3y"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZLt-XN-prE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="652.67175572519079" y="-413.38028169014086"/>
+            <point key="canvasLocation" x="652.2388059701492" y="-413.95881006864988"/>
         </scene>
         <!--Admin Ticket Table View Controller-->
         <scene sceneID="Vjk-l4-OXA">
