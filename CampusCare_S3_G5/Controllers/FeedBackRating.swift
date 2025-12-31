@@ -14,6 +14,7 @@ class FeedBackRating: UIViewController {
     
     weak var delegate: FeedbackDelegate?
     var currentRating: Int = 0
+    var ticketID: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,33 +34,27 @@ class FeedBackRating: UIViewController {
     let db = Firestore.firestore()
 
     @IBAction func submitPressed(_ sender: UIButton) {
-        let userComment = reviewTextView.text ?? ""
-        
-        // 1. Create the data dictionary for Firebase
-        let feedbackData: [String: Any] = [
-            "rating": currentRating,
-            "comment": userComment,
-            "date": Timestamp(date: Date()), // Saves the exact time
-            "userId": "User123" // You can replace this later with a real user ID
-        ]
-        
-        // 2. Save it to a collection named "feedbacks" in Firestore
-        db.collection("feedbacks").addDocument(data: feedbackData) { error in
-            
-            if let error = error {
-                // If something goes wrong (e.g., no internet)
-                print("Error saving feedback: \(error)")
-                self.showAlert(title: "Error", message: "Could not save feedback.")
-            } else {
-                // 3. Success! Also save locally so the list updates instantly
-                print("Feedback successfully saved to Cloud!")
+            guard let tID = ticketID else { return }
+            let userComment = reviewTextView.text ?? ""
                 
-                let newReview = Review(rating: self.currentRating, comment: userComment)
-                FeedbackManager.shared.allReviews.insert(newReview, at: 0)
+            let feedbackData: [String: Any] = [
+                "rating": currentRating,
+                "comment": userComment,
+                "date": Timestamp(date: Date()),
+                "ticketId": tID // Link feedback to this specific ticket
+            ]
                 
-                self.showAlert(title: "Success", message: "Feedback sent to database!")
+            // 1. Save feedback
+            db.collection("feedbacks").addDocument(data: feedbackData) { [weak self] error in
+                if error == nil {
+                    // 2. Mark the ticket as having feedback so it can't be done again
+                    self?.db.collection("tickets").document(tID).updateData([
+                        "hasFeedback": true
+                    ]) { _ in
+                        self?.showAlert(title: "Success", message: "Feedback sent to database!")
+                    }
+                }
             }
-        }
     }
         
     // Helper function to show alerts easily

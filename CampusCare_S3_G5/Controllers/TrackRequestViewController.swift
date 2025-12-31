@@ -87,15 +87,22 @@ class TrackRequestViewController: UIViewController {
         formatter.timeStyle = .short
         assignmentDateTextField.text = formatter.string(from: ticket.dateCommenced)
         
-        // ⭐ Show Add Feedback only when completed
-        addFeedbackButton.isHidden = (ticket.status != .completed)
+        // Show Add Feedback only when completed
+        let isCompleted = (ticket.status == .completed)
+                let alreadyHasFeedback = (ticket.hasFeedback ?? false)
+                
+                addFeedbackButton.isHidden = !(isCompleted && !alreadyHasFeedback)
     }
     
     // MARK: - Actions
     @IBAction func addFeedbackTapped(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "FeedBackRating", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "FeedBackRating")
-        navigationController?.pushViewController(vc, animated: true)
+                guard let vc = storyboard.instantiateViewController(withIdentifier: "FeedBackRating") as? FeedBackRating else { return }
+                
+                // Pass the ID to the feedback screen
+                vc.ticketID = self.request.id
+                
+                navigationController?.pushViewController(vc, animated: true)
     }
 }
 

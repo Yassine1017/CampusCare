@@ -18,6 +18,7 @@ struct Ticket: Identifiable, Codable{
     let assignedTo: String?
     let dueDate: Date
     var dateCompleted: Date?
+    var hasFeedback: Bool?
     var isEscalated: Bool = false
     var escalationReason: String?
     
