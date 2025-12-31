@@ -19,8 +19,9 @@ class DetailedRequestViewController: UIViewController {
     
     // MARK: - Properties
         var selectedTicket: Ticket?
-        let statusOptions = TicketStatus.allCases
-        
+        var statusOptions: [TicketStatus] {
+            return TicketStatus.allCases.filter { $0 != .new }
+        }
         // MARK: - Lifecycle
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -73,50 +74,49 @@ class DetailedRequestViewController: UIViewController {
         // MARK: - Status Update Logic
         private func showCompletionAlert(forRow row: Int) {
             let alert = UIAlertController(
-                title: "Confirm Completion",
-                message: "Are you sure you want to mark this ticket as Completed? This action will move it to the historical records.",
-                preferredStyle: .alert
-            )
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-                // Revert picker to original status if cancelled
-                if let index = self.statusOptions.firstIndex(of: self.selectedTicket?.status ?? .new) {
-                    self.statusPicker.selectRow(index, inComponent: 0, animated: true)
-                }
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
-                self.updateTicketStatus(to: self.statusOptions[row])
-            }))
-            
-            present(alert, animated: true)
+                    title: "Confirm Completion",
+                    message: "Are you sure you want to mark this request as completed? This will notify the user.",
+                    preferredStyle: .alert
+                )
+                
+                alert.addAction(UIAlertAction(title: "Complete", style: .default) { _ in
+                    // Call the update function with the completed status
+                    self.updateTicketStatus(to: .completed)
+                })
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                    // Revert the picker if they cancel
+                    if let currentStatus = self.selectedTicket?.status,
+                       let index = self.statusOptions.firstIndex(of: currentStatus) {
+                        self.statusPicker.selectRow(index, inComponent: 0, animated: true)
+                    }
+                })
+                
+                present(alert, animated: true)
         }
             
-    private func updateTicketStatus(to newStatus: TicketStatus) {
-        guard let ticket = selectedTicket else { return }
+    private func updateTicketStatus(to status: TicketStatus) {
+        guard let ticketID = selectedTicket?.id else { return }
         
         let db = Firestore.firestore()
-        let ticketRef = db.collection("tickets").document(ticket.id)
+        let ticketRef = db.collection("tickets").document(ticketID)
         
-        // Prepare the data to update
-        var updateData: [String: Any] = ["status": newStatus.rawValue]
+        // Prepare the update data
+        var updateData: [String: Any] = ["status": status.rawValue]
         
-        // If completed, we also record the completion timestamp
-        if newStatus == .completed {
+        // If completing, we also set a completion timestamp
+        if status == .completed {
             updateData["dateCompleted"] = Timestamp(date: Date())
         }
         
         ticketRef.updateData(updateData) { [weak self] error in
             if let error = error {
                 print("Error updating status: \(error.localizedDescription)")
-                // Optionally show an alert to the user here
+                self?.showAlert("Update Failed", error.localizedDescription)
             } else {
-                print("Successfully updated ticket \(ticket.id) to \(newStatus.rawValue)")
-                
-                // If the status is completed, go back to the dashboard
-                if newStatus == .completed {
-                    self?.navigationController?.popViewController(animated: true)
-                }
+                print("Status successfully updated to \(status.rawValue)")
+                // Update local model to match UI
+                self?.selectedTicket?.status = status
             }
         }
     }
@@ -150,11 +150,21 @@ class DetailedRequestViewController: UIViewController {
         
         func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
             let selectedStatus = statusOptions[row]
-            
-            if selectedStatus == .completed {
-                showCompletionAlert(forRow: row)
-            } else {
-                updateTicketStatus(to: selectedStatus)
-            }
+                
+                if selectedStatus == .completed {
+                    // Trigger the confirmation alert
+                    showCompletionAlert(forRow: row)
+                } else {
+                    // Standard update for other statuses
+                    updateTicketStatus(to: selectedStatus)
+                }
         }
+        // MARK: - Helpers
+        private func showAlert(_ title: String, _ message: String) {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+        
+        
 }

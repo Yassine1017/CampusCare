@@ -36,24 +36,21 @@ class StatisticsViewController: UIViewController {
     private func updateUI() {
 
         // 1. Technician identity (from User model)
-        if let user = user, user.role == .technician {
-            technicianNameAndIDLabel.text =
-                "\(user.firstName) \(user.lastName) (#\(user.id))"
+            if let user = user, user.role == .technician {
+                // Refactored: Removed (#\(user.id)) as requested
+                technicianNameAndIDLabel.text = "\(user.firstName) \(user.lastName)"
 
-            technicianPositionLabel.text =
-                user.specialization ?? "IT Technician"
-        } else {
-            // Fallback if user is nil or not a technician
-            technicianNameAndIDLabel.text = "Technician"
-            technicianPositionLabel.text = ""
-        }
+                technicianPositionLabel.text = user.specialization ?? "IT Technician"
+            } else {
+                technicianNameAndIDLabel.text = "Technician"
+                technicianPositionLabel.text = ""
+            }
 
-        // 2. Total completed tickets
-        let completedCount = tickets.filter { $0.status == .completed }.count
-        totalCompletedLabel.text = "\(completedCount)"
+            // 2. Total completed tickets
+            let completedCount = tickets.filter { $0.status == .completed }.count
+            totalCompletedLabel.text = "\(completedCount)"
 
-        // 3. Overall feedback (placeholder)
-        overallFeedbackLabel.text = "Mostly Positive"
+            overallFeedbackLabel.text = "Mostly Positive"
     }
 
     // MARK: - Navigation
@@ -61,11 +58,10 @@ class StatisticsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "showCompletedList",
-           let destinationVC = segue.destination as? CompletedRequestsViewController {
-
-            destinationVC.allTickets = tickets
-        }
-
+               let destinationVC = segue.destination as? CompletedRequestsViewController {
+                // Pass the ID from the User model
+                destinationVC.technicianID = self.user?.id
+            }
         if segue.identifier == "showEscalatedList",
            let destinationVC = segue.destination as? EscalatedRequestsViewController {
 

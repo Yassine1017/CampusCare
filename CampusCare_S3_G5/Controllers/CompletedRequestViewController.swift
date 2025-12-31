@@ -6,42 +6,87 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class CompletedRequestsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
     // This will be passed from the Statistics Page
-    var allTickets: [Ticket] = []
-    var completedTickets: [Ticket] = []
+    var technicianID: String?
+        
+        var allTickets: [Ticket] = []
+        var completedTickets: [Ticket] = []
+        
+        private let db = Firestore.firestore()
+        private var listener: ListenerRegistration?
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showCompletedDetail" {
+            guard let destinationVC = segue.destination as? DetailedCompletedViewController,
+                  let ticket = sender as? Ticket else {
+                print("DEBUG: Segue failed - could not cast destination or ticket")
+                return
+            }
+            
+            // This is the critical line: Injecting the ticket into the detail view
+            destinationVC.selectedTicket = ticket
+            print("DEBUG: Successfully passed ticket #\(ticket.id) to DetailedCompletedViewController")
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        filterData()
+                
+        print("DEBUG: technicianID is \(technicianID ?? "NIL")") // Check this in console
+                    
+            if let id = technicianID {
+                fetchCompletedTickets(for: id)
+            }
     }
+    deinit {
+            listener?.remove()
+        }
     
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
     }
     
-    private func filterData() {
-        // Hard-coded to only show completed
-        completedTickets = allTickets.filter { $0.status == .completed }
-        print("Completed View: Found \(completedTickets.count) tickets")
-        tableView.reloadData()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showCompletedDetail",
-           let destinationVC = segue.destination as? DetailedCompletedViewController,
-           let ticket = sender as? Ticket {
-            // This line MUST execute to pass the data
-            destinationVC.selectedTicket = ticket
-            print("DEBUG: Successfully passed ticket #\(ticket.id) to Detail View")
+    private func fetchCompletedTickets(for id: String) {
+        listener = db.collection("tickets")
+                .whereField("assignedTo", isEqualTo: id)
+                .whereField("status", isEqualTo: "Completed") // Ensure this matches DB case!
+                .addSnapshotListener { [weak self] querySnapshot, error in
+                    
+                    guard let self = self else { return }
+                    
+                    if let error = error {
+                        print("DEBUG: Firebase Error - \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let documents = querySnapshot?.documents else {
+                        print("DEBUG: No documents found")
+                        return
+                    }
+                    
+                    self.completedTickets = documents.compactMap { document -> Ticket? in
+                        do {
+                            return try document.data(as: Ticket.self)
+                        } catch {
+                            print("DEBUG: Decoding error for ticket \(document.documentID): \(error)")
+                            return nil
+                        }
+                    }
+                    
+                    print("DEBUG: Successfully loaded \(self.completedTickets.count) tickets")
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
         }
-    }
 
 }
 
@@ -53,18 +98,21 @@ extension CompletedRequestsViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TicketCell", for: indexPath) as? TicketCell else {
-            return UITableViewCell()
-        }
-        
-        let ticket = completedTickets[indexPath.row]
-        cell.configure(with: ticket)
-        
-        cell.onButtonTapped = { [weak self] in
-            self?.performSegue(withIdentifier: "showCompletedDetail", sender: ticket)
-        }
-        
-        return cell
+        print("DEBUG: Drawing row \(indexPath.row) for ticket #\(completedTickets[indexPath.row].id)")
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TicketCell", for: indexPath) as? TicketCell else {
+                print("DEBUG: Failed to cast cell to TicketCell. Check Storyboard Identity Inspector.")
+                return UITableViewCell()
+            }
+            
+            let ticket = completedTickets[indexPath.row]
+            cell.configure(with: ticket)
+            
+            cell.onButtonTapped = { [weak self] in
+                self?.performSegue(withIdentifier: "showCompletedDetail", sender: ticket)
+            }
+            
+            return cell
     }
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {

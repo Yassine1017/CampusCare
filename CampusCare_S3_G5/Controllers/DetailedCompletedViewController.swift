@@ -29,18 +29,29 @@ class DetailedCompletedViewController: UIViewController {
     private func configureUI() {
         guard let ticket = selectedTicket else { return }
 
-        // 1. Text View Content
-        descriptionTextView.text = ticket.description
+            // 1. Core Information
+            descriptionTextView.text = ticket.description
+            maintenanceIDLabel.text = "Maintenance ID: #\(ticket.id)"
+            
+            // 2. Dates
+            // Use formattedDate for the start date
+            dateStartedLabel.text = "Date Started: \(ticket.formattedDate)"
+            
+            // Check if a completion date exists in the model
+            if let completionDate = ticket.dateCompleted {
+                let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                formatter.timeStyle = .short
+                completedAtLabel.text = "Completed At: \(formatter.string(from: completionDate))"
+            } else {
+                completedAtLabel.text = "Completed At: N/A"
+            }
 
-        // 2. ID and Dates
-        maintenanceIDLabel.text = "Maintenance ID: #\(ticket.id)"
-        dateStartedLabel.text = "Date Started: \(ticket.formattedDate)"
-        
-        // Use a formatted string for completion date (placeholder if nil)
-        completedAtLabel.text = "Completed At: \(ticket.formattedDate)" // For now reusing start date
-
-        // 3. Priority and Feedback
-        priorityLevelLabel.text = "Priority Level: \(ticket.priority.rawValue.capitalized)"
-        userFeedbackLabel.text = "User Feedback: Pending..."
+            // 3. Metadata
+            priorityLevelLabel.text = "Priority Level: \(ticket.priority.rawValue.capitalized)"
+            priorityLevelLabel.textColor = ticket.priority.color
+            
+            // Placeholder for feedback which may be implemented later
+            userFeedbackLabel.text = "User Feedback: No feedback provided yet."
     }
 }
