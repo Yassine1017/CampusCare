@@ -70,25 +70,27 @@ class LoginViewController: UIViewController {
 
     private func routeUser(uid: String) {
         db.collection("users").document(uid).getDocument { snapshot, error in
-            if let error = error {
-                self.showAlert(title: "Error", message: error.localizedDescription)
-                return
-            }
+
+            print("🔑 AUTH UID:", uid)
+            print("📄 FIRESTORE DOC EXISTS:", snapshot?.exists ?? false)
+            print("📄 FIRESTORE DATA:", snapshot?.data() ?? [:])
 
             let role = snapshot?.data()?["role"] as? String ?? "user"
+            print("👤 ROLE USED:", role)
 
             DispatchQueue.main.async {
                 switch role {
                 case "technician":
-                    self.switchStoryboard(name: "Technician")
+                    self.switchStoryboard(name: "TechnicianUserPages")
                 case "admin":
-                    self.switchStoryboard(name: "Admin")
+                    self.switchStoryboard(name: "AdminDashboard")
                 default:
                     self.switchStoryboard(name: "RepairRequestSystem")
                 }
             }
         }
     }
+
 
     private func switchStoryboard(name: String) {
 

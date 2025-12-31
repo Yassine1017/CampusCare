@@ -32,6 +32,7 @@ class TechnicianTaskViewController: UIViewController {
             
             updateUI()
         }
+    
         
         // MARK: - Setup
         func setupSampleData() {
