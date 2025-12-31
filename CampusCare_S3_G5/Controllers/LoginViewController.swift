@@ -69,47 +69,48 @@ class LoginViewController: UIViewController {
     // MARK: - Role routing (UIKit way)
 
     private func routeUser(uid: String) {
-        db.collection("users").document(uid).getDocument { snapshot, error in
-
-            print("🔑 AUTH UID:", uid)
-            print("📄 FIRESTORE DOC EXISTS:", snapshot?.exists ?? false)
-            print("📄 FIRESTORE DATA:", snapshot?.data() ?? [:])
-
-            let role = snapshot?.data()?["role"] as? String ?? "user"
-            print("👤 ROLE USED:", role)
-
-            DispatchQueue.main.async {
-                switch role {
-                case "technician":
-                    self.switchStoryboard(name: "TechnicianUserPages")
-                case "admin":
-                    self.switchStoryboard(name: "AdminDashboard")
-                default:
-                    self.switchStoryboard(name: "RepairRequestSystem")
+        // 1. Fetch the document using the User model
+            db.collection("users").document(uid).getDocument(as: User.self) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let loggedInUser):
+                    DispatchQueue.main.async {
+                        // 2. Pass the decoded user object to the storyboard switcher
+                        self.switchStoryboard(name: self.getStoryboardName(for: loggedInUser.role), user: loggedInUser)
+                    }
+                case .failure(let error):
+                    print("Decoding Error: \(error)")
+                    self.showAlert(title: "Error", message: "User profile mismatch.")
                 }
             }
-        }
     }
 
-
-    private func switchStoryboard(name: String) {
-
-        guard
-            let sceneDelegate = view.window?.windowScene?.delegate as? SceneDelegate,
-            let window = sceneDelegate.window
-        else {
-            print("❌ Could not get SceneDelegate window")
-            return
+    // Helper to determine storyboard name based on role
+    private func getStoryboardName(for role: UserRole) -> String {
+        switch role {
+        case .technician: return "TechnicianUserPages"
+        case .admin: return "AdminDashboard"
+        case .user: return "RepairRequestSystem"
         }
+    }
+    private func switchStoryboard(name: String, user: User) {
+        guard let window = view.window?.windowScene?.delegate as? SceneDelegate,
+              let windowRef = window.window else { return }
 
         let storyboard = UIStoryboard(name: name, bundle: nil)
+        let initialVC = storyboard.instantiateInitialViewController()
 
-        guard let vc = storyboard.instantiateInitialViewController() else {
-            fatalError("Storyboard \(name) has no initial view controller")
+        // 3. Inject the User object so TechnicianTaskViewController uses live data
+        if let nav = initialVC as? UINavigationController,
+           let techVC = nav.viewControllers.first as? TechnicianTaskViewController {
+            techVC.user = user
+        } else if let techVC = initialVC as? TechnicianTaskViewController {
+            techVC.user = user
         }
 
-        window.rootViewController = vc
-        window.makeKeyAndVisible()
+        windowRef.rootViewController = initialVC
+        windowRef.makeKeyAndVisible()
     }
 
 

@@ -17,20 +17,51 @@ class TechnicianTaskViewController: UIViewController {
     @IBOutlet weak var tasksInProgressLabel: UILabel!
     @IBOutlet weak var highPriTaskLabel: UILabel!
     // MARK: - Properties
-        // Refactored: Use User model instead of Technician
         var user: User?
         var tickets: [Ticket] = []
-        
+        private var listener: ListenerRegistration? // Store the listener to stop it when done
+        private let db = Firestore.firestore()
         // MARK: - Lifecycle
         override func viewDidLoad() {
             super.viewDidLoad()
-            
-            // Only use sample data if no user was passed from Login
-            if user == nil {
-                setupSampleData()
-            }
-            
-            updateUI()
+                    
+                    // Only fetch if a user was passed from Login
+                    if let technicianID = user?.id {
+                        fetchTechnicianTickets(technicianID: technicianID)
+                    } else {
+                        print("No technician user found, showing sample data")
+                        setupSampleData()
+                        updateUI()
+                    }
+        }
+    deinit {
+            listener?.remove()
+        }
+    
+    // MARK: - Firestore Integration
+        func fetchTechnicianTickets(technicianID: String) {
+            // We query the 'tickets' collection for documents where 'assignedTo' matches this ID
+            listener = db.collection("tickets")
+                .whereField("assignedTo", isEqualTo: technicianID)
+                .addSnapshotListener { [weak self] querySnapshot, error in
+                    
+                    guard let self = self else { return }
+                    
+                    if let error = error {
+                        print("Error fetching tickets: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    // Map Firestore documents to your Ticket model
+                    self.tickets = querySnapshot?.documents.compactMap { document -> Ticket? in
+                        try? document.data(as: Ticket.self)
+                    } ?? []
+                    
+                    // Update the dashboard UI with live data
+                    DispatchQueue.main.async {
+                        self.updateUI()
+                    }
+                }
         }
     
         
