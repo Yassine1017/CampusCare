@@ -30,7 +30,8 @@ class ManageTechniciansViewController: UIViewController {
     // MARK: - Firestore
     private func loadTechnicians() {
         Firestore.firestore()
-            .collection("technicians")
+            .collection("users")                              
+            .whereField("role", isEqualTo: "technician")
             .addSnapshotListener { [weak self] snapshot, error in
                 guard let self = self else { return }
 
@@ -54,7 +55,6 @@ class ManageTechniciansViewController: UIViewController {
                     return (id: doc.documentID, name: fullName, email: email)
                 } ?? []
 
-
                 self.filteredTechnicians = self.technicians
                 self.tableView.reloadData()
             }
@@ -63,7 +63,7 @@ class ManageTechniciansViewController: UIViewController {
     // MARK: - Actions
     @IBAction func createButtonTapped(_ sender: UIButton) {
         print("Create New Technician tapped")
-        // Create screen later
+        // Navigation handled elsewhere
     }
 }
 

@@ -143,8 +143,7 @@ admins manage repairs efficiently.</string>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Register"/>
                                 <connections>
-                                    <action selector="registerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rkH-4i-Svb"/>
-                                    <segue destination="sDs-E7-gID" kind="show" id="gRf-wU-Wsp"/>
+                                    <segue destination="sDs-E7-gID" kind="show" identifier="showSignUp" id="gRf-wU-Wsp"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Liy-rt-SVW">

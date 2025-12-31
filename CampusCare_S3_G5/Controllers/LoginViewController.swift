@@ -119,5 +119,10 @@ class LoginViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+    
+    @IBAction func registerButtonTapped(_ sender: UIButton) {
+        // This performs the segue to the Sign Up screen
+        performSegue(withIdentifier: "showSignUp", sender: self)
+    }
 }
 
