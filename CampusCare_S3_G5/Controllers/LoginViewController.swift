@@ -15,19 +15,17 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var txtEmail: UITextField!
 
+    private let db = Firestore.firestore()
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Configure email text field
         txtEmail.keyboardType = .emailAddress
         txtEmail.autocapitalizationType = .none
         txtEmail.autocorrectionType = .no
-
-        // Secure password entry
         passwordTextField.isSecureTextEntry = true
 
-        // Dismiss keyboard when tapping outside
         let tapGesture = UITapGestureRecognizer(
             target: self,
             action: #selector(dismissKeyboard)
@@ -44,7 +42,6 @@ class LoginViewController: UIViewController {
     // MARK: - Actions
     @IBAction func loginButtonTapped(_ sender: UIButton) {
 
-        // Validate input
         guard let email = txtEmail.text?.trimmingCharacters(in: .whitespacesAndNewlines),
               !email.isEmpty,
               let password = passwordTextField.text,
@@ -55,8 +52,7 @@ class LoginViewController: UIViewController {
 
         loginButton.isEnabled = false
 
-        // Firebase Authentication login
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] _, error in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             guard let self = self else { return }
             self.loginButton.isEnabled = true
 
@@ -65,78 +61,59 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            guard let authUser = Auth.auth().currentUser else {
-                self.showAlert(title: "Error", message: "User not found.")
+            guard let uid = result?.user.uid else { return }
+            self.routeUser(uid: uid)
+        }
+    }
+
+    // MARK: - Role routing (UIKit way)
+
+    private func routeUser(uid: String) {
+        db.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                self.showAlert(title: "Error", message: error.localizedDescription)
                 return
             }
 
-            self.handleSuccessfulLogin(user: authUser)
-        }
-    }
+            let role = snapshot?.data()?["role"] as? String ?? "user"
 
-    // Register button (to be connected later)
-    @IBAction func registerButtonTapped(_ sender: UIButton) {
-        // Intentionally left empty
-    }
-
-    // MARK: - Handle Login Success
-    private func handleSuccessfulLogin(user: FirebaseAuth.User) {
-
-        let db = Firestore.firestore()
-        let userRef = db.collection("users").document(user.uid)
-
-        let email = user.email ?? ""
-
-        // Extract first and last name from display name
-        let displayName = (user.displayName ?? "")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-
-        let nameParts = displayName.split(separator: " ")
-        let firstName = nameParts.first.map(String.init) ?? "User"
-        let lastName = nameParts.dropFirst().joined(separator: " ")
-
-        let now = Timestamp(date: Date())
-
-        // Fetch existing user document
-        userRef.getDocument { [weak self] snapshot, error in
-            guard let self = self else { return }
-
-            let data = snapshot?.data()
-
-            // Read role from Firestore or default to "user"
-            let role = data?["role"] as? String ?? "user"
-
-            // Preserve first login time if it exists
-            let loginAt = data?["loginAt"] as? Timestamp ?? now
-
-            // Data to save/update in Firestore
-            let dataToSave: [String: Any] = [
-                "email": email,
-                "firstName": firstName,
-                "lastName": lastName,
-                "role": role,         
-                "loginAt": loginAt,
-                "lastLogin": now
-            ]
-
-            // Save data with merge to avoid overwriting existing fields
-            userRef.setData(dataToSave, merge: true) { _ in
-                let message = role == "admin"
-                    ? "Login successful. Welcome Admin!"
-                    : "Login successful. Welcome!"
-
-                self.showAlert(title: "Success", message: message)
+            DispatchQueue.main.async {
+                switch role {
+                case "technician":
+                    self.switchStoryboard(name: "Technician")
+                case "admin":
+                    self.switchStoryboard(name: "Admin")
+                default:
+                    self.switchStoryboard(name: "RepairRequestSystem")
+                }
             }
         }
     }
 
+    private func switchStoryboard(name: String) {
+
+        guard
+            let sceneDelegate = view.window?.windowScene?.delegate as? SceneDelegate,
+            let window = sceneDelegate.window
+        else {
+            print("❌ Could not get SceneDelegate window")
+            return
+        }
+
+        let storyboard = UIStoryboard(name: name, bundle: nil)
+
+        guard let vc = storyboard.instantiateInitialViewController() else {
+            fatalError("Storyboard \(name) has no initial view controller")
+        }
+
+        window.rootViewController = vc
+        window.makeKeyAndVisible()
+    }
+
+
     // MARK: - Alert
     private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }

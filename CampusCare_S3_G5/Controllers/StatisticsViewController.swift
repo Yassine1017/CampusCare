@@ -17,40 +17,59 @@ class StatisticsViewController: UIViewController {
     @IBOutlet weak var overallFeedbackLabel: UILabel!
     
     // MARK: - Properties
-        // Change this from 'technician' to 'user'
-        var user: User?
-        var tickets: [Ticket] = []
 
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            setupUI()
+    /// Logged-in user (technician role expected)
+    var user: User?
+
+    /// Tickets assigned to the technician
+    var tickets: [Ticket] = []
+
+    // MARK: - Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateUI()
+    }
+
+    // MARK: - UI Updates
+
+    private func updateUI() {
+
+        // 1. Technician identity (from User model)
+        if let user = user, user.role == .technician {
+            technicianNameAndIDLabel.text =
+                "\(user.firstName) \(user.lastName) (#\(user.id))"
+
+            technicianPositionLabel.text =
+                user.specialization ?? "IT Technician"
+        } else {
+            // Fallback if user is nil or not a technician
+            technicianNameAndIDLabel.text = "Technician"
+            technicianPositionLabel.text = ""
         }
 
-        private func setupUI() {
-            // 1. Update Profile Info using the new User model
-            if let user = user {
-                technicianNameAndIDLabel.text = "\(user.firstName) \(user.lastName)"
-                technicianPositionLabel.text = user.specialization ?? "General Technician"
-            }
+        // 2. Total completed tickets
+        let completedCount = tickets.filter { $0.status == .completed }.count
+        totalCompletedLabel.text = "\(completedCount)"
 
-            // 2. Calculate Statistics from the tickets array
-            let completedCount = tickets.filter { $0.status == .completed }.count
-            let escalatedCount = tickets.filter { $0.isEscalated == true }.count
+        // 3. Overall feedback (placeholder)
+        overallFeedbackLabel.text = "Mostly Positive"
+    }
 
-            totalCompletedLabel.text = "\(completedCount)"
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.identifier == "showCompletedList",
+           let destinationVC = segue.destination as? CompletedRequestsViewController {
+
+            destinationVC.allTickets = tickets
         }
 
-        // MARK: - Navigation
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            // Ensure data is passed to the next filtered list views
-            if segue.identifier == "showCompletedList",
-               let destinationVC = segue.destination as? CompletedRequestsViewController {
-                destinationVC.allTickets = self.tickets
-            }
-            
-            if segue.identifier == "showEscalatedList",
-               let destinationVC = segue.destination as? EscalatedRequestsViewController {
-                destinationVC.allTickets = self.tickets
-            }
+        if segue.identifier == "showEscalatedList",
+           let destinationVC = segue.destination as? EscalatedRequestsViewController {
+
+            destinationVC.allTickets = tickets
         }
+    }
 }
