@@ -217,48 +217,72 @@
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nMw-f6-ga7">
-                                <rect key="frame" x="28" y="201" width="185" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gyc-MZ-STw">
-                                <rect key="frame" x="28" y="258" width="185" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Specialization" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Egv-uI-lZs">
-                                <rect key="frame" x="28" y="313" width="185" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mfb-XA-inV">
-                                <rect key="frame" x="28" y="366" width="185" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eDD-Np-ybt">
-                                <rect key="frame" x="121" y="503" width="161" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Create Technician"/>
-                                <connections>
-                                    <action selector="createButtonTapped:" destination="6VO-Eq-cvw" eventType="touchUpInside" id="xgf-YR-bDq"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Vu-B3-CBs">
-                                <rect key="frame" x="28" y="420" width="185" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="KMf-1n-hta">
+                                <rect key="frame" x="20" y="219.99999999999997" width="362" height="404.33333333333326"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nMw-f6-ga7">
+                                        <rect key="frame" x="40" y="0.0" width="282" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gyc-MZ-STw">
+                                        <rect key="frame" x="40" y="61" width="282" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Specialization" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Egv-uI-lZs">
+                                        <rect key="frame" x="40" y="122" width="282" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mfb-XA-inV">
+                                        <rect key="frame" x="40" y="183" width="282" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Vu-B3-CBs">
+                                        <rect key="frame" x="40" y="244" width="282" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tzV-FY-ahU" userLabel="Password Field">
+                                        <rect key="frame" x="40" y="305" width="282" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eDD-Np-ybt">
+                                        <rect key="frame" x="101.00000000000001" y="366" width="160.33333333333337" height="38.333333333333314"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Create Technician"/>
+                                        <connections>
+                                            <action selector="createButtonTapped:" destination="6VO-Eq-cvw" eventType="touchUpInside" id="xgf-YR-bDq"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="1Vu-B3-CBs" secondAttribute="trailing" constant="40" id="54Y-Gl-NTL"/>
+                                    <constraint firstItem="Egv-uI-lZs" firstAttribute="leading" secondItem="KMf-1n-hta" secondAttribute="leading" constant="40" id="Cro-nm-gek"/>
+                                    <constraint firstItem="1Vu-B3-CBs" firstAttribute="leading" secondItem="KMf-1n-hta" secondAttribute="leading" constant="40" id="GPY-WN-FIK"/>
+                                    <constraint firstItem="Mfb-XA-inV" firstAttribute="leading" secondItem="KMf-1n-hta" secondAttribute="leading" constant="40" id="MbH-lv-obW"/>
+                                    <constraint firstItem="tzV-FY-ahU" firstAttribute="leading" secondItem="KMf-1n-hta" secondAttribute="leading" constant="40" id="SnC-9S-ljO"/>
+                                    <constraint firstItem="gyc-MZ-STw" firstAttribute="leading" secondItem="KMf-1n-hta" secondAttribute="leading" constant="40" id="T7n-mx-4gI"/>
+                                    <constraint firstItem="nMw-f6-ga7" firstAttribute="leading" secondItem="KMf-1n-hta" secondAttribute="leading" constant="40" id="TcF-e4-5bo"/>
+                                    <constraint firstAttribute="height" constant="404.32999999999998" id="VzH-wH-ib3"/>
+                                    <constraint firstAttribute="trailing" secondItem="nMw-f6-ga7" secondAttribute="trailing" constant="40" id="X0t-Hc-vcF"/>
+                                    <constraint firstAttribute="trailing" secondItem="tzV-FY-ahU" secondAttribute="trailing" constant="40" id="ddn-v1-dlp"/>
+                                    <constraint firstAttribute="trailing" secondItem="Egv-uI-lZs" secondAttribute="trailing" constant="40" id="dpR-A0-m6x"/>
+                                    <constraint firstAttribute="trailing" secondItem="gyc-MZ-STw" secondAttribute="trailing" constant="40" id="pgc-ek-wWR"/>
+                                    <constraint firstAttribute="trailing" secondItem="Mfb-XA-inV" secondAttribute="trailing" constant="40" id="rpT-mm-3IE"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xZB-rU-eEu"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="KMf-1n-hta" firstAttribute="top" secondItem="xZB-rU-eEu" secondAttribute="top" constant="52" id="K6E-bP-ghx"/>
+                            <constraint firstItem="xZB-rU-eEu" firstAttribute="trailing" secondItem="KMf-1n-hta" secondAttribute="trailing" constant="20" id="L95-tY-Atv"/>
+                            <constraint firstItem="KMf-1n-hta" firstAttribute="leading" secondItem="xZB-rU-eEu" secondAttribute="leading" constant="20" id="jt0-PD-2i7"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ScB-xH-bA0"/>
                     <connections>
@@ -266,6 +290,7 @@
                         <outlet property="emailField" destination="Mfb-XA-inV" id="YYF-KR-Ebm"/>
                         <outlet property="firstNameField" destination="nMw-f6-ga7" id="6DG-pO-Pay"/>
                         <outlet property="lastNameField" destination="gyc-MZ-STw" id="bIB-FQ-ks8"/>
+                        <outlet property="passwordField" destination="tzV-FY-ahU" id="jH2-Nl-fh9"/>
                         <outlet property="phoneField" destination="1Vu-B3-CBs" id="gVM-9j-RJB"/>
                         <outlet property="specializationField" destination="Egv-uI-lZs" id="j1z-N3-bAj"/>
                     </connections>

@@ -11,6 +11,7 @@ class CreateTechnicianViewController: UIViewController {
     @IBOutlet weak var specializationField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
     @IBOutlet weak var firstNameField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,75 +23,69 @@ class CreateTechnicianViewController: UIViewController {
 
     @IBAction func createButtonTapped(_ sender: UIButton) {
 
-        guard
-            let firstName = firstNameField.text, !firstName.isEmpty,
-            let lastName = lastNameField.text, !lastName.isEmpty,
-            let specialization = specializationField.text, !specialization.isEmpty,
-            let email = emailField.text, !email.isEmpty
-        else {
-            showAlert("Missing Information",
-                      "All fields except phone are required.")
-            return
-        }
-
-        // 1. Generate temporary password
-        let tempPassword = UUID().uuidString.prefix(8)
-        let password = String(tempPassword)
-
-        // 2. Create Auth user
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-
-            if let error = error {
-                self.showAlert("Auth Error", error.localizedDescription)
+        // 1. Updated validation to include the passwordField
+            guard
+                let firstName = firstNameField.text, !firstName.isEmpty,
+                let lastName = lastNameField.text, !lastName.isEmpty,
+                let specialization = specializationField.text, !specialization.isEmpty,
+                let email = emailField.text, !email.isEmpty,
+                let password = passwordField.text, !password.isEmpty
+            else {
+                showAlert("Missing Information", "All fields including password are required.")
                 return
             }
 
-            guard let uid = authResult?.user.uid else {
-                self.showAlert("Error", "Failed to get user ID")
-                return
-            }
+            // 2. Create the user in Firebase Auth using the password from the IBOutlet
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
 
-            // 3. Save technician as USER in Firestore
-            let userData: [String: Any] = [
-                "firstName": firstName,
-                "lastName": lastName,
-                "email": email,
-                "role": "technician",              
-                "specialization": specialization,
-                "createdAt": Timestamp(date: Date()),
-                "lastLogin": NSNull()
-            ]
-
-            Firestore.firestore()
-                .collection("users")
-                .document(uid)
-                .setData(userData) { error in
-
-                    if let error = error {
-                        self.showAlert("Database Error", error.localizedDescription)
-                        return
-                    }
-
-                    // Send password reset email
-                    Auth.auth().sendPasswordReset(withEmail: email) { error in
-                        if let error = error {
-                            print("Email not sent:", error.localizedDescription)
-                        }
-                    }
-
-                    self.showAlert(
-                        "Technician Created",
-                        """
-                        Account created successfully.
-
-                        Login email sent to:
-                        \(email)
-                        """
-                    )
-
-                    self.navigationController?.popViewController(animated: true)
+                if let error = error {
+                    self.showAlert("Auth Error", error.localizedDescription)
+                    return
                 }
-        }
+
+                guard let uid = authResult?.user.uid else {
+                    self.showAlert("Error", "Failed to get user ID")
+                    return
+                }
+
+                // 3. Save technician data to Firestore
+                // Including "id" ensures compatibility with your User model
+                let userData: [String: Any] = [
+                    "id": uid,
+                    "firstName": firstName,
+                    "lastName": lastName,
+                    "email": email,
+                    "role": "technician",
+                    "specialization": specialization,
+                    "createdAt": Timestamp(date: Date()),
+                    "lastLogin": NSNull()
+                ]
+
+                Firestore.firestore()
+                    .collection("users")
+                    .document(uid)
+                    .setData(userData) { error in
+
+                        if let error = error {
+                            self.showAlert("Database Error", error.localizedDescription)
+                            return
+                        }
+
+                        // 4. Success handling
+                        let successMessage = """
+                        Technician account created successfully.
+                        
+                        Email: \(email)
+                        Password: \(password)
+                        """
+
+                        let alert = UIAlertController(title: "Success", message: successMessage, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                        self.present(alert, animated: true)
+                    }
+            }
     }
 
     private func showAlert(_ title: String, _ message: String) {
