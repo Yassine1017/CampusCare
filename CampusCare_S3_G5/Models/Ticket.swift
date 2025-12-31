@@ -8,7 +8,7 @@ struct Ticket: Identifiable, Codable{
     let id: String
     let title: String
     let dateCommenced: Date
-    let status: TicketStatus
+    var status: TicketStatus
     let priority: TicketPriority
     let tasks: [TicketTask]
     let location: String
@@ -17,6 +17,7 @@ struct Ticket: Identifiable, Codable{
     let description: String
     let assignedTo: String?
     let dueDate: Date
+    var dateCompleted: Date?
     var isEscalated: Bool = false
     var escalationReason: String?
     

@@ -8,22 +8,28 @@
 import Foundation
 import FirebaseFirestore
 
-struct User: Identifiable, Codable {
+enum UserRole: String, Codable {
+    case user = "user"
+    case technician = "technician"
+    case admin = "admin"
+}
 
+struct User: Identifiable, Codable {
     // Firestore document ID (Firebase Auth UID)
     var id: String
 
-    // Name
+    // Shared Name & Contact info
     let firstName: String
     let lastName: String
-
-    // Student details
     let email: String
-    let studentId: String?
 
-    // Optional contact info
-    let phone: String?
+    // Role-based Attribute
+    let role: UserRole
 
-    // Dates
+    // Technician specific (moved from Technician.swift)
+    let specialization: String?
+
+    // Metadata
     let createdAt: Timestamp
+    var lastLogin: Timestamp?
 }

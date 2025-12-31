@@ -17,47 +17,40 @@ class StatisticsViewController: UIViewController {
     @IBOutlet weak var overallFeedbackLabel: UILabel!
     
     // MARK: - Properties
-    var technician: Technician?
-    var tickets: [Ticket] = []
+        // Change this from 'technician' to 'user'
+        var user: User?
+        var tickets: [Ticket] = []
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateUI()
-    }
-    
-    private func updateUI() {
-        // 1. Display Technician Name and ID
-        if let tech = technician {
-            technicianNameAndIDLabel.text = "\(tech.firstName) \(tech.lastName) (#\(tech.id))"
-            // Display Position/Specialization
-            technicianPositionLabel.text = tech.specialization
-        } else {
-            // Fallback for placeholder
-            technicianNameAndIDLabel.text = "Unknown Technician"
-            technicianPositionLabel.text = "IT Technician"
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            setupUI()
         }
-        
-        // 2. Calculate Total Completed Requests
-        // This filters the ticket array for those with a status of .completed
-        let completedCount = tickets.filter { $0.status == .completed }.count
-        totalCompletedLabel.text = "\(completedCount)"
-        
-        // 3. Overall Feedback Placeholder
-        overallFeedbackLabel.text = "Mostly Positive"
-    }
-    
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showCompletedList",
-           let destinationVC = segue.destination as? CompletedRequestsViewController {
+        private func setupUI() {
+            // 1. Update Profile Info using the new User model
+            if let user = user {
+                technicianNameAndIDLabel.text = "\(user.firstName) \(user.lastName)"
+                technicianPositionLabel.text = user.specialization ?? "General Technician"
+            }
+
+            // 2. Calculate Statistics from the tickets array
+            let completedCount = tickets.filter { $0.status == .completed }.count
+            let escalatedCount = tickets.filter { $0.isEscalated == true }.count
+
+            totalCompletedLabel.text = "\(completedCount)"
+        }
+
+        // MARK: - Navigation
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            // Ensure data is passed to the next filtered list views
+            if segue.identifier == "showCompletedList",
+               let destinationVC = segue.destination as? CompletedRequestsViewController {
+                destinationVC.allTickets = self.tickets
+            }
             
-            // Pass the master list that came from the Home Page
-            destinationVC.allTickets = self.tickets
-            print("Passing \(self.tickets.count) tickets to Completed View")
+            if segue.identifier == "showEscalatedList",
+               let destinationVC = segue.destination as? EscalatedRequestsViewController {
+                destinationVC.allTickets = self.tickets
+            }
         }
-        if segue.identifier == "showEscalatedList",
-           let destinationVC = segue.destination as? EscalatedRequestsViewController {
-            destinationVC.allTickets = self.tickets
-        }
-    }
 }
