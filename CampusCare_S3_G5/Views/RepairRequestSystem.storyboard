@@ -300,6 +300,9 @@
                                         <buttonConfiguration key="configuration" style="filled" title="View My Feedbacks">
                                             <color key="baseBackgroundColor" systemColor="systemBlueColor"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <segue destination="T57-7W-wu4" kind="show" identifier="showMyFeedback" id="dPd-rg-D15"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -495,6 +498,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXG-dc-qXF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1705" y="437"/>
+        </scene>
+        <!--MyFeedBack-->
+        <scene sceneID="bHa-7H-ptB">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MyFeedBack" id="T57-7W-wu4" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="wo7-0l-IkX"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IDF-kq-qh8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2261" y="387"/>
         </scene>
     </scenes>
     <resources>

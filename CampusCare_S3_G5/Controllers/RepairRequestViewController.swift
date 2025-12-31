@@ -69,15 +69,22 @@ class RepairRequestViewController: UIViewController {
         tableView.layoutMargins = .zero
         tableView.contentInsetAdjustmentBehavior = .never
         
-        
-        
         listenForTickets()
     }
     
-    
-    
     deinit {
         listener?.remove()
+    }
+    
+    // MARK: - NEW: Navigation Logic
+    @objc private func viewFeedbackPressed() {
+        // This looks for the file MyFeedBack.storyboard
+        let storyboard = UIStoryboard(name: "MyFeedBack", bundle: nil)
+        
+        // This opens the screen marked as "Initial View Controller" in that file
+        if let feedbackVC = storyboard.instantiateInitialViewController() {
+            self.navigationController?.pushViewController(feedbackVC, animated: true)
+        }
     }
     
     // MARK: - Firestore Listener (NEW TICKETS DB)
@@ -144,10 +151,6 @@ class RepairRequestViewController: UIViewController {
             ?? segue.destination as? TrackRequestViewController
             vc?.request = ticket
         }
-        
-
-        
-
     }
     
     // MARK: - UI Setup
@@ -207,7 +210,6 @@ class RepairRequestViewController: UIViewController {
     private func setupNavigationItems() {
 
         // LEFT: Logo
-        // LEFT: Logo closer to title
         let logoImage = UIImage(named: "campus_logo")?
             .withRenderingMode(.alwaysTemplate)
 
@@ -239,97 +241,91 @@ class RepairRequestViewController: UIViewController {
         titleLabel.textAlignment = .center
         navigationItem.titleView = titleLabel
 
-        // RIGHT: Profile
-        /* let profileImage = UIImage(systemName: "person.circle.fill")
-        let profileButton = UIBarButtonItem(
-            image: profileImage,
+        // RIGHT: Added View My Feedback Button
+        let feedbackButton = UIBarButtonItem(
+            title: "View My Feedback",
             style: .plain,
             target: self,
-            action: #selector(profileTapped)
+            action: #selector(viewFeedbackPressed)
         )
-        profileButton.tintColor = .white
-        navigationItem.rightBarButtonItem = profileButton */
+        feedbackButton.tintColor = .white
+        navigationItem.rightBarButtonItem = feedbackButton
     }
-    
-    
-
-
 }
     
     
-    // MARK: - UITableView
-    extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSource {
+// MARK: - UITableView
+extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        filteredTickets.count
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        func tableView(_ tableView: UITableView,
-                       numberOfRowsInSection section: Int) -> Int {
-            filteredTickets.count
-        }
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "RequestCell",
+            for: indexPath
+        ) as! RequestTableViewCell
         
-        func tableView(_ tableView: UITableView,
-                       cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let ticket = filteredTickets[indexPath.row]
+        cell.configure(with: ticket)
+        
+        cell.actionHandler = { [weak self] action in
+            guard let self = self else { return }
+            self.selectedTicket = ticket
             
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: "RequestCell",
-                for: indexPath
-            ) as! RequestTableViewCell
-            
-            let ticket = filteredTickets[indexPath.row]
-            cell.configure(with: ticket)
-            
-            cell.actionHandler = { [weak self] action in
-                guard let self = self else { return }
-                self.selectedTicket = ticket
-                
-                switch action {
-                case .edit:
-                    self.performSegue(withIdentifier: "showEditRequest", sender: self)
-                case .view:
-                    self.performSegue(withIdentifier: "showTrackRequest", sender: self)
-                }
+            switch action {
+            case .edit:
+                self.performSegue(withIdentifier: "showEditRequest", sender: self)
+            case .view:
+                self.performSegue(withIdentifier: "showTrackRequest", sender: self)
             }
-            
-            return cell
         }
         
-        func tableView(_ tableView: UITableView,
-                       heightForRowAt indexPath: IndexPath) -> CGFloat {
-            44
-        }
+        return cell
     }
     
-    // MARK: - UIPickerView
-    extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-        
-        func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
-        
-        func pickerView(_ pickerView: UIPickerView,
-                        numberOfRowsInComponent component: Int) -> Int {
-            statusOptions.count
-        }
-        
-        func pickerView(_ pickerView: UIPickerView,
-                        titleForRow row: Int,
-                        forComponent component: Int) -> String? {
-            statusOptions[row]
-        }
-        
-        func pickerView(_ pickerView: UIPickerView,
-                        didSelectRow row: Int,
-                        inComponent component: Int) {
-            statusTextField.text = statusOptions[row]
-        }
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        44
     }
-    
-    // MARK: - Search Bar
-    extension RepairRequestViewController: UISearchBarDelegate {
-        
-        func searchBar(_ searchBar: UISearchBar,
-                       textDidChange searchText: String) {
-            applyFilters()
-        }
-        
-        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.resignFirstResponder()
-        }
-    }
+}
 
+// MARK: - UIPickerView
+extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
+    
+    func pickerView(_ pickerView: UIPickerView,
+                    numberOfRowsInComponent component: Int) -> Int {
+        statusOptions.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView,
+                    titleForRow row: Int,
+                    forComponent component: Int) -> String? {
+        statusOptions[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView,
+                    didSelectRow row: Int,
+                    inComponent component: Int) {
+        statusTextField.text = statusOptions[row]
+    }
+}
+
+// MARK: - Search Bar
+extension RepairRequestViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar,
+                   textDidChange searchText: String) {
+        applyFilters()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+}
