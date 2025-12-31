@@ -86,7 +86,7 @@ class TicketDetailViewController: UIViewController {
     
     private func fetchTechnicians() {
         Firestore.firestore()
-            .collection("technicians")
+            .collection("users").whereField("role", isEqualTo: "technician")
             .getDocuments { [weak self] snapshot, error in
                 guard let self else { return }
 
