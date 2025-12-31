@@ -38,7 +38,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-G4-Lfy">
-                                <rect key="frame" x="66" y="337" width="270" height="200"/>
+                                <rect key="frame" x="66" y="387" width="270" height="150.33333333333337"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVn-aP-kn9">
                                         <rect key="frame" x="75" y="0.0" width="120" height="38.333333333333336"/>
@@ -49,13 +49,8 @@
                                             <segue destination="v2p-tI-Duq" kind="show" id="N8Y-Ls-o0P"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z1s-X9-j5h">
-                                        <rect key="frame" x="19.666666666666686" y="54" width="231" height="38.333333333333343"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Assign Technician to Ticket"/>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="tCf-3w-ffT">
-                                        <rect key="frame" x="10.666666666666671" y="107.66666666666667" width="248.66666666666663" height="38.333333333333329"/>
+                                        <rect key="frame" x="10.666666666666671" y="56" width="248.66666666666663" height="38.333333333333343"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="View Technician Preformance"/>
@@ -64,7 +59,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9h-ua-POg">
-                                        <rect key="frame" x="16" y="161.66666666666669" width="238" height="38.333333333333343"/>
+                                        <rect key="frame" x="16" y="111.99999999999999" width="238" height="38.333333333333329"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Manage Technician Account"/>
                                         <connections>
@@ -74,7 +69,7 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="0eG-lg-j8O"/>
+                                    <constraint firstAttribute="height" constant="150" id="0eG-lg-j8O"/>
                                     <constraint firstAttribute="width" constant="270" id="Rf5-Ih-ejc"/>
                                 </constraints>
                             </stackView>
@@ -82,8 +77,8 @@
                         <viewLayoutGuide key="safeArea" id="Fl4-u0-opX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Fl4-u0-opX" firstAttribute="bottom" secondItem="4uH-G4-Lfy" secondAttribute="bottom" constant="269" id="A0G-A9-iTx"/>
-                            <constraint firstItem="4uH-G4-Lfy" firstAttribute="top" secondItem="Fl4-u0-opX" secondAttribute="top" constant="169" id="Hqu-5j-tk5"/>
+                            <constraint firstItem="Fl4-u0-opX" firstAttribute="bottom" secondItem="4uH-G4-Lfy" secondAttribute="bottom" constant="319" id="A0G-A9-iTx"/>
+                            <constraint firstItem="4uH-G4-Lfy" firstAttribute="top" secondItem="Fl4-u0-opX" secondAttribute="top" constant="219" id="Hqu-5j-tk5"/>
                             <constraint firstItem="4uH-G4-Lfy" firstAttribute="leading" secondItem="Fl4-u0-opX" secondAttribute="leading" constant="66" id="m5o-FF-hOU"/>
                             <constraint firstItem="Fl4-u0-opX" firstAttribute="trailing" secondItem="4uH-G4-Lfy" secondAttribute="trailing" constant="66" id="yrq-FW-Td4"/>
                         </constraints>
