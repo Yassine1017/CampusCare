@@ -127,11 +127,9 @@ class TrackRequestViewController: UIViewController {
             withIdentifier: "FeedBackRating"
         ) as? FeedBackRating else { return }
         
-        // Pass the Ticket ID
         vc.ticketID = self.request.id
         
-        // FIXED: Pass the technician's unique ID (assignedTo)
-        // This ensures the feedback is linked to the right person forever.
+        // ADD THIS LINE: It passes the tech's unique ID to the feedback screen
         vc.technicianID = self.request.assignedTo
         
         navigationController?.pushViewController(vc, animated: true)

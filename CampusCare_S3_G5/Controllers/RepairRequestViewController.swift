@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 class RepairRequestViewController: UIViewController {
     
@@ -250,10 +251,26 @@ class RepairRequestViewController: UIViewController {
         feedbackButton.tintColor = .white
         navigationItem.rightBarButtonItem = nil
     }
-}
+
+    // ✅ ADDED THIS FUNCTION INSIDE THE CLASS TO FIX THE ERROR
+    @IBAction func viewMyFeedbacksTapped(_ sender: UIButton) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {
+            print("Error: No user is logged in")
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "FeedbackStats", bundle: nil)
+        
+        if let statsVC = storyboard.instantiateViewController(withIdentifier: "FeedbackStatsVC") as? FeedbackStats {
+            statsVC.techID = currentUID
+            statsVC.techName = "My Feedbacks"
+            self.navigationController?.pushViewController(statsVC, animated: true)
+        }
+    }
+} // <--- THE CLASS ENDS HERE
     
     
-// MARK: - UITableView
+// MARK: - UITableView Extensions
 extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
@@ -293,7 +310,7 @@ extension RepairRequestViewController: UITableViewDelegate, UITableViewDataSourc
     }
 }
 
-// MARK: - UIPickerView
+// MARK: - UIPickerView Extension
 extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
@@ -316,7 +333,7 @@ extension RepairRequestViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
 }
 
-// MARK: - Search Bar
+// MARK: - Search Bar Extension
 extension RepairRequestViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar,

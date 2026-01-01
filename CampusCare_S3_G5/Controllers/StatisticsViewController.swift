@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class StatisticsViewController: UIViewController {
 
@@ -66,6 +67,20 @@ class StatisticsViewController: UIViewController {
            let destinationVC = segue.destination as? EscalatedRequestsViewController {
 
             destinationVC.allTickets = tickets
+        }
+    }
+    @IBAction func viewFeedbackTapped(_ sender: UIButton) {
+        guard let currentUID = Auth.auth().currentUser?.uid else {
+            print("Error: No technician is logged in")
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "FeedbackStats", bundle: nil)
+        
+        if let statsVC = storyboard.instantiateViewController(withIdentifier: "FeedbackStatsVC") as? FeedbackStats {
+            statsVC.techID = currentUID
+            statsVC.techName = "My Performance"
+            self.navigationController?.pushViewController(statsVC, animated: true)
         }
     }
 }

@@ -687,7 +687,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="View Feedback"/>
                                         <connections>
-                                            <segue destination="iRN-xB-HXW" kind="show" id="sVq-1M-PDs"/>
+                                            <action selector="viewFeedbackTapped:" destination="fFM-Wf-NFc" eventType="touchUpInside" id="Xp2-cE-2Yd"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -723,16 +723,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LVx-Vi-f2a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3801.4925373134324" y="-2.0594965675057209"/>
-        </scene>
-        <!--FeedbackStats-->
-        <scene sceneID="iKK-Rw-XSu">
-            <objects>
-                <viewControllerPlaceholder storyboardName="FeedbackStats" id="iRN-xB-HXW" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Aos-5x-Wci"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oKR-80-YQJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3980" y="380"/>
         </scene>
         <!--Completed Requests View Controller-->
         <scene sceneID="tqd-My-EIZ">
