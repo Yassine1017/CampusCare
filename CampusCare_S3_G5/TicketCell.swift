@@ -58,3 +58,4 @@ class TicketCell: UITableViewCell {
         onButtonTapped?()
     }
 }
+

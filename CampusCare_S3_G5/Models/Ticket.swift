@@ -21,6 +21,8 @@ struct Ticket: Identifiable, Codable{
     var hasFeedback: Bool?
     var isEscalated: Bool = false
     var escalationReason: String?
+    var escalatedAt:Timestamp?
+    var escalatedTo:String?
     
     // Computed properties
     var formattedDate: String {
@@ -28,6 +30,14 @@ struct Ticket: Identifiable, Codable{
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         return formatter.string(from: dateCommenced)
+    }
+    
+    var formattedEscalatedDate: String {
+        guard let escalatedAt = escalatedAt else { return "N/A" }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: escalatedAt.dateValue())
     }
     
     var tasksCount: Int {

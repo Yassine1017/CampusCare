@@ -666,24 +666,24 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="QDM-Mu-f3d">
                                 <rect key="frame" x="89.000000000000014" y="392" width="224.33333333333337" height="163"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rBt-hS-nKw">
-                                        <rect key="frame" x="0.0" y="0.0" width="224.33333333333334" height="38.333333333333336"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rBt-hS-nKw">
+                                        <rect key="frame" x="0.0" y="0.0" width="224.33333333333334" height="46.333333333333336"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="View Completed Requests"/>
                                         <connections>
                                             <segue destination="W5c-CW-y6n" kind="show" identifier="showCompletedList" id="xcX-DI-iio"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygs-TK-5bA">
-                                        <rect key="frame" x="0.0" y="62.333333333333314" width="224.33333333333334" height="38.333333333333343"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygs-TK-5bA">
+                                        <rect key="frame" x="0.0" y="70.333333333333314" width="224.33333333333334" height="34.333333333333343"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="View Escalated Requests"/>
                                         <connections>
-                                            <segue destination="wpR-aM-3fp" kind="show" id="fyN-aA-a5s"/>
+                                            <segue destination="wpR-aM-3fp" kind="show" identifier="showEscalatedRequests" id="fyN-aA-a5s"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gic-Ik-Cj9">
-                                        <rect key="frame" x="0.0" y="124.66666666666661" width="224.33333333333334" height="38.333333333333329"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gic-Ik-Cj9">
+                                        <rect key="frame" x="0.0" y="128.66666666666663" width="224.33333333333334" height="34.333333333333343"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="View Feedback"/>
                                         <connections>
@@ -977,7 +977,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gTH-cT-h3g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5146" y="-2"/>
+            <point key="canvasLocation" x="5249" y="-85"/>
         </scene>
         <!--Escalated Requests View Controller-->
         <scene sceneID="d5u-lO-G4Z">
@@ -1004,8 +1004,8 @@
                                     <constraint firstAttribute="height" constant="100" id="j88-mr-qAz"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="KhT-Yi-gSp">
-                                <rect key="frame" x="20" y="209" width="362" height="177"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="KhT-Yi-gSp">
+                                <rect key="frame" x="20" y="178" width="362" height="618"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="sectionIndexBackgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                 <prototypes>
@@ -1086,17 +1086,20 @@
                             <constraint firstItem="KhT-Yi-gSp" firstAttribute="leading" secondItem="kAb-ce-4rQ" secondAttribute="leading" constant="20" id="c2A-FS-kbG"/>
                             <constraint firstItem="Sz4-Zq-Zrs" firstAttribute="top" secondItem="7ZA-hv-BRv" secondAttribute="top" id="dhg-tE-bse"/>
                             <constraint firstItem="Sz4-Zq-Zrs" firstAttribute="leading" secondItem="7ZA-hv-BRv" secondAttribute="leading" id="ehH-lv-rhs"/>
+                            <constraint firstItem="kAb-ce-4rQ" firstAttribute="bottom" secondItem="KhT-Yi-gSp" secondAttribute="bottom" constant="10" id="gZi-wX-eMC"/>
                             <constraint firstAttribute="trailing" secondItem="Sz4-Zq-Zrs" secondAttribute="trailing" id="kYP-jh-ps9"/>
+                            <constraint firstItem="KhT-Yi-gSp" firstAttribute="top" secondItem="kAb-ce-4rQ" secondAttribute="top" constant="10" id="yb6-dK-0Z4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pNx-Na-bC1"/>
                     <connections>
                         <outlet property="tableView" destination="KhT-Yi-gSp" id="kba-bt-XbE"/>
+                        <segue destination="xxn-h7-V7S" kind="show" identifier="showEscalatedDetail" id="3lg-H5-b9R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ro-6m-QFo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5811" y="-2"/>
+            <point key="canvasLocation" x="5931" y="-25"/>
         </scene>
         <!--Detailed Escalated View Controller-->
         <scene sceneID="fzN-nz-bsq">
@@ -1214,10 +1217,19 @@
                             <constraint firstAttribute="trailing" secondItem="Mxi-Y2-Aq1" secondAttribute="trailing" id="hX8-qx-Goz"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="OzQ-S6-CUE"/>
+                    <connections>
+                        <outlet property="dateStartedLabel" destination="tau-4o-48C" id="tjl-bT-fky"/>
+                        <outlet property="descriptionTextView" destination="wHL-ng-GdJ" id="v63-b0-sQM"/>
+                        <outlet property="escalatedAtLabel" destination="ohy-iT-aCX" id="1KW-Uk-cKd"/>
+                        <outlet property="escalatedToLabel" destination="SFt-NG-dek" id="mSa-WC-AzF"/>
+                        <outlet property="maintenanceIDLabel" destination="qed-rL-Oj6" id="qjm-T9-4Q6"/>
+                        <outlet property="statedReasonLabel" destination="gcd-gM-rrb" id="QDj-el-z3H"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DpU-9z-N4e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6477" y="-2"/>
+            <point key="canvasLocation" x="6710" y="5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zYs-ei-3Dj">

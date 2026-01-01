@@ -63,10 +63,7 @@ class StatisticsViewController: UIViewController {
                 // Pass the ID from the User model
                 destinationVC.technicianID = self.user?.id
             }
-        if segue.identifier == "showEscalatedList",
-           let destinationVC = segue.destination as? EscalatedRequestsViewController {
-
-            destinationVC.allTickets = tickets
+        if segue.identifier == "showEscalatedRequests"{
         }
     }
     @IBAction func viewFeedbackTapped(_ sender: UIButton) {

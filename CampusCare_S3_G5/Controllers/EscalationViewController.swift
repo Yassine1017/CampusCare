@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class EscalationViewController: UIViewController {
 
@@ -66,17 +67,40 @@ class EscalationViewController: UIViewController {
             message: "Are you sure you want to submit this escalation request for Ticket #\(ticketID ?? "")?",
             preferredStyle: .alert
         )
-        
-        alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { _ in
-            print("Escalation Submitted: \(self.reasoningTextView.text!)")
-            // Future logic: Send to Firebase here
-            self.navigationController?.popToRootViewController(animated: true)
+
+        alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { [weak self] _ in
+            guard let self = self,
+                  let ticketID = self.ticketID else {
+                return
+            }
+
+            let db = Firestore.firestore()
+
+            db.collection("tickets")
+                .document(ticketID)
+                .updateData([
+                    "isEscalated": true,
+                    "escalationReason": self.reasoningTextView.text ?? "",
+                    "escalatedAt": Timestamp(date: Date())
+                ]) { error in
+                    if let error = error {
+                        print("DEBUG: Failed to escalate ticket: \(error.localizedDescription)")
+                        return
+                    }
+
+                    print("DEBUG: Ticket \(ticketID) successfully escalated")
+
+                    DispatchQueue.main.async {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
         }))
-        
+
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
+
         present(alert, animated: true)
     }
+
     
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

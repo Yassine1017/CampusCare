@@ -37,11 +37,11 @@
                                 <rect key="frame" x="0.0" y="151" width="393" height="321"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-G4-Lfy">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-G4-Lfy">
                                 <rect key="frame" x="66" y="387" width="270" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVn-aP-kn9">
-                                        <rect key="frame" x="75" y="0.0" width="120" height="38.333333333333336"/>
+                                        <rect key="frame" x="75" y="0.0" width="120" height="1"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="View Tickets"/>
                                         <connections>
@@ -50,7 +50,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="tCf-3w-ffT">
-                                        <rect key="frame" x="10.666666666666671" y="56" width="248.66666666666663" height="38.333333333333343"/>
+                                        <rect key="frame" x="10.666666666666671" y="17.000000000000004" width="248.66666666666663" height="34.333333333333343"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="View Technician Preformance"/>
@@ -60,12 +60,20 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9h-ua-POg">
-                                        <rect key="frame" x="16" y="94.333333333333314" width="238" height="5.6666666666666714"/>
+                                        <rect key="frame" x="16" y="67.333333333333314" width="238" height="1"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Manage Technician Account"/>
                                         <connections>
                                             <action selector="manageTechnicianTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="QMI-2G-WRR"/>
                                             <segue destination="vAc-Ap-hYw" kind="show" id="jgy-tg-gDL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ey-aJ-FBU">
+                                        <rect key="frame" x="95" y="84.333333333333314" width="80.333333333333314" height="15.666666666666671"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="gray" title="LogOut"/>
+                                        <connections>
+                                            <action selector="signOutTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="8PY-qg-ztP"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -118,10 +126,10 @@
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TicketCell" id="y3U-jt-i4s" customClass="TicketTableViewCell" customModule="CampusCare_S3_G5" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="94" width="402" height="47.666667938232422"/>
+                                <rect key="frame" x="0.0" y="94" width="402" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y3U-jt-i4s" id="Ucp-hw-vCp">
-                                    <rect key="frame" x="0.0" y="0.0" width="402" height="47.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="402" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -245,37 +253,37 @@
                                 <rect key="frame" x="20" y="219.99999999999997" width="362" height="404.33333333333326"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nMw-f6-ga7">
-                                        <rect key="frame" x="40" y="0.0" width="282" height="34"/>
+                                        <rect key="frame" x="40" y="0.0" width="282" height="38"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gyc-MZ-STw">
-                                        <rect key="frame" x="40" y="61" width="282" height="34"/>
+                                        <rect key="frame" x="40" y="65" width="282" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Specialization" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Egv-uI-lZs">
-                                        <rect key="frame" x="40" y="122" width="282" height="34"/>
+                                        <rect key="frame" x="40" y="126" width="282" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mfb-XA-inV">
-                                        <rect key="frame" x="40" y="183" width="282" height="34"/>
+                                        <rect key="frame" x="40" y="187" width="282" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Vu-B3-CBs">
-                                        <rect key="frame" x="40" y="244" width="282" height="34"/>
+                                        <rect key="frame" x="40" y="248" width="282" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tzV-FY-ahU" userLabel="Password Field">
-                                        <rect key="frame" x="40" y="305" width="282" height="34"/>
+                                        <rect key="frame" x="40" y="309" width="282" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eDD-Np-ybt">
-                                        <rect key="frame" x="101.00000000000001" y="366" width="160.33333333333337" height="38.333333333333314"/>
+                                        <rect key="frame" x="101.00000000000001" y="370" width="160.33333333333337" height="34.333333333333314"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Create Technician"/>
                                         <connections>

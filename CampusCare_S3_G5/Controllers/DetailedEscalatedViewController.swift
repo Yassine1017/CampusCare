@@ -33,18 +33,16 @@ class DetailedEscalatedViewController: UIViewController {
         // 1. Description
         descriptionTextView.text = ticket.description
 
-        // 2. Identification and Timeline
-        maintenanceIDLabel.text = "Maintenance ID: #\(ticket.id)"
+        // 2. Identification & Timeline
+        maintenanceIDLabel.text = "Maintenance ID: #\(ticket.id ?? "N/A")"
         dateStartedLabel.text = "Date Started: \(ticket.formattedDate)"
-        
-        // Using the ticket's start date as a placeholder for Escalated At
-        escalatedAtLabel.text = "Escalated At: \(ticket.formattedDate)"
 
-        // 3. Escalation Details
-        // escalatedTo is currently a placeholder; you can add a field to your Ticket struct later
-        escalatedToLabel.text = "Escalated To: Senior Supervisor"
-        
-        // Stated Reason uses the escalationReason property from the Ticket model
-        statedReasonLabel.text = "Stated Reason: \(ticket.escalationReason ?? "No reason provided.")"
+        // 3. Escalation Info
+        escalatedAtLabel.text = "Escalated At: \(ticket.formattedEscalatedDate)"
+
+        escalatedToLabel.text = "Escalated To: \(ticket.escalatedTo ?? "Not Assigned")"
+
+        statedReasonLabel.text =
+            "Stated Reason: \(ticket.escalationReason ?? "No reason provided.")"
     }
 }
