@@ -70,20 +70,26 @@ class LoginViewController: UIViewController {
 
     private func routeUser(uid: String) {
         // 1. Fetch the document using the User model
-            db.collection("users").document(uid).getDocument(as: User.self) { [weak self] result in
-                guard let self = self else { return }
+        db.collection("users").document(uid).getDocument(as: User.self) { [weak self] result in
+            guard let self = self else { return }
                 
-                switch result {
-                case .success(let loggedInUser):
-                    DispatchQueue.main.async {
-                        // 2. Pass the decoded user object to the storyboard switcher
+            switch result {
+            case .success(let loggedInUser):
+                DispatchQueue.main.async {
+                    // --- ADDED WELCOME ALERT HERE ---
+                    let alert = UIAlertController(title: "Success", message: "Welcome back!", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                        // 2. Pass the decoded user object to the storyboard switcher after alert is dismissed
                         self.switchStoryboard(name: self.getStoryboardName(for: loggedInUser.role), user: loggedInUser)
-                    }
-                case .failure(let error):
-                    print("Decoding Error: \(error)")
-                    self.showAlert(title: "Error", message: "User profile mismatch.")
+                    })
+                    self.present(alert, animated: true)
+                    // --- END OF ALERT ---
                 }
+            case .failure(let error):
+                print("Decoding Error: \(error)")
+                self.showAlert(title: "Error", message: "User profile mismatch.")
             }
+        }
     }
 
     // Helper to determine storyboard name based on role
@@ -94,6 +100,7 @@ class LoginViewController: UIViewController {
         case .user: return "RepairRequestSystem"
         }
     }
+
     private func switchStoryboard(name: String, user: User) {
         guard let window = view.window?.windowScene?.delegate as? SceneDelegate,
               let windowRef = window.window else { return }
@@ -126,4 +133,3 @@ class LoginViewController: UIViewController {
         performSegue(withIdentifier: "showSignUp", sender: self)
     }
 }
-
