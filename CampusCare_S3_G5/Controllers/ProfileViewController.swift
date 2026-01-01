@@ -23,11 +23,9 @@ class ProfileViewController: UIViewController {
     func setupUI() {
         navigationItem.title = "Profile"
 
-        // Email always comes from Firebase Auth
         emailTextField.isUserInteractionEnabled = false
         emailTextField.textColor = .secondaryLabel
 
-        // Optional hint
         phoneTextField.placeholder = "Optional"
 
         editProfileButton.layer.cornerRadius = 10
@@ -41,8 +39,6 @@ class ProfileViewController: UIViewController {
         }
 
         let uid = user.uid
-
-        // Email from Firebase Auth
         emailTextField.text = user.email
 
         db.collection("users").document(uid).getDocument { snapshot, error in
@@ -57,40 +53,78 @@ class ProfileViewController: UIViewController {
             }
 
             DispatchQueue.main.async {
-                self.nameTextField.text = data["fullName"] as? String
-                self.phoneTextField.text = data["phone"] as? String ?? ""
+                let firstName = data["firstName"] as? String ?? ""
+                let lastName  = data["lastName"] as? String ?? ""
+
+                self.nameTextField.text =
+                    "\(firstName) \(lastName)"
+                        .trimmingCharacters(in: .whitespaces)
+
+                self.phoneTextField.text =
+                    data["phone"] as? String ?? ""
             }
         }
     }
 
-
-    // MARK: - Edit Profile
+    // MARK: - Edit Profile (FIXED)
     @IBAction func editProfileTapped(_ sender: UIButton) {
 
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
 
-        guard let name = nameTextField.text, !name.isEmpty else {
-            showAlert(title: "Missing Name", message: "Please enter your name")
+        guard
+            let fullName = nameTextField.text, !fullName.isEmpty,
+            let email = emailTextField.text, !email.isEmpty
+        else {
+            showAlert(title: "Missing Info", message: "Name and email are required.")
             return
         }
 
+        // Split name into first & last
+        let parts = fullName.split(separator: " ", maxSplits: 1)
+        let firstName = String(parts.first ?? "")
+        let lastName = parts.count > 1 ? String(parts[1]) : ""
+
         var updatedData: [String: Any] = [
-            "name": name
+            "firstName": firstName,
+            "lastName": lastName
         ]
 
-        // Phone is optional
+        // Phone optional
         if let phone = phoneTextField.text, !phone.isEmpty {
             updatedData["phone"] = phone
         } else {
-            // Remove phone field if empty
             updatedData["phone"] = FieldValue.delete()
         }
 
-        db.collection("users").document(uid).updateData(updatedData) { error in
+        // Update email in Firebase Auth if changed
+        if email != user.email {
+            user.sendEmailVerification(beforeUpdatingEmail: email) { error in
+                if let error = error {
+                    self.showAlert(title: "Error", message: error.localizedDescription)
+                    return
+                }
+
+                self.showAlert(
+                    title: "Verify Your Email",
+                    message: "A verification email was sent to \(email). Your email will be updated after verification."
+                )
+
+                // Update Firestore immediately (name / phone)
+                self.updateUserFirestore(uid: uid, data: updatedData)
+            }
+        }
+ else {
+            updateUserFirestore(uid: uid, data: updatedData)
+        }
+    }
+
+    // MARK: - Firestore Update Helper
+    private func updateUserFirestore(uid: String, data: [String: Any]) {
+
+        db.collection("users").document(uid).updateData(data) { error in
             if let error = error {
-                print("Error updating profile:", error)
-                self.showAlert(title: "Error", message: "Could not update profile")
+                self.showAlert(title: "Error", message: error.localizedDescription)
                 return
             }
 
@@ -99,7 +133,7 @@ class ProfileViewController: UIViewController {
     }
 
     // MARK: - Alert Helper
-    func showAlert(title: String, message: String) {
+    private func showAlert(title: String, message: String) {
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -108,4 +142,30 @@ class ProfileViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+    @IBAction func signOutTapped(_ sender: UIButton) {
+
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            showAlert(title: "Error", message: "Failed to sign out.")
+            return
+        }
+
+        // Go back to Login screen
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        guard let loginVC = storyboard.instantiateViewController(
+            withIdentifier: "LoginViewController"
+        ) as? UIViewController else {
+            return
+        }
+
+        let nav = UINavigationController(rootViewController: loginVC)
+        nav.modalPresentationStyle = .fullScreen
+
+        // Replace root view controller (no back navigation)
+        view.window?.rootViewController = nav
+        view.window?.makeKeyAndVisible()
+    }
+
 }

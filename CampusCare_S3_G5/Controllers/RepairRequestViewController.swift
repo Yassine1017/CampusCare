@@ -46,7 +46,6 @@ class RepairRequestViewController: UIViewController {
         setupNavigationAppearance()
         setupTableHeader()
         setupNavigationItems()
-        //setupProfileNavigationTitle()//
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -249,7 +248,7 @@ class RepairRequestViewController: UIViewController {
             action: #selector(viewFeedbackPressed)
         )
         feedbackButton.tintColor = .white
-        navigationItem.rightBarButtonItem = feedbackButton
+        navigationItem.rightBarButtonItem = nil
     }
 }
     

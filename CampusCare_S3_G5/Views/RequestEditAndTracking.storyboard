@@ -38,7 +38,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SIR-4h-Tl1">
-                                                        <rect key="frame" x="0.0" y="32" width="361" height="13.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="32" width="361" height="17.666666666666671"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="361" id="pbh-dG-ORM"/>
                                                         </constraints>
@@ -46,80 +46,80 @@
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IN4-xR-Whb">
-                                                        <rect key="frame" x="0.0" y="61.666666666666664" width="361" height="20.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="65.666666666666657" width="361" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="92v-9O-9ZA">
-                                                        <rect key="frame" x="0.0" y="98" width="361" height="34"/>
+                                                        <rect key="frame" x="0.0" y="102" width="361" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbT-9D-YSs">
-                                                        <rect key="frame" x="0.0" y="148" width="361" height="20.333333333333343"/>
+                                                        <rect key="frame" x="0.0" y="152" width="361" height="20.333333333333343"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DCn-Wg-XA6">
-                                                        <rect key="frame" x="0.0" y="184.33333333333331" width="361" height="34"/>
+                                                        <rect key="frame" x="0.0" y="188.33333333333331" width="361" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Assignment Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW6-bN-pyE">
-                                                        <rect key="frame" x="0.0" y="234.33333333333331" width="361" height="20.333333333333343"/>
+                                                        <rect key="frame" x="0.0" y="238.33333333333331" width="361" height="20.333333333333314"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wXF-AD-GBd">
-                                                        <rect key="frame" x="0.0" y="270.66666666666669" width="361" height="34"/>
+                                                        <rect key="frame" x="0.0" y="274.66666666666669" width="361" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Technician" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyo-C8-5MT">
-                                                        <rect key="frame" x="0.0" y="320.66666666666669" width="361" height="20.333333333333314"/>
+                                                        <rect key="frame" x="0.0" y="324.66666666666669" width="361" height="20.333333333333314"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Technician Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c1v-6I-Yes">
-                                                        <rect key="frame" x="0.0" y="357" width="361" height="34"/>
+                                                        <rect key="frame" x="0.0" y="361" width="361" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Technician ID: " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oei-Xp-D1w">
-                                                        <rect key="frame" x="0.0" y="407" width="361" height="34"/>
+                                                        <rect key="frame" x="0.0" y="411" width="361" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qff-GW-luz">
-                                                        <rect key="frame" x="0.0" y="457" width="361" height="20.333333333333314"/>
+                                                        <rect key="frame" x="0.0" y="461" width="361" height="20.333333333333314"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="K2b-Qt-00b">
-                                                        <rect key="frame" x="0.0" y="493.33333333333337" width="361" height="34"/>
+                                                        <rect key="frame" x="0.0" y="497.33333333333337" width="361" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Technician Notes " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zBf-ss-gvJ">
-                                                        <rect key="frame" x="0.0" y="543.33333333333337" width="361" height="20.333333333333371"/>
+                                                        <rect key="frame" x="0.0" y="547.33333333333337" width="361" height="20.333333333333371"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="9KP-Ue-ViR">
-                                                        <rect key="frame" x="0.0" y="579.66666666666663" width="361" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="583.66666666666663" width="361" height="0.0"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <color key="textColor" systemColor="labelColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckq-Af-hZV">
-                                                        <rect key="frame" x="0.0" y="595.66666666666663" width="361" height="38.333333333333371"/>
+                                                        <rect key="frame" x="0.0" y="599.66666666666663" width="361" height="34.333333333333371"/>
                                                         <color key="tintColor" systemColor="systemGreenColor"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="filled" title="Add Feedback"/>
@@ -165,6 +165,8 @@
                         <outlet property="descriptionTextField" destination="92v-9O-9ZA" id="er9-sB-el5"/>
                         <outlet property="requestIdTextField" destination="SIR-4h-Tl1" id="6Qq-a3-RWf"/>
                         <outlet property="statusTextField" destination="DCn-Wg-XA6" id="s9M-l7-q4c"/>
+                        <outlet property="technicianIdTextField" destination="oei-Xp-D1w" id="A2b-bd-8YK"/>
+                        <outlet property="technicianNameTextField" destination="c1v-6I-Yes" id="Tu0-Bv-aW4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oIv-xD-SvD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

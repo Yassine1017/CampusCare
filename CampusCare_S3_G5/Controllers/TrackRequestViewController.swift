@@ -1,10 +1,3 @@
-//
-//  TrackRequestViewController.swift
-//  CampusCare_S3_G5
-//
-//  Created by ESKY on 20/12/2025.
-//
-
 import UIKit
 import FirebaseFirestore
 
@@ -20,6 +13,8 @@ class TrackRequestViewController: UIViewController {
     @IBOutlet weak var assignmentDateTextField: UITextField!
     @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var addFeedbackButton: UIButton!
+    @IBOutlet weak var technicianNameTextField: UITextField!
+    @IBOutlet weak var technicianIdTextField: UITextField!
     
     // MARK: - Firebase
     private let db = Firestore.firestore()
@@ -29,16 +24,16 @@ class TrackRequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Safety guard
         guard request != nil else {
             assertionFailure("TrackRequestViewController.request was nil")
             navigationController?.popViewController(animated: true)
             return
         }
         
-        // Initial UI state
         addFeedbackButton.isHidden = true
         descriptionTextField.isUserInteractionEnabled = false
+        technicianNameTextField.isUserInteractionEnabled = false
+        technicianIdTextField.isUserInteractionEnabled = false
         
         startListening()
     }
@@ -71,6 +66,7 @@ class TrackRequestViewController: UIViewController {
                 }
                 
                 self.updateUI(with: ticket)
+                self.loadTechnician(for: ticket)   // ✅ ADDED
             }
     }
     
@@ -87,22 +83,50 @@ class TrackRequestViewController: UIViewController {
         formatter.timeStyle = .short
         assignmentDateTextField.text = formatter.string(from: ticket.dateCommenced)
         
-        // Show Add Feedback only when completed
         let isCompleted = (ticket.status == .completed)
-                let alreadyHasFeedback = (ticket.hasFeedback ?? false)
+        let alreadyHasFeedback = (ticket.hasFeedback ?? false)
+        addFeedbackButton.isHidden = !(isCompleted && !alreadyHasFeedback)
+    }
+    
+    // MARK: - Technician Loader (NEW, SMALL)
+    private func loadTechnician(for ticket: Ticket) {
+        
+        guard let technicianId = ticket.assignedTo else {
+            technicianNameTextField.text = "Not Assigned"
+            technicianIdTextField.text = "—"
+            return
+        }
+        
+        db.collection("users")
+            .document(technicianId)
+            .getDocument { [weak self] snapshot, error in
                 
-                addFeedbackButton.isHidden = !(isCompleted && !alreadyHasFeedback)
+                guard let self = self else { return }
+                
+                guard
+                    let snapshot = snapshot,
+                    let user = try? snapshot.data(as: User.self),
+                    user.role == .technician
+                else {
+                    self.technicianNameTextField.text = "Unknown"
+                    self.technicianIdTextField.text = technicianId
+                    return
+                }
+                
+                self.technicianNameTextField.text =
+                    "\(user.firstName) \(user.lastName)"
+                self.technicianIdTextField.text = user.id
+            }
     }
     
     // MARK: - Actions
     @IBAction func addFeedbackTapped(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "FeedBackRating", bundle: nil)
-                guard let vc = storyboard.instantiateViewController(withIdentifier: "FeedBackRating") as? FeedBackRating else { return }
-                
-                // Pass the ID to the feedback screen
-                vc.ticketID = self.request.id
-                
-                navigationController?.pushViewController(vc, animated: true)
+        guard let vc = storyboard.instantiateViewController(
+            withIdentifier: "FeedBackRating"
+        ) as? FeedBackRating else { return }
+        
+        vc.ticketID = self.request.id
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
-
