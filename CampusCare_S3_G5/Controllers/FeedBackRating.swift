@@ -2,9 +2,9 @@ import UIKit
 import FirebaseCore
 import FirebaseFirestore
 
-// The protocol acts as the "river" to carry data back to the list
+// Simplified protocol to fix "does not conform" errors
 protocol FeedbackDelegate: AnyObject {
-    func didSubmitNewFeedback(_ activity: ActivityHistory)
+    func didSubmitNewFeedback()
 }
 
 class FeedBackRating: UIViewController {
@@ -15,7 +15,11 @@ class FeedBackRating: UIViewController {
     weak var delegate: FeedbackDelegate?
     var currentRating: Int = 0
     var ticketID: String?
+    // Set this ID when you navigate to this page to track performance
+    var technicianID: String = "Technician_Name"
     
+    let db = Firestore.firestore()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         reviewTextView.layer.cornerRadius = 10
@@ -31,45 +35,49 @@ class FeedBackRating: UIViewController {
         }
     }
 
-    let db = Firestore.firestore()
-
     @IBAction func submitPressed(_ sender: UIButton) {
-            guard let tID = ticketID else { return }
-            let userComment = reviewTextView.text ?? ""
-                
-            let feedbackData: [String: Any] = [
-                "rating": currentRating,
-                "comment": userComment,
-                "date": Timestamp(date: Date()),
-                "ticketId": tID // Link feedback to this specific ticket
-            ]
-                
-            // 1. Save feedback
-            db.collection("feedbacks").addDocument(data: feedbackData) { [weak self] error in
-                if error == nil {
-                    // 2. Mark the ticket as having feedback so it can't be done again
-                    self?.db.collection("tickets").document(tID).updateData([
-                        "hasFeedback": true
-                    ]) { _ in
-                        self?.showAlert(title: "Success", message: "Feedback sent to database!")
-                    }
+        guard let tID = ticketID else { return }
+        let userComment = reviewTextView.text ?? ""
+            
+        // Save feedback with technicianId for the performance page
+        let feedbackData: [String: Any] = [
+            "rating": currentRating,
+            "comment": userComment,
+            "date": Timestamp(date: Date()),
+            "ticketId": tID,
+            "technicianId": technicianID
+        ]
+            
+        db.collection("feedbacks").addDocument(data: feedbackData) { [weak self] error in
+            if error == nil {
+                // Update the local FeedbackManager list
+                let newReview = Review(
+                    rating: self?.currentRating ?? 0,
+                    comment: userComment,
+                    date: Date(),
+                    ticketId: tID,
+                    technicianId: self?.technicianID ?? "N/A"
+                )
+                FeedbackManager.shared.addReview(newReview)
+
+                self?.db.collection("tickets").document(tID).updateData(["hasFeedback": true]) { _ in
+                    // Notify delegate to refresh the history list
+                    self?.delegate?.didSubmitNewFeedback()
+                    self?.showAlert(title: "Success", message: "Thank you for your Feedback!")
                 }
             }
+        }
     }
         
-    // Helper function to show alerts easily
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             if title == "Success" {
-                // --- NAVIGATION START ---
-                // This manually loads the RepairRequestSystem storyboard and shows it
                 let storyboard = UIStoryboard(name: "RepairRequestSystem", bundle: nil)
                 if let vc = storyboard.instantiateInitialViewController() {
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true, completion: nil)
                 }
-                // --- NAVIGATION END ---
             }
         })
         present(alert, animated: true)
