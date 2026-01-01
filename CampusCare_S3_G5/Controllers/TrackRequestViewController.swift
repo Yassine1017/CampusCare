@@ -114,11 +114,12 @@ class TrackRequestViewController: UIViewController {
                 }
                 
                 self.technicianNameTextField.text =
-                    "\(user.firstName) \(user.lastName)"
+                "\(user.firstName) \(user.lastName)"
                 self.technicianIdTextField.text = user.id
             }
     }
     
+    // MARK: - Actions
     // MARK: - Actions
     @IBAction func addFeedbackTapped(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "FeedBackRating", bundle: nil)
@@ -126,7 +127,13 @@ class TrackRequestViewController: UIViewController {
             withIdentifier: "FeedBackRating"
         ) as? FeedBackRating else { return }
         
+        // Pass the Ticket ID
         vc.ticketID = self.request.id
+        
+        // FIXED: Pass the technician's unique ID (assignedTo)
+        // This ensures the feedback is linked to the right person forever.
+        vc.technicianID = self.request.assignedTo
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -90,10 +90,10 @@
             </objects>
             <point key="canvasLocation" x="652.2388059701492" y="-413.95881006864988"/>
         </scene>
-        <!--TechnincanPerformance-->
+        <!--TechnicianDirectory-->
         <scene sceneID="OrE-SG-I2O">
             <objects>
-                <viewControllerPlaceholder storyboardName="TechnincanPerformance" id="P0o-lH-Qtz" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="TechnicianDirectory" id="P0o-lH-Qtz" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="WaE-Co-2Ri"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xZV-sR-Guz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

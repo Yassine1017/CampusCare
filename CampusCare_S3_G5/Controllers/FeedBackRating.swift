@@ -2,7 +2,6 @@ import UIKit
 import FirebaseCore
 import FirebaseFirestore
 
-// Simplified protocol to fix "does not conform" errors
 protocol FeedbackDelegate: AnyObject {
     func didSubmitNewFeedback()
 }
@@ -15,8 +14,9 @@ class FeedBackRating: UIViewController {
     weak var delegate: FeedbackDelegate?
     var currentRating: Int = 0
     var ticketID: String?
-    // Set this ID when you navigate to this page to track performance
-    var technicianID: String = "Technician_Name"
+    
+    // This variable is now correctly filled by TrackRequestViewController
+    var technicianID: String?
     
     let db = Firestore.firestore()
 
@@ -37,31 +37,26 @@ class FeedBackRating: UIViewController {
 
     @IBAction func submitPressed(_ sender: UIButton) {
         guard let tID = ticketID else { return }
+        
+        // This guard will now pass because we are sending technicianID from the previous screen
+        guard let techUID = technicianID else {
+            print("Error: No technician ID found for this ticket")
+            return
+        }
+        
         let userComment = reviewTextView.text ?? ""
             
-        // Save feedback with technicianId for the performance page
         let feedbackData: [String: Any] = [
             "rating": currentRating,
             "comment": userComment,
             "date": Timestamp(date: Date()),
             "ticketId": tID,
-            "technicianId": technicianID
+            "technicianId": techUID // Saves the correct UID for the Admin Performance page
         ]
             
         db.collection("feedbacks").addDocument(data: feedbackData) { [weak self] error in
             if error == nil {
-                // Update the local FeedbackManager list
-                let newReview = Review(
-                    rating: self?.currentRating ?? 0,
-                    comment: userComment,
-                    date: Date(),
-                    ticketId: tID,
-                    technicianId: self?.technicianID ?? "N/A"
-                )
-                FeedbackManager.shared.addReview(newReview)
-
                 self?.db.collection("tickets").document(tID).updateData(["hasFeedback": true]) { _ in
-                    // Notify delegate to refresh the history list
                     self?.delegate?.didSubmitNewFeedback()
                     self?.showAlert(title: "Success", message: "Thank you for your Feedback!")
                 }
