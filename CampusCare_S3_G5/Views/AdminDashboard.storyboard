@@ -38,7 +38,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-G4-Lfy">
-                                <rect key="frame" x="66" y="387" width="270" height="150.33333333333337"/>
+                                <rect key="frame" x="66" y="387" width="270" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVn-aP-kn9">
                                         <rect key="frame" x="75" y="0.0" width="120" height="38.333333333333336"/>
@@ -56,10 +56,11 @@
                                         <buttonConfiguration key="configuration" style="gray" title="View Technician Preformance"/>
                                         <connections>
                                             <action selector="viewPerformanceTapped:" destination="TY9-5o-kSf" eventType="touchUpInside" id="lEn-sA-bY1"/>
+                                            <segue destination="P0o-lH-Qtz" kind="show" id="Gm3-b6-nk9"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9h-ua-POg">
-                                        <rect key="frame" x="16" y="111.99999999999999" width="238" height="38.333333333333329"/>
+                                        <rect key="frame" x="16" y="94.333333333333314" width="238" height="5.6666666666666714"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Manage Technician Account"/>
                                         <connections>
@@ -88,6 +89,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZLt-XN-prE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="652.2388059701492" y="-413.95881006864988"/>
+        </scene>
+        <!--TechnincanPerformance-->
+        <scene sceneID="OrE-SG-I2O">
+            <objects>
+                <viewControllerPlaceholder storyboardName="TechnincanPerformance" id="P0o-lH-Qtz" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="WaE-Co-2Ri"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xZV-sR-Guz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1215" y="-330"/>
         </scene>
         <!--Admin Ticket Table View Controller-->
         <scene sceneID="Vjk-l4-OXA">
