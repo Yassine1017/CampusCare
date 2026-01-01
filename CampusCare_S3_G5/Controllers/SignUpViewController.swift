@@ -47,8 +47,19 @@ class SignUpViewController: UIViewController {
         }
 
         private func configurePasswordFields() {
-            txtPassword.isSecureTextEntry = true
-            txtConfirmPassword.isSecureTextEntry = true
+            // Enable secure text entry
+                txtPassword.isSecureTextEntry = true
+                txtConfirmPassword.isSecureTextEntry = true
+
+                // Disable iOS Strong Password and AutoFill suggestions
+                txtPassword.textContentType = .oneTimeCode
+                txtConfirmPassword.textContentType = .oneTimeCode
+
+                // Disable autocorrection and spell checking
+                txtPassword.autocorrectionType = .no
+                txtConfirmPassword.autocorrectionType = .no
+                txtPassword.spellCheckingType = .no
+                txtConfirmPassword.spellCheckingType = .no
         }
 
         private func setupKeyboardDismiss() {
