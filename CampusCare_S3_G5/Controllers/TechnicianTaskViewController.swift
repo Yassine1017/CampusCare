@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 class TechnicianTaskViewController: UIViewController {
     
@@ -153,4 +154,39 @@ class TechnicianTaskViewController: UIViewController {
                 destinationVC.tickets = self.tickets
             }
         }
+    
+    @IBAction func signOutTapped(_ sender: UIButton) {
+
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            showAlert(title: "Error", message: "Failed to sign out.")
+            return
+        }
+
+        // Go back to Login screen
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        guard let loginVC = storyboard.instantiateViewController(
+            withIdentifier: "LoginViewController"
+        ) as? UIViewController else {
+            return
+        }
+
+        let nav = UINavigationController(rootViewController: loginVC)
+        nav.modalPresentationStyle = .fullScreen
+
+        // Replace root view controller (no back navigation)
+        view.window?.rootViewController = nav
+        view.window?.makeKeyAndVisible()
+    }
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
 }
