@@ -266,7 +266,7 @@ class RepairRequestViewController: UIViewController {
             self.navigationController?.pushViewController(statsVC, animated: true)
         }
     }
-} 
+}
     
     
 // MARK: - UITableView Extensions
