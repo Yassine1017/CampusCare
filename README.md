@@ -1,7 +1,5 @@
 # CampusCare
 
-**GitHub Link:** [https://github.com/Yassine1017/CampusCare](https://github.com/Yassine1017/CampusCare)
-
 ## Group Members
 - Yassine Benmansour (202304164)
 - Husain Fardan (202300294)
