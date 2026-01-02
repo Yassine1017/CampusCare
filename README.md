@@ -27,13 +27,8 @@
 ## Design Changes
 - **Mohamed:** Verify OTP was deleted (unnecessary). Maintenance Schedule design was changed.
 - **Faisal:** Admin dashboard tickets of varying status are viewed in one page instead of separate pages.
-
-## Libraries, Packages, External Code Implementations
-*(Not specified in the original file)*
-
-## Steps to Setup the Project
-*(Not specified in the original file)*
-
+- **Kusi:** No longer including the notification when a technician is assigned/scheduled.
+  
 ## Simulators Used for Testing
 - iPhone 16 Pro
 
