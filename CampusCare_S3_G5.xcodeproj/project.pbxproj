@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		50A65B662EF93E3800C51C97 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 50A65B652EF93E3800C51C97 /* FirebaseAnalytics */; };
+		50A65B682EF93E3800C51C97 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 50A65B672EF93E3800C51C97 /* FirebaseAuth */; };
+		50A65B6A2EF93E3800C51C97 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 50A65B692EF93E3800C51C97 /* FirebaseCore */; };
+		50A65B6C2EF93E3800C51C97 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 50A65B6B2EF93E3800C51C97 /* FirebaseCrashlytics */; };
+		50A65B6E2EF93E3800C51C97 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 50A65B6D2EF93E3800C51C97 /* FirebaseDatabase */; };
+		50A65B702EF93E3800C51C97 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 50A65B6F2EF93E3800C51C97 /* FirebaseFirestore */; };
+		50A65B722EF93E3800C51C97 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 50A65B712EF93E3800C51C97 /* FirebaseMessaging */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		50E9D5802EE03B6F002F20C4 /* CampusCare_S3_G5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CampusCare_S3_G5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -14,7 +24,9 @@
 		50E9D5922EE03B70002F20C4 /* Exceptions for "CampusCare_S3_G5" folder in "CampusCare_S3_G5" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Controllers/SceneDelegate.swift,
 				Info.plist,
+				Views/ForgotPasswordViewController.swift,
 			);
 			target = 50E9D57F2EE03B6F002F20C4 /* CampusCare_S3_G5 */;
 		};
@@ -36,6 +48,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50A65B6E2EF93E3800C51C97 /* FirebaseDatabase in Frameworks */,
+				50A65B662EF93E3800C51C97 /* FirebaseAnalytics in Frameworks */,
+				50A65B722EF93E3800C51C97 /* FirebaseMessaging in Frameworks */,
+				50A65B6C2EF93E3800C51C97 /* FirebaseCrashlytics in Frameworks */,
+				50A65B6A2EF93E3800C51C97 /* FirebaseCore in Frameworks */,
+				50A65B682EF93E3800C51C97 /* FirebaseAuth in Frameworks */,
+				50A65B702EF93E3800C51C97 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +97,13 @@
 			);
 			name = CampusCare_S3_G5;
 			packageProductDependencies = (
+				50A65B652EF93E3800C51C97 /* FirebaseAnalytics */,
+				50A65B672EF93E3800C51C97 /* FirebaseAuth */,
+				50A65B692EF93E3800C51C97 /* FirebaseCore */,
+				50A65B6B2EF93E3800C51C97 /* FirebaseCrashlytics */,
+				50A65B6D2EF93E3800C51C97 /* FirebaseDatabase */,
+				50A65B6F2EF93E3800C51C97 /* FirebaseFirestore */,
+				50A65B712EF93E3800C51C97 /* FirebaseMessaging */,
 			);
 			productName = CampusCare_S3_G5;
 			productReference = 50E9D5802EE03B6F002F20C4 /* CampusCare_S3_G5.app */;
@@ -107,6 +133,9 @@
 			);
 			mainGroup = 50E9D5772EE03B6F002F20C4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50E9D5812EE03B6F002F20C4 /* Products */;
 			projectDirPath = "";
@@ -149,7 +178,7 @@
 				INFOPLIST_FILE = CampusCare_S3_G5/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = TechnicianUserPages;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -176,7 +205,7 @@
 				INFOPLIST_FILE = CampusCare_S3_G5/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = TechnicianUserPages;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -333,6 +362,55 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		50A65B652EF93E3800C51C97 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		50A65B672EF93E3800C51C97 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		50A65B692EF93E3800C51C97 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		50A65B6B2EF93E3800C51C97 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		50A65B6D2EF93E3800C51C97 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		50A65B6F2EF93E3800C51C97 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		50A65B712EF93E3800C51C97 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50A65B642EF93E3800C51C97 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 50E9D5782EE03B6F002F20C4 /* Project object */;
 }
