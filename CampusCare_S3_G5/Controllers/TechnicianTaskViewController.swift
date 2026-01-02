@@ -189,4 +189,12 @@ class TechnicianTaskViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+    @IBAction func taskScheduleTapped(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Maintenance", bundle: nil)
+        let maintenanceVC = storyboard.instantiateViewController(withIdentifier: "MaintenanceTVC")
+
+        navigationController?.pushViewController(maintenanceVC, animated: true)
+    }
+
+
 }

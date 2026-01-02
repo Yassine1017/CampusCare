@@ -90,6 +90,9 @@
                                                         <integer key="value" value="10"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="taskScheduleTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="wji-cX-fce"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -1145,7 +1148,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wHL-ng-GdJ">
-                                        <rect key="frame" x="0.0" y="48.333333333333258" width="312" height="154.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="48.333333333333258" width="312" height="154.66666666666666"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="154.66999999999999" id="8n5-UC-0Dv"/>

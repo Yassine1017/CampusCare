@@ -87,7 +87,7 @@ class RepairRequestViewController: UIViewController {
         }
     }
     
-    // MARK: - Firestore Listener (NEW TICKETS DB)
+    // MARK: - Firestore Listener
     private func listenForTickets() {
         listener = db.collection("tickets")
             .order(by: "dateCommenced", descending: true)
@@ -252,7 +252,6 @@ class RepairRequestViewController: UIViewController {
         navigationItem.rightBarButtonItem = nil
     }
 
-    // ✅ ADDED THIS FUNCTION INSIDE THE CLASS TO FIX THE ERROR
     @IBAction func viewMyFeedbacksTapped(_ sender: UIButton) {
         guard let currentUID = Auth.auth().currentUser?.uid else {
             print("Error: No user is logged in")
@@ -267,7 +266,7 @@ class RepairRequestViewController: UIViewController {
             self.navigationController?.pushViewController(statsVC, animated: true)
         }
     }
-} // <--- THE CLASS ENDS HERE
+} 
     
     
 // MARK: - UITableView Extensions
